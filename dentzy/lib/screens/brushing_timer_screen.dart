@@ -15,7 +15,7 @@ class _BrushingTimerScreenState extends State<BrushingTimerScreen> {
   late Timer _timer;
   int _remainingSeconds = 120; // 2 minutes in seconds
   bool _isRunning = false;
-  int _totalSeconds = 120;
+  final int _totalSeconds = 120;
 
   @override
   void dispose() {

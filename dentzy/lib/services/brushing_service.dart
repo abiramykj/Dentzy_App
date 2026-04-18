@@ -31,7 +31,6 @@ class BrushingService {
       
       // Parse each member's data
       decodedData.forEach((memberId, dateMap) {
-        if (memberId is! String) return;
         _brushingData[memberId] = {};
         
         if (dateMap is Map) {
@@ -152,9 +151,7 @@ class BrushingService {
   // Load brushing data from SharedPreferences (for one-time access)
   Future<Map<String, Map<String, Map<String, bool>>>> loadBrushingData() async {
     try {
-      if (_prefs == null) {
-        _prefs = await SharedPreferences.getInstance();
-      }
+      _prefs ??= await SharedPreferences.getInstance();
       await _loadData();
       return _brushingData;
     } catch (e) {

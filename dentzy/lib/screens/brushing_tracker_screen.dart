@@ -426,7 +426,7 @@ class _BrushingTrackerScreenState extends State<BrushingTrackerScreen> {
                     ],
                   ),
                 );
-              }).toList(),
+              }),
             ],
           ),
         ),
@@ -531,7 +531,7 @@ class _BrushingTrackerScreenState extends State<BrushingTrackerScreen> {
               const Divider(),
               _buildStatRow('Days Tracked', '30 days'),
               const Divider(),
-              _buildStatRow('Average per Day', '${(total / 30).toStringAsFixed(1)}'),
+              _buildStatRow('Average per Day', (total / 30).toStringAsFixed(1)),
             ],
           ),
         ),

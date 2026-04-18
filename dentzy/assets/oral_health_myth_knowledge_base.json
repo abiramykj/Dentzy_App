@@ -1,0 +1,140 @@
+[
+{
+"id": "M1",
+"category": "Toothpaste Quantity & Foam",
+"covers": [
+"More toothpaste cleans better",
+"Full brush toothpaste gives better whitening",
+"More foam means better cleaning",
+"Using extra toothpaste cleans teeth better"
+],
+"explanation": "Using more toothpaste does not improve cleaning. A pea-sized amount is sufficient for effective plaque removal.",
+"recommended_action": "Use a pea-sized amount of fluoride toothpaste."
+},
+
+{
+"id": "M2",
+"category": "Brushing Force & Technique",
+"covers": [
+"Hard brushing strengthens teeth",
+"Hard bristles clean better",
+"Brushing harder removes stains faster",
+"Using more pressure removes plaque faster",
+"Strong brushing prevents gum disease",
+"You should brush horizontally only"
+],
+"explanation": "Brushing too hard or using hard bristles can damage enamel and gums. Gentle circular brushing with a soft brush is recommended.",
+"recommended_action": "Use soft bristles and gentle circular motions."
+},
+
+{
+"id": "M3",
+"category": "Scaling & Professional Cleaning",
+"covers": [
+"Scaling weakens teeth",
+"Scaling removes protective enamel",
+"Professional cleaning removes enamel",
+"Professional scaling damages gums",
+"Dental cleaning causes tooth mobility",
+"Professional dental cleaning causes permanent tooth gaps"
+],
+"explanation": "Professional scaling removes plaque and tartar without damaging healthy enamel or loosening teeth.",
+"recommended_action": "Get scaling done by qualified dental professionals."
+},
+
+{
+"id": "M4",
+"category": "Gum Bleeding Misconceptions",
+"covers": [
+"If gums bleed you should stop brushing",
+"Bleeding gums are normal",
+"Gum bleeding means brushing should stop",
+"Gums should bleed during proper brushing",
+"Gum bleeding is caused by brushing correctly",
+"Gum bleeding is a sign of healthy brushing"
+],
+"explanation": "Bleeding gums often indicate inflammation or gum disease and should not be ignored.",
+"recommended_action": "Continue gentle brushing and consult a dentist."
+},
+
+{
+"id": "M5",
+"category": "Baby Teeth & Children Oral Care",
+"covers": [
+"Baby teeth do not need care",
+"Primary teeth are not important",
+"Milk teeth problems do not matter",
+"Children cannot have cavities in baby teeth",
+"Children cannot get cavities if they avoid candy",
+"Children cannot get gum disease",
+"Children do not need fluoride"
+],
+"explanation": "Primary teeth are essential for proper development and can develop cavities and gum disease.",
+"recommended_action": "Ensure children practice proper oral hygiene and use fluoride as recommended."
+},
+
+{
+"id": "M6",
+"category": "Flossing & Interdental Cleaning",
+"covers": [
+"Flossing creates gaps between teeth",
+"Flossing is unnecessary",
+"Skipping flossing has no consequences"
+],
+"explanation": "Flossing removes plaque between teeth and does not create gaps.",
+"recommended_action": "Floss daily to maintain gum health."
+},
+
+{
+"id": "M7",
+"category": "Mouthwash Misconceptions",
+"covers": [
+"Mouthwash can replace brushing",
+"Mouthwash alone keeps teeth healthy"
+],
+"explanation": "Mouthwash cannot remove plaque effectively. It supports brushing but does not replace it.",
+"recommended_action": "Brush and floss regularly; use mouthwash as supplementary."
+},
+
+{
+"id": "M8",
+"category": "Cavity Causes & Progression",
+"covers": [
+"Sugar is the only cause of cavities",
+"Cavities heal on their own",
+"Cavities disappear without treatment",
+"Tooth decay happens overnight",
+"Tooth decay spreads instantly",
+"You can feel cavities forming",
+"Tooth decay only happens when you eat sugar"
+],
+"explanation": "Cavities are caused by bacteria producing acid over time and require professional treatment once formed.",
+"recommended_action": "Limit sugar frequency and maintain oral hygiene."
+},
+
+{
+"id": "M9",
+"category": "Pain & Symptoms Misconceptions",
+"covers": [
+"You only need a dentist when in pain",
+"If there is no pain there is no problem",
+"Tooth sensitivity is normal and harmless",
+"Tooth pain always means extraction",
+"Gum disease is always painful"
+],
+"explanation": "Many dental problems are painless in early stages.",
+"recommended_action": "Attend regular dental checkups."
+},
+
+{
+"id": "M10",
+"category": "Fluoride Myths",
+"covers": [
+"Fluoride is harmful in all amounts",
+"Fluoride causes cavities",
+"Fluoride toothpaste should not be used daily"
+],
+"explanation": "Fluoride in recommended amounts strengthens enamel and prevents cavities.",
+"recommended_action": "Use fluoride toothpaste as advised."
+}
+]

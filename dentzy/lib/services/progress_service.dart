@@ -36,7 +36,7 @@ class ProgressService {
       'total': 2,
       'percentage': percentage,
       'display': '$percentage%',
-      'status': '${completed}/2',
+      'status': '$completed/2',
     };
   }
 

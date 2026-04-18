@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/achievement.dart';
-import 'brushing_service.dart';
 
 class AchievementService {
   static const String _achievementsKey = 'achievements';

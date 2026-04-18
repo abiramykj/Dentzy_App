@@ -371,6 +371,22 @@ class _ProfilePageState extends State<ProfilePage> {
                   return FutureBuilder<Map<String, Map<String, Map<String, bool>>>>(
                     future: brushingService.loadBrushingData(),
                     builder: (context, snapshot) {
+                      // Check for errors
+                      if (snapshot.hasError) {
+                        return CustomCard(
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Text(
+                                'Error loading progress data',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+
+                      // Show loading indicator
                       if (!snapshot.hasData) {
                         return CustomCard(
                           child: const Center(
@@ -382,9 +398,48 @@ class _ProfilePageState extends State<ProfilePage> {
                         );
                       }
 
-                      final brushingData = snapshot.data!;
+                      final brushingData = snapshot.data ?? {};
+
+                      // Check if this member has any brushing data
+                      if (brushingData.isEmpty || brushingData[memberId] == null) {
+                        return CustomCard(
+                          padding: const EdgeInsets.all(16),
+                          child: Center(
+                            child: Column(
+                              children: [
+                                Text(
+                                  'No brushing data available',
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                                const SizedBox(height: 12),
+                                Text(
+                                  'Start brushing to see your progress!',
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }
+
+                      // Get progress with safe defaults
                       final progress =
                           ProgressService.getAllProgress(memberId, brushingData);
+
+                      // Safely access progress values with defaults
+                      final dailyStatus =
+                          progress['daily']?['status'] as String? ?? '0/2';
+                      final dailyDisplay =
+                          progress['daily']?['display'] as String? ?? '0%';
+                      final weeklyStatus =
+                          progress['weekly']?['status'] as String? ?? '0/14';
+                      final weeklyDisplay =
+                          progress['weekly']?['display'] as String? ?? '0%';
+                      final monthlyStatus =
+                          progress['monthly']?['status'] as String? ?? '0/60';
+                      final monthlyDisplay =
+                          progress['monthly']?['display'] as String? ?? '0%';
 
                       return Column(
                         children: [
@@ -408,7 +463,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
-                                      progress['daily']!['status'],
+                                      dailyStatus,
                                       style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
@@ -417,7 +472,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ],
                                 ),
                                 Text(
-                                  progress['daily']!['display'],
+                                  dailyDisplay,
                                   style: const TextStyle(
                                     fontSize: 24,
                                     fontWeight: FontWeight.bold,
@@ -448,7 +503,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
-                                      progress['weekly']!['status'],
+                                      weeklyStatus,
                                       style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
@@ -457,7 +512,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ],
                                 ),
                                 Text(
-                                  progress['weekly']!['display'],
+                                  weeklyDisplay,
                                   style: const TextStyle(
                                     fontSize: 24,
                                     fontWeight: FontWeight.bold,
@@ -488,7 +543,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
-                                      progress['monthly']!['status'],
+                                      monthlyStatus,
                                       style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
@@ -497,7 +552,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ],
                                 ),
                                 Text(
-                                  progress['monthly']!['display'],
+                                  monthlyDisplay,
                                   style: const TextStyle(
                                     fontSize: 24,
                                     fontWeight: FontWeight.bold,
@@ -841,7 +896,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 const SizedBox(height: 12),
                 DropdownButtonFormField<String>(
-                  value: selectedRelation,
+                  initialValue: selectedRelation,
                   decoration: const InputDecoration(
                     labelText: 'Relation (Optional)',
                     border: OutlineInputBorder(),
@@ -927,7 +982,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 const SizedBox(height: 12),
                 DropdownButtonFormField<String>(
-                  value: selectedRelation,
+                  initialValue: selectedRelation,
                   decoration: const InputDecoration(
                     labelText: 'Relation (Optional)',
                     border: OutlineInputBorder(),
