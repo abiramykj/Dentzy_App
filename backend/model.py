@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Dict
+from typing import Dict, Tuple
 
 import numpy as np
 from sentence_transformers import SentenceTransformer
@@ -24,7 +24,35 @@ _MYTH_EMBEDDINGS = _MODEL.encode(
     normalize_embeddings=True,
 )
 
-_THRESHOLD = 0.45
+# Define general dental concepts for semantic relevance detection
+_DENTAL_CONCEPTS = [
+    "tooth health and care",
+    "gum disease and treatment",
+    "oral hygiene practices",
+    "dental procedures and cleaning",
+    "tooth decay and cavities",
+    "brushing and flossing techniques",
+    "dental prevention and maintenance",
+    "mouth and tooth health",
+    "enamel and dental sensitivity",
+    "plaque and tartar buildup",
+    "பல் ஆரோக்கியம் மற்றும் பராமரிப்பு",
+    "ஈறு நோய் மற்றும் சிகிச்சை",
+    "வாய் சுகாதாரம் நடைமுறைகள்",
+    "பல் அழுக்கு மற்றும் குழி",
+]
+
+# Precompute embeddings for dental concepts at startup
+_DENTAL_EMBEDDINGS = _MODEL.encode(
+    _DENTAL_CONCEPTS,
+    convert_to_numpy=True,
+    normalize_embeddings=True,
+)
+
+# Thresholds for multi-level classification
+_DENTAL_RELEVANCE_THRESHOLD = 0.35
+_HIGH_THRESHOLD = 0.6
+_MEDIUM_THRESHOLD = 0.4
 
 
 def _best_match(scores: np.ndarray) -> tuple[int, float]:
@@ -32,34 +60,80 @@ def _best_match(scores: np.ndarray) -> tuple[int, float]:
     return index, float(scores[index])
 
 
-def is_dental(sentence: str) -> bool:
-    dental_keywords = [
-        "tooth", "teeth", "gum", "brush", "floss", "dentist", "oral", "mouth", "cavity", "toothbrush", "cleaning", "hygiene", "neem", "stick",
-        "பல்", "பற்கள்", "ஈறு", "துலக்கு", "பற்பசை", "மவுத்", "வாய்", "பிளாக்", "நீம்", "குச்சி"
-    ]
-    return any(keyword in sentence.lower() for keyword in dental_keywords)
-
-
-def classify(sentence: str) -> Dict[str, object]:
+def is_dental(sentence: str) -> Tuple[bool, float]:
+    """
+    STAGE 1: Detect whether a sentence is related to dental/oral health using semantic similarity.
+    
+    Uses semantic embeddings of general dental concepts to determine relevance,
+    independent of dataset sentence matching.
+    
+    Args:
+        sentence: Input sentence to classify
+        
+    Returns:
+        Tuple[bool, float]: (is_dental, confidence_score)
+    """
     if not sentence or not sentence.strip():
-        raise ValueError("Input text is empty.")
-
+        return False, 0.0
+    
     query_embedding = _MODEL.encode(
         sentence,
         convert_to_numpy=True,
         normalize_embeddings=True,
     )
+    
+    # Compute semantic similarity with dental concepts
+    concept_scores = np.dot(_DENTAL_EMBEDDINGS, query_embedding)
+    best_concept_index, best_concept_score = _best_match(concept_scores)
+    
+    # Determine if sentence is dental-related based on threshold
+    is_dental_related = best_concept_score > _DENTAL_RELEVANCE_THRESHOLD
+    
+    return is_dental_related, float(best_concept_score)
 
+
+def classify(sentence: str) -> Dict[str, object]:
+    """
+    Two-stage classification pipeline:
+    
+    STAGE 1: Detect if sentence is dental-related using semantic similarity with dental concepts
+    STAGE 2: Classify as fact or myth using dataset embeddings (only if Stage 1 is positive)
+    
+    Args:
+        sentence: Input sentence to classify
+        
+    Returns:
+        Dict with type ("fact", "myth", or "not_dental"), explanation, tip, and confidence
+    """
+    if not sentence or not sentence.strip():
+        raise ValueError("Input text is empty.")
+    
+    # STAGE 1: Dental Relevance Detection
+    is_dental_related, dental_confidence = is_dental(sentence)
+    
+    if not is_dental_related:
+        return {
+            "type": "not_dental",
+            "explanation": "This statement is not clearly related to dental health.",
+            "tip": "Try asking about oral hygiene, dental care, or common myths.",
+            "confidence": float(dental_confidence),
+        }
+    
+    # STAGE 2: Fact vs Myth Classification
+    query_embedding = _MODEL.encode(
+        sentence,
+        convert_to_numpy=True,
+        normalize_embeddings=True,
+    )
+    
     fact_scores = np.dot(_FACT_EMBEDDINGS, query_embedding)
     myth_scores = np.dot(_MYTH_EMBEDDINGS, query_embedding)
-
+    
     best_fact_index, best_fact_score = _best_match(fact_scores)
     best_myth_index, best_myth_score = _best_match(myth_scores)
-
-    HIGH_THRESHOLD = 0.6
-    MEDIUM_THRESHOLD = 0.4
-
-    if best_fact_score > best_myth_score and best_fact_score > HIGH_THRESHOLD:
+    
+    # High confidence match for fact
+    if best_fact_score > best_myth_score and best_fact_score > _HIGH_THRESHOLD:
         best_fact = all_facts[best_fact_index]
         return {
             "type": "fact",
@@ -67,8 +141,9 @@ def classify(sentence: str) -> Dict[str, object]:
             "tip": best_fact["tip"],
             "confidence": float(best_fact_score),
         }
-
-    if best_myth_score > best_fact_score and best_myth_score > HIGH_THRESHOLD:
+    
+    # High confidence match for myth
+    if best_myth_score > best_fact_score and best_myth_score > _HIGH_THRESHOLD:
         best_myth = all_myths[best_myth_index]
         return {
             "type": "myth",
@@ -76,34 +151,20 @@ def classify(sentence: str) -> Dict[str, object]:
             "tip": best_myth["tip"],
             "confidence": float(best_myth_score),
         }
-
-    if max(best_fact_score, best_myth_score) > MEDIUM_THRESHOLD:
+    
+    # Medium confidence match - classify as fact (safe fallback)
+    if max(best_fact_score, best_myth_score) > _MEDIUM_THRESHOLD:
         best_fact = all_facts[best_fact_index]
         return {
             "type": "fact",
             "explanation": "This statement is related to dental care but not found in the knowledge base.",
             "confidence": float(max(best_fact_score, best_myth_score)),
         }
-
-    if is_dental(sentence):
-        return {
-            "type": "fact",
-            "explanation": "This statement is related to dental care but not found in the knowledge base.",
-            "confidence": 0.4,
-        }
-
-    if "neem" in sentence.lower():
-        return {
-            "type": "fact",
-            "explanation": "Neem sticks have antibacterial properties and support oral hygiene.",
-            "tip": "Use gently and maintain proper brushing habits.",
-            "confidence": 0.5,
-        }
-
-    best_score = float(max(best_fact_score, best_myth_score))
+    
+    # Low confidence but still dental-related - return fact with generic explanation
+    best_score = float(max(best_fact_score, best_myth_score, dental_confidence))
     return {
-        "type": "not_dental",
-        "explanation": "This statement is not clearly related to dental health.",
-        "tip": "Try asking about oral hygiene, dental care, or common myths.",
+        "type": "fact",
+        "explanation": "This statement is related to dental care but not found in the knowledge base.",
         "confidence": best_score,
     }

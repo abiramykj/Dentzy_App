@@ -8,7 +8,8 @@ class AdvancedMythChecker {
     'tartar', 'scale', 'scaling', 'clean', 'cleaning', 'toothpaste',
     'toothbrush', 'mouth', 'oral', 'bite', 'crown', 'filling', 'whitening',
     'implant', 'root', 'canal', 'periodontal', 'gingiv', 'halitosis', 'breath',
-    'fluoride', 'mouthwash', 'orthodont', 'braces', 'extraction'
+    'fluoride', 'mouthwash', 'orthodont', 'braces', 'extraction', 'neem',
+    'miswak', 'datun', 'chewing stick', 'tooth stick'
   ];
 
   // Priority rules for high-confidence classifications
@@ -147,18 +148,31 @@ class AdvancedMythChecker {
       }
     }
 
+    if (bestMatch == null) {
+      return MythCheckResult(
+        label: 'Unknown',
+        explanation:
+            'This seems dental-related, but the knowledge base is unavailable.',
+        confidence: 0,
+        category: 'Unknown',
+        reason: 'No items loaded for matching',
+      );
+    }
+
     // Apply confidence thresholds
     int confidence = 0;
     String reason = '';
 
     if (bestScore < 0.5) {
+      confidence = (bestScore * 100).round();
       return MythCheckResult(
-        label: 'Not Dental',
+        label: 'Unknown',
         explanation:
-            'The statement is unclear or not in our dental knowledge base. Please rephrase and try again.',
-        confidence: 0,
+            'This is dental-related, but we could not confidently match it to our knowledge base. Please rephrase or add more detail.',
+        confidence: confidence,
         category: 'Unknown',
-        reason: 'No confident match (score: ${(bestScore * 100).toStringAsFixed(0)}%)',
+        reason:
+            'Low confidence match (score: ${(bestScore * 100).toStringAsFixed(0)}%)',
       );
     } else if (bestScore >= 0.5 && bestScore < 0.65) {
       confidence = (bestScore * 100).toInt();

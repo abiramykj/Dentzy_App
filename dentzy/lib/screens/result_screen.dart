@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import '../widgets/custom_card.dart';
+import '../services/myth_api_service.dart';
 import '../utils/theme.dart';
 
 class ResultScreen extends StatefulWidget {
@@ -21,6 +22,7 @@ class ResultScreen extends StatefulWidget {
 class _ResultScreenState extends State<ResultScreen> {
   bool isLoading = true;
   Map<String, dynamic>? result;
+  final MythApiService _apiService = MythApiService();
 
   @override
   void initState() {
@@ -35,7 +37,7 @@ class _ResultScreenState extends State<ResultScreen> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://10.0.2.2:8000/check'),
+        Uri.parse('${_apiService.baseUrl}/classify'),
         headers: const {
           'Content-Type': 'application/json',
         },

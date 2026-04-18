@@ -44,7 +44,7 @@ class MythItem {
 
 /// Myth checking result
 class MythCheckResult {
-  final String label; // 'Myth', 'Fact', 'Not Dental'
+  final String label; // 'Myth', 'Fact', 'Not Dental', 'Unknown'
   final String explanation;
   final int confidence; // 0-100%
   final String? matchedText;
