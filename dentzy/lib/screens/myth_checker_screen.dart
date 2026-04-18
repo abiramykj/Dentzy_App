@@ -3,6 +3,7 @@ import '../widgets/custom_card.dart';
 import '../utils/theme.dart';
 import '../l10n/app_localizations.dart';
 import '../services/advanced_myth_checker.dart';
+import '../services/myth_api_service.dart';
 import '../models/myth_item.dart';
 
 class MythCheckerScreen extends StatefulWidget {
@@ -14,6 +15,7 @@ class MythCheckerScreen extends StatefulWidget {
 
 class _MythCheckerScreenState extends State<MythCheckerScreen> {
   final TextEditingController _inputController = TextEditingController();
+  final MythApiService _apiService = MythApiService();
   MythCheckResult? _result;
   bool _isChecking = false;
   bool _isDataLoaded = false;
@@ -48,14 +50,8 @@ class _MythCheckerScreenState extends State<MythCheckerScreen> {
   }
 
   void _checkInput() async {
-    if (!_isDataLoaded) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Loading datasets... Please wait')),
-      );
-      return;
-    }
-
-    if (_inputController.text.trim().isEmpty) {
+    final input = _inputController.text.trim();
+    if (input.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please enter a statement to check')),
       );
@@ -66,20 +62,60 @@ class _MythCheckerScreenState extends State<MythCheckerScreen> {
       _isChecking = true;
     });
 
-    // Process with advanced myth checker
-    Future.delayed(const Duration(milliseconds: 800), () async {
-      final result = await AdvancedMythChecker.classify(
-        _inputController.text.trim(),
-        _database,
-      );
+    MythCheckResult? result;
+    try {
+      result = await _apiService.classifyStatement(input);
+
+      if (result.label == 'Not Dental' && result.confidence <= 5 && _isDataLoaded) {
+        final localResult = await AdvancedMythChecker.classify(
+          input,
+          _database,
+        );
+
+        if (localResult.label != 'Not Dental') {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Low-confidence backend result, using offline data'),
+              ),
+            );
+          }
+          result = localResult;
+        }
+      }
+    } catch (_) {
+      if (!_isDataLoaded) {
+        if (mounted) {
+          setState(() {
+            _isChecking = false;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Backend unavailable and datasets still loading.'),
+            ),
+          );
+        }
+        return;
+      }
 
       if (mounted) {
-        setState(() {
-          _result = result;
-          _isChecking = false;
-        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Backend unavailable, using offline data')),
+        );
       }
-    });
+
+      result = await AdvancedMythChecker.classify(
+        input,
+        _database,
+      );
+    }
+
+    if (mounted) {
+      setState(() {
+        _result = result;
+        _isChecking = false;
+      });
+    }
   }
 
 
@@ -442,6 +478,8 @@ class _MythCheckerScreenState extends State<MythCheckerScreen> {
         return Colors.green;
       case 'Not Dental':
         return Colors.orange;
+      case 'Unknown':
+        return Colors.blueGrey;
       default:
         return Colors.grey;
     }
@@ -454,6 +492,8 @@ class _MythCheckerScreenState extends State<MythCheckerScreen> {
       case 'Fact':
         return Icons.verified_rounded;
       case 'Not Dental':
+        return Icons.help_outline_rounded;
+      case 'Unknown':
         return Icons.help_outline_rounded;
       default:
         return Icons.question_mark_rounded;

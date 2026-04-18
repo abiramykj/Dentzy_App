@@ -3,3 +3,6 @@ uvicorn
 sentence-transformers
 scikit-learn
 numpy
+pandas
+google-genai
+python-dotenv

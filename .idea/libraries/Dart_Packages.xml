@@ -142,6 +142,20 @@
             </list>
           </value>
         </entry>
+        <entry key="http">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/http-1.6.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="http_parser">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/http_parser-4.1.2/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="intl">
           <value>
             <list>
@@ -401,6 +415,13 @@
             </list>
           </value>
         </entry>
+        <entry key="typed_data">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/typed_data-1.4.0/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="url_launcher">
           <value>
             <list>
@@ -511,6 +532,8 @@
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/flutter_local_notifications_linux-4.0.1/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/flutter_local_notifications_platform_interface-7.2.0/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/flutter_tts-4.2.5/lib" />
+      <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/http-1.6.0/lib" />
+      <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/http_parser-4.1.2/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/intl-0.20.2/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/json_annotation-4.11.0/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/leak_tracker-11.0.2/lib" />
@@ -547,6 +570,7 @@
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/term_glyph-1.2.2/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/test_api-0.7.10/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/timezone-0.9.4/lib" />
+      <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/typed_data-1.4.0/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/url_launcher-6.3.2/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/url_launcher_android-6.3.29/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/url_launcher_ios-6.4.1/lib" />
