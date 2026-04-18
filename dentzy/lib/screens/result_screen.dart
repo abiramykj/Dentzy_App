@@ -1,199 +1,380 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
 import '../widgets/custom_card.dart';
 import '../utils/theme.dart';
 
-class ResultScreen extends StatelessWidget {
-  final bool isCorrect;
-  final String myth;
-  final String correctAnswer;
-  final String explanation;
+class ResultScreen extends StatefulWidget {
+  final String inputText;
 
   const ResultScreen({
     super.key,
-    required this.isCorrect,
-    required this.myth,
-    required this.correctAnswer,
-    required this.explanation,
+    required this.inputText,
   });
+
+  @override
+  State<ResultScreen> createState() => _ResultScreenState();
+}
+
+class _ResultScreenState extends State<ResultScreen> {
+  bool isLoading = true;
+  Map<String, dynamic>? result;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchResult();
+  }
+
+  Future<void> fetchResult() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final response = await http.post(
+        Uri.parse('http://10.0.2.2:8000/check'),
+        headers: const {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'text': widget.inputText,
+        }),
+      );
+
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        throw Exception('Unexpected status: ${response.statusCode}');
+      }
+
+      final Map<String, dynamic> data =
+          jsonDecode(response.body) as Map<String, dynamic>;
+
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        result = data;
+        isLoading = false;
+      });
+    } catch (error) {
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        isLoading = false;
+        result = null;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to fetch result')),
+      );
+    }
+  }
+
+  String _resultTitle(String? type) {
+    switch (type) {
+      case 'myth':
+        return '❌ Myth';
+      case 'fact':
+        return '✅ Fact';
+      case 'not_dental':
+        return '⚠️ Not Dental';
+      default:
+        return 'Result';
+    }
+  }
+
+  String _resultSubtitle(String? type) {
+    switch (type) {
+      case 'myth':
+        return 'This statement is a myth.';
+      case 'fact':
+        return 'This statement is a fact.';
+      case 'not_dental':
+        return 'This statement is not about dental health.';
+      default:
+        return 'We could not classify this statement.';
+    }
+  }
+
+  IconData _resultIcon(String? type) {
+    switch (type) {
+      case 'myth':
+        return Icons.cancel;
+      case 'fact':
+        return Icons.check_circle;
+      case 'not_dental':
+        return Icons.warning;
+      default:
+        return Icons.help_outline;
+    }
+  }
+
+  LinearGradient _resultGradient(String? type) {
+    switch (type) {
+      case 'fact':
+        return AppTheme.successGradient;
+      case 'not_dental':
+        return LinearGradient(
+          colors: [
+            Colors.grey[400]!,
+            Colors.grey[600]!,
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        );
+      case 'myth':
+      default:
+        return LinearGradient(
+          colors: [
+            Colors.red[400]!,
+            Colors.red[600]!,
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        );
+    }
+  }
+
+  Color _resultTitleColor(String? type) {
+    switch (type) {
+      case 'fact':
+        return AppTheme.successColor;
+      case 'not_dental':
+        return Colors.grey[700]!;
+      case 'myth':
+      default:
+        return AppTheme.errorColor;
+    }
+  }
+
+  String? _firstNonEmpty(List<String?> values) {
+    for (final value in values) {
+      if (value != null && value.trim().isNotEmpty) {
+        return value;
+      }
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(24),
+        child: isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: result == null
+                      ? _buildErrorContent(context)
+                      : _buildResultContent(context),
+                ),
+              ),
+      ),
+    );
+  }
+
+  Widget _buildErrorContent(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        CustomCard(
+          padding: const EdgeInsets.all(20),
+          border: Border.all(
+            color: AppTheme.errorColor,
+            width: 1,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Result Unavailable',
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                'We could not fetch the classification right now. Please try again.',
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 32),
+        ElevatedButton.icon(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back),
+          label: const Text('Check Another Statement'),
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            backgroundColor: AppTheme.primaryColor,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildResultContent(BuildContext context) {
+    final String? type = (result?['type'] as String?)?.toLowerCase();
+    final String explanationText = _firstNonEmpty([
+          result?['explanation_ta'] as String?,
+          result?['explanation'] as String?,
+        ]) ??
+        'No explanation available.';
+    final String? tipText = type == 'myth'
+        ? _firstNonEmpty([
+            result?['recommended_action_ta'] as String?,
+            result?['tip'] as String?,
+          ])
+        : null;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Center(
+          child: Container(
+            width: 120,
+            height: 120,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: _resultGradient(type),
+            ),
+            child: Icon(
+              _resultIcon(type),
+              size: 60,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        const SizedBox(height: 24),
+        Center(
+          child: Column(
+            children: [
+              Text(
+                _resultTitle(type),
+                style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                  color: _resultTitleColor(type),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                _resultSubtitle(type),
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: AppTheme.textSecondary,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 32),
+        CustomCard(
+          padding: const EdgeInsets.all(20),
+          border: Border.all(
+            color: AppTheme.dividerColor,
+            width: 1,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Your Statement',
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                widget.inputText,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        CustomCard(
+          padding: const EdgeInsets.all(20),
+          border: Border.all(
+            color: AppTheme.accentColor,
+            width: 2,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.lightbulb, color: AppTheme.accentColor),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Explanation',
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Text(
+                explanationText,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+            ],
+          ),
+        ),
+        if (type == 'myth' && tipText != null) ...[
+          const SizedBox(height: 16),
+          CustomCard(
+            padding: const EdgeInsets.all(20),
+            border: Border.all(
+              color: AppTheme.primaryColor,
+              width: 1,
+            ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Result Icon
-                Center(
-                  child: Container(
-                    width: 120,
-                    height: 120,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: isCorrect
-                        ? AppTheme.successGradient
-                        : LinearGradient(
-                          colors: [
-                            Colors.red[400]!,
-                            Colors.red[600]!,
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
+                Row(
+                  children: [
+                    const Icon(Icons.tips_and_updates, color: AppTheme.primaryColor),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Tip',
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    child: Icon(
-                      isCorrect ? Icons.check_circle : Icons.cancel,
-                      size: 60,
-                      color: Colors.white,
-                    ),
-                  ),
+                  ],
                 ),
-
-                const SizedBox(height: 24),
-
-                // Result Text
-                Center(
-                  child: Column(
-                    children: [
-                      Text(
-                        isCorrect ? 'Correct!' : 'Incorrect',
-                        style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                          color: isCorrect ? AppTheme.successColor : AppTheme.errorColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        isCorrect
-                          ? 'Great job! You got it right.'
-                          : 'Don\'t worry, learn from this and try again.',
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: AppTheme.textSecondary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 32),
-
-                // Question Card
-                CustomCard(
-                  padding: const EdgeInsets.all(20),
-                  border: Border.all(
-                    color: AppTheme.dividerColor,
-                    width: 1,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'The Myth',
-                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        myth,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 16),
-
-                // Correct Answer Card
-                CustomCard(
-                  padding: const EdgeInsets.all(20),
-                  gradient: AppTheme.successGradient,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'The Truth',
-                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        correctAnswer,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 16),
-
-                // Explanation Card
-                CustomCard(
-                  padding: const EdgeInsets.all(20),
-                  border: Border.all(
-                    color: AppTheme.accentColor,
-                    width: 2,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          const Icon(Icons.lightbulb, color: AppTheme.accentColor),
-                          const SizedBox(width: 8),
-                          Text(
-                            'Explanation',
-                            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        explanation,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 32),
-
-                // Action Buttons
-                ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: const Icon(Icons.arrow_forward),
-                  label: const Text('Next Question'),
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    backgroundColor: AppTheme.primaryColor,
-                  ),
-                ),
-
                 const SizedBox(height: 12),
-
-                OutlinedButton.icon(
-                  onPressed: () {},
-                  icon: const Icon(Icons.home),
-                  label: const Text('Go to Home'),
+                Text(
+                  tipText,
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ],
             ),
           ),
+        ],
+        const SizedBox(height: 32),
+        ElevatedButton.icon(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back),
+          label: const Text('Check Another Statement'),
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            backgroundColor: AppTheme.primaryColor,
+          ),
         ),
-      ),
+      ],
     );
   }
 }
