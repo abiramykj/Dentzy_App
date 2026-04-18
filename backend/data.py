@@ -4,11 +4,22 @@ from pathlib import Path
 import pandas as pd
 
 # Resolve assets relative to the repo root so the backend can run from any CWD.
-_ASSETS_DIR = Path(__file__).resolve().parents[1] / "assets"
+_REPO_ROOT = Path(__file__).resolve().parents[1]
+_ASSET_DIR_CANDIDATES = [
+    _REPO_ROOT / "assets",
+    _REPO_ROOT / "dentzy" / "assets",
+]
+
+
+def _resolve_assets_dir() -> Path:
+    for candidate in _ASSET_DIR_CANDIDATES:
+        if candidate.exists():
+            return candidate
+    return _REPO_ROOT / "assets"
 
 
 def _asset_path(filename: str) -> Path:
-    return _ASSETS_DIR / filename
+    return _resolve_assets_dir() / filename
 
 # Function to load myths from JSON files
 def load_myths(json_file: str) -> list[dict]:
