@@ -1,0 +1,106 @@
+{
+  "appName": "Dentzy",
+  "appTagline": "Bust the Myths, Embrace the Truth",
+  "selectLanguage": "Select Language",
+  "english": "English",
+  "tamil": "தமிழ்",
+  "continueBtn": "Continue",
+  "next": "Next",
+  "previous": "Previous",
+  "save": "Save",
+  "delete": "Delete",
+  "edit": "Edit",
+  "cancel": "Cancel",
+  "retry": "Retry",
+  "loading": "Loading...",
+  "error": "Error",
+  "noData": "No data available",
+  "welcome": "Welcome Back!",
+  "readyForQuiz": "Ready to bust some myths today?",
+  "startQuiz": "Start Quiz",
+  "mythChecker": "Myth Checker",
+  "learn": "Learn",
+  "progress": "Progress",
+  "videos": "Videos",
+  "home": "Home",
+  "tracker": "Tracker",
+  "reports": "Reports",
+  "profile": "Profile",
+  "logout": "Logout",
+  "questionNumber": "Question {number} of {total}",
+  "@questionNumber": {
+    "description": "Progress indicator showing current question",
+    "placeholders": {
+      "number": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "isThisMythOrTruth": "Is this a myth or truth?",
+  "selectYourAnswer": "Select your answer:",
+  "myth": "Myth",
+  "truth": "Truth",
+  "aiConfidence": "AI Confidence",
+  "category": "Category",
+  "categoryColon": "Category: {category}",
+  "@categoryColon": {
+    "description": "Category label with value",
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "checked": "Checked",
+  "accuracy": "Accuracy",
+  "streak": "Streak",
+  "quickActions": "Quick Actions",
+  "testYourKnowledge": "Test your knowledge",
+  "educationalContent": "Educational content",
+  "trackYourStats": "Track your stats",
+  "videoLessons": "Video lessons",
+  "featuredArticles": "Featured Articles",
+  "topicsCovered": "Topics Covered",
+  "categoryFilter": "All",
+  "health": "Health",
+  "science": "Science",
+  "technology": "Technology",
+  "history": "History",
+  "society": "Society",
+  "environment": "Environment",
+  "oralHygiene": "Oral Hygiene",
+  "nutrition": "Nutrition",
+  "brushingTechniques": "Brushing Techniques",
+  "dentalHealth": "Dental Health",
+  "commonMyths": "Common Myths",
+  "prevention": "Prevention",
+  "minRead": "{minutes} min read",
+  "@minRead": {
+    "description": "Reading time indicator",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "understandingDentalMyths": "Understanding Dental Myths",
+  "learnTheDifference": "Learn the difference between common dental myths and facts.",
+  "scienceOfToothDecay": "The Science Behind Tooth Decay",
+  "discoverScientific": "Discover the scientific processes that cause tooth decay.",
+  "modernDentalTech": "Modern Dental Technology",
+  "exploreInnovations": "Explore the latest innovations in dental technology.",
+  "notifications": "Notifications",
+  "accountSettings": "Account Settings",
+  "percentage": "{value}%",
+  "@percentage": {
+    "description": "Percentage display",
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  }
+}

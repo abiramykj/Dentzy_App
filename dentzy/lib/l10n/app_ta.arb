@@ -1,0 +1,106 @@
+{
+  "appName": "டென்ட்ஸி",
+  "appTagline": "கட்டுக்கதைகளை உடைக்கவும், உண்மையை ஏற்றுக்கொள்ளுங்கள்",
+  "selectLanguage": "மொழியைத் தேர்ந்தெடுக்கவும்",
+  "english": "English",
+  "tamil": "தமிழ்",
+  "continueBtn": "தொடர்க",
+  "next": "அடுத்தது",
+  "previous": "முந்தையது",
+  "save": "சேமிக்க",
+  "delete": "அழிக்க",
+  "edit": "திருத்த",
+  "cancel": "ரத்து செய்க",
+  "retry": "மீண்டும் முயற்சி செய்க",
+  "loading": "ஏற்றுதல்...",
+  "error": "பிழை",
+  "noData": "தரவு கிடைக்கவில்லை",
+  "welcome": "மீண்டும் வரவேற்கிறோம்!",
+  "readyForQuiz": "இன்று கட்டுக்கதைகளை உடைக்க தயாரா?",
+  "startQuiz": "வினாடி வினா தொடங்கவும்",
+  "mythChecker": "கட்டுக்கதை சரிபார்ப்பான்",
+  "learn": "கற்க",
+  "progress": "முன்னேற்றம்",
+  "videos": "வீடியோக்கள்",
+  "home": "முகப்பு",
+  "tracker": "ட்ராக்கர்",
+  "reports": "அறிக்கைகள்",
+  "profile": "சுயவிவரம்",
+  "logout": "வெளியே இறங்கவும்",
+  "questionNumber": "கேள்வி {number}/{total}",
+  "@questionNumber": {
+    "description": "Progress indicator showing current question",
+    "placeholders": {
+      "number": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "isThisMythOrTruth": "இது கட்டுக்கதையா அல்லது உண்மையா?",
+  "selectYourAnswer": "உங்கள் பதிலைத் தேர்ந்தெடுக்கவும்:",
+  "myth": "கட்டுக்கதை",
+  "truth": "உண்மை",
+  "aiConfidence": "AI நம்பிக்கை",
+  "category": "வகை",
+  "categoryColon": "வகை: {category}",
+  "@categoryColon": {
+    "description": "Category label with value",
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "checked": "சரிபார்க்கப்பட்ட",
+  "accuracy": "துல்லியம்",
+  "streak": "தொடர்",
+  "quickActions": "விரைவு நடவடிக்கைகள்",
+  "testYourKnowledge": "உங்கள் அறிவை சோதிக்கவும்",
+  "educationalContent": "கல்வி உள்ளடக்கம்",
+  "trackYourStats": "உங்கள் புள்ளிவிவரங்களைக் கண்டறியவும்",
+  "videoLessons": "வீடியோ பாடங்கள்",
+  "featuredArticles": "முன்னிலை கட்டுரைகள்",
+  "topicsCovered": "கவரிய தலைப்புகள்",
+  "categoryFilter": "அனைத்தும்",
+  "health": "ஆரோக்கியம்",
+  "science": "அறிவியல்",
+  "technology": "தொழில்நுட்பம்",
+  "history": "வரலாறு",
+  "society": "சமூகம்",
+  "environment": "சுற்றுச்சூழல்",
+  "oralHygiene": "வாய் சுகாதாரம்",
+  "nutrition": "ஊட்டச்சத்து",
+  "brushingTechniques": "பல் துலக்கும் நுட்பங்கள்",
+  "dentalHealth": "பல் சுகாதாரம்",
+  "commonMyths": "பொதுவான கட்டுக்கதைகள்",
+  "prevention": "தடுப்பு",
+  "minRead": "{minutes} நிமிட வாசிப்பு",
+  "@minRead": {
+    "description": "Reading time indicator",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "understandingDentalMyths": "பல் சுகாதாரம் பற்றிய கட்டுக்கதைகளைப் புரிந்துகொள்ளுதல்",
+  "learnTheDifference": "பொதுவான பல் கட்டுக்கதைகள் மற்றும் உண்மைகளுக்கு இடையிலான வேறுபாட்டை அறிக.",
+  "scienceOfToothDecay": "பல் சிதைவின் பின்னணியிலுள்ள அறிவியல்",
+  "discoverScientific": "பல் சிதைவை ஏற்படுத்தும் பின்னணியிலுள்ள அறிவியல் செயல்முறைகளைக் கண்டறியவும்.",
+  "modernDentalTech": "நவீன பல் பயவமை",
+  "exploreInnovations": "பல் பயவமைக்குள் சமீபத்திய கண்டுபிடிப்புகளை ஆராயவும்.",
+  "notifications": "அறிவிப்புகள்",
+  "accountSettings": "கணக்கு அமைப்புகள்",
+  "percentage": "{value}%",
+  "@percentage": {
+    "description": "Percentage display",
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  }
+}
