@@ -5,6 +5,7 @@ import '../utils/theme.dart';
 import '../services/family_provider.dart';
 import '../services/brushing_service.dart';
 import '../models/family_member.dart';
+import '../l10n/app_localizations.dart';
 
 class BrushingTrackerScreen extends StatefulWidget {
   const BrushingTrackerScreen({super.key});
@@ -38,13 +39,14 @@ class _BrushingTrackerScreenState extends State<BrushingTrackerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     final familyProvider = context.watch<FamilyProvider>();
 
     if (familyProvider.familyMembers.isEmpty) {
       return Scaffold(
         backgroundColor: AppTheme.backgroundColor,
         appBar: AppBar(
-          title: const Text('Brushing Tracker'),
+          title: Text(loc.brushingTracker),
           elevation: 0,
         ),
         body: Center(
@@ -58,12 +60,12 @@ class _BrushingTrackerScreenState extends State<BrushingTrackerScreen> {
               ),
               const SizedBox(height: 16),
               Text(
-                'No family members added',
+                loc.noFamilyMembersAdded,
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               const SizedBox(height: 8),
               Text(
-                'Add family members in the Profile section to start tracking',
+                loc.addFamilyMembersProfile,
                 style: Theme.of(context).textTheme.bodySmall,
                 textAlign: TextAlign.center,
               ),
@@ -85,7 +87,7 @@ class _BrushingTrackerScreenState extends State<BrushingTrackerScreen> {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
-        title: const Text('Brushing Tracker'),
+        title: Text(loc.brushingTracker),
         elevation: 0,
       ),
       body: SingleChildScrollView(
@@ -126,11 +128,11 @@ class _BrushingTrackerScreenState extends State<BrushingTrackerScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
                 children: [
-                  _buildTabButton('Daily', 0),
+                  _buildTabButton(loc.daily, 0),
                   const SizedBox(width: 8),
-                  _buildTabButton('Weekly', 1),
+                  _buildTabButton(loc.weekly, 1),
                   const SizedBox(width: 8),
-                  _buildTabButton('Monthly', 2),
+                  _buildTabButton(loc.monthly, 2),
                 ],
               ),
             ),
@@ -185,6 +187,7 @@ class _BrushingTrackerScreenState extends State<BrushingTrackerScreen> {
   }
 
   Widget _buildDailyView(FamilyMember member) {
+    final loc = AppLocalizations.of(context)!;
     final todayStatus = _brushingService.getTodayStatus(member.id);
 
     return Column(
@@ -198,7 +201,7 @@ class _BrushingTrackerScreenState extends State<BrushingTrackerScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Today's Brushing Status",
+                loc.todaysBrushingStatus,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -209,11 +212,11 @@ class _BrushingTrackerScreenState extends State<BrushingTrackerScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   _buildStatusColumn(
-                    'Morning',
+                    loc.morning,
                     todayStatus['morning'] ?? false,
                   ),
                   _buildStatusColumn(
-                    'Night',
+                    loc.night,
                     todayStatus['night'] ?? false,
                   ),
                 ],
@@ -242,7 +245,7 @@ class _BrushingTrackerScreenState extends State<BrushingTrackerScreen> {
                       ? Icons.check_circle
                       : Icons.radio_button_unchecked,
                 ),
-                label: const Text('Mark Morning'),
+                label: Text(loc.markMorning),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: todayStatus['morning'] ?? false
                       ? AppTheme.successColor
@@ -268,7 +271,7 @@ class _BrushingTrackerScreenState extends State<BrushingTrackerScreen> {
                       ? Icons.check_circle
                       : Icons.radio_button_unchecked,
                 ),
-                label: const Text('Mark Night'),
+                label: Text(loc.markNight),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: todayStatus['night'] ?? false
                       ? AppTheme.successColor
@@ -331,8 +334,8 @@ class _BrushingTrackerScreenState extends State<BrushingTrackerScreen> {
           padding: const EdgeInsets.all(20),
           gradient: LinearGradient(
             colors: [
-              AppTheme.accentColor.withOpacity(0.8),
-              AppTheme.accentColor.withOpacity(0.4),
+              AppTheme.accentColor.withAlpha((0.8 * 255).toInt()),
+              AppTheme.accentColor.withAlpha((0.4 * 255).toInt()),
             ],
           ),
           child: Column(
@@ -384,9 +387,9 @@ class _BrushingTrackerScreenState extends State<BrushingTrackerScreen> {
                 child: LinearProgressIndicator(
                   value: total / 14,
                   minHeight: 8,
-                  backgroundColor: Colors.white.withOpacity(0.3),
+                  backgroundColor: Colors.white.withAlpha((0.3 * 255).toInt()),
                   valueColor: AlwaysStoppedAnimation<Color>(
-                    Colors.white.withOpacity(0.9),
+                    Colors.white.withAlpha((0.9 * 255).toInt()),
                   ),
                 ),
               ),
@@ -447,8 +450,8 @@ class _BrushingTrackerScreenState extends State<BrushingTrackerScreen> {
           padding: const EdgeInsets.all(20),
           gradient: LinearGradient(
             colors: [
-              AppTheme.successColor.withOpacity(0.8),
-              AppTheme.successColor.withOpacity(0.4),
+              AppTheme.successColor.withAlpha((0.8 * 255).toInt()),
+              AppTheme.successColor.withAlpha((0.4 * 255).toInt()),
             ],
           ),
           child: Column(
@@ -500,9 +503,9 @@ class _BrushingTrackerScreenState extends State<BrushingTrackerScreen> {
                 child: LinearProgressIndicator(
                   value: total / 60,
                   minHeight: 8,
-                  backgroundColor: Colors.white.withOpacity(0.3),
+                  backgroundColor: Colors.white.withAlpha((0.3 * 255).toInt()),
                   valueColor: AlwaysStoppedAnimation<Color>(
-                    Colors.white.withOpacity(0.9),
+                    Colors.white.withAlpha((0.9 * 255).toInt()),
                   ),
                 ),
               ),

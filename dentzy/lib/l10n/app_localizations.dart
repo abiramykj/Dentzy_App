@@ -511,6 +511,444 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{value}%'**
   String percentage(int value);
+
+  /// No description provided for @brushingTimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Brushing Timer'**
+  String get brushingTimer;
+
+  /// No description provided for @brushingTracker.
+  ///
+  /// In en, this message translates to:
+  /// **'Brushing Tracker'**
+  String get brushingTracker;
+
+  /// No description provided for @twoMinuteGuidedBrush.
+  ///
+  /// In en, this message translates to:
+  /// **'2-minute guided brush'**
+  String get twoMinuteGuidedBrush;
+
+  /// No description provided for @trackDailyBrushing.
+  ///
+  /// In en, this message translates to:
+  /// **'Track daily brushing'**
+  String get trackDailyBrushing;
+
+  /// No description provided for @timeRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'Time Remaining'**
+  String get timeRemaining;
+
+  /// No description provided for @brushingTips.
+  ///
+  /// In en, this message translates to:
+  /// **'Brushing Tips'**
+  String get brushingTips;
+
+  /// No description provided for @brushTip1.
+  ///
+  /// In en, this message translates to:
+  /// **'Brush for at least 2 minutes'**
+  String get brushTip1;
+
+  /// No description provided for @brushTip2.
+  ///
+  /// In en, this message translates to:
+  /// **'Use gentle, circular motions'**
+  String get brushTip2;
+
+  /// No description provided for @brushTip3.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t forget your tongue'**
+  String get brushTip3;
+
+  /// No description provided for @brushTip4.
+  ///
+  /// In en, this message translates to:
+  /// **'Brush twice daily'**
+  String get brushTip4;
+
+  /// No description provided for @greatJob.
+  ///
+  /// In en, this message translates to:
+  /// **'Great Job!'**
+  String get greatJob;
+
+  /// No description provided for @completedBrushingSession.
+  ///
+  /// In en, this message translates to:
+  /// **'You completed your 2-minute brushing session!'**
+  String get completedBrushingSession;
+
+  /// No description provided for @start.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get start;
+
+  /// No description provided for @pause.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause'**
+  String get pause;
+
+  /// No description provided for @reset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get reset;
+
+  /// No description provided for @noFamilyMembersAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'No family members added'**
+  String get noFamilyMembersAdded;
+
+  /// No description provided for @addFamilyMembersProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Add family members in the Profile section to start tracking'**
+  String get addFamilyMembersProfile;
+
+  /// No description provided for @daily.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily'**
+  String get daily;
+
+  /// No description provided for @weekly.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly'**
+  String get weekly;
+
+  /// No description provided for @monthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get monthly;
+
+  /// No description provided for @todaysBrushingStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s Brushing Status'**
+  String get todaysBrushingStatus;
+
+  /// No description provided for @morning.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning'**
+  String get morning;
+
+  /// No description provided for @night.
+  ///
+  /// In en, this message translates to:
+  /// **'Night'**
+  String get night;
+
+  /// No description provided for @markMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark Morning'**
+  String get markMorning;
+
+  /// No description provided for @markNight.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark Night'**
+  String get markNight;
+
+  /// No description provided for @ok.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get ok;
+
+  /// No description provided for @profileFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile & Family'**
+  String get profileFamily;
+
+  /// No description provided for @myProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'My Profile'**
+  String get myProfile;
+
+  /// No description provided for @yourStatistics.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Statistics'**
+  String get yourStatistics;
+
+  /// No description provided for @familyMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Family Members'**
+  String get familyMembers;
+
+  /// No description provided for @achievements.
+  ///
+  /// In en, this message translates to:
+  /// **'Achievements'**
+  String get achievements;
+
+  /// No description provided for @add.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get add;
+
+  /// No description provided for @age.
+  ///
+  /// In en, this message translates to:
+  /// **'Age'**
+  String get age;
+
+  /// No description provided for @years.
+  ///
+  /// In en, this message translates to:
+  /// **'years'**
+  String get years;
+
+  /// No description provided for @achievementsUnlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Achievements Unlocked'**
+  String get achievementsUnlocked;
+
+  /// No description provided for @addFamilyMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Family Member'**
+  String get addFamilyMember;
+
+  /// No description provided for @editFamilyMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Family Member'**
+  String get editFamilyMember;
+
+  /// No description provided for @relationOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Relation (Optional)'**
+  String get relationOptional;
+
+  /// No description provided for @update.
+  ///
+  /// In en, this message translates to:
+  /// **'Update'**
+  String get update;
+
+  /// No description provided for @father.
+  ///
+  /// In en, this message translates to:
+  /// **'Father'**
+  String get father;
+
+  /// No description provided for @mother.
+  ///
+  /// In en, this message translates to:
+  /// **'Mother'**
+  String get mother;
+
+  /// No description provided for @child.
+  ///
+  /// In en, this message translates to:
+  /// **'Child'**
+  String get child;
+
+  /// No description provided for @sibling.
+  ///
+  /// In en, this message translates to:
+  /// **'Sibling'**
+  String get sibling;
+
+  /// No description provided for @grandparent.
+  ///
+  /// In en, this message translates to:
+  /// **'Grandparent'**
+  String get grandparent;
+
+  /// No description provided for @auntUncle.
+  ///
+  /// In en, this message translates to:
+  /// **'Aunt/Uncle'**
+  String get auntUncle;
+
+  /// No description provided for @cousin.
+  ///
+  /// In en, this message translates to:
+  /// **'Cousin'**
+  String get cousin;
+
+  /// No description provided for @friend.
+  ///
+  /// In en, this message translates to:
+  /// **'Friend'**
+  String get friend;
+
+  /// No description provided for @mythsChecked.
+  ///
+  /// In en, this message translates to:
+  /// **'Myths Checked'**
+  String get mythsChecked;
+
+  /// No description provided for @dayStreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Day Streak'**
+  String get dayStreak;
+
+  /// No description provided for @noFamilyMembersYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No family members yet'**
+  String get noFamilyMembersYet;
+
+  /// No description provided for @addFamilyMembersTrackBrushing.
+  ///
+  /// In en, this message translates to:
+  /// **'Add family members to track their brushing habits'**
+  String get addFamilyMembersTrackBrushing;
+
+  /// No description provided for @noAchievements.
+  ///
+  /// In en, this message translates to:
+  /// **'No achievements'**
+  String get noAchievements;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// No description provided for @brushingProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Brushing Progress'**
+  String get brushingProgress;
+
+  /// No description provided for @selectFamilyMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Family Member'**
+  String get selectFamilyMember;
+
+  /// No description provided for @errorLoadingProgressData.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading progress data'**
+  String get errorLoadingProgressData;
+
+  /// No description provided for @noBrushingDataAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No brushing data available'**
+  String get noBrushingDataAvailable;
+
+  /// No description provided for @startBrushingToSeeProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Start brushing to see your progress!'**
+  String get startBrushingToSeeProgress;
+
+  /// No description provided for @today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get today;
+
+  /// No description provided for @thisWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'This Week'**
+  String get thisWeek;
+
+  /// No description provided for @thisMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'This Month'**
+  String get thisMonth;
+
+  /// No description provided for @reminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders'**
+  String get reminders;
+
+  /// No description provided for @enableReminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable Reminders'**
+  String get enableReminders;
+
+  /// No description provided for @receiveBrushingNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Receive brushing notifications'**
+  String get receiveBrushingNotifications;
+
+  /// No description provided for @remindersEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders enabled'**
+  String get remindersEnabled;
+
+  /// No description provided for @remindersDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders disabled'**
+  String get remindersDisabled;
+
+  /// No description provided for @morningReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning Reminder'**
+  String get morningReminder;
+
+  /// No description provided for @nightReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Night Reminder'**
+  String get nightReminder;
+
+  /// No description provided for @tapToChangeTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to change time'**
+  String get tapToChangeTime;
+
+  /// No description provided for @selectedForTracking.
+  ///
+  /// In en, this message translates to:
+  /// **'selected for tracking'**
+  String get selectedForTracking;
+
+  /// No description provided for @name.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get name;
+
+  /// No description provided for @deleteMemberQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Member?'**
+  String get deleteMemberQuestion;
+
+  /// Delete confirmation with member name
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to remove {name}?'**
+  String confirmRemoveMember(String name);
 }
 
 class _AppLocalizationsDelegate

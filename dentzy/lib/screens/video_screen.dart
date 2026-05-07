@@ -11,47 +11,198 @@ class VideoScreen extends StatefulWidget {
 }
 
 class _VideoScreenState extends State<VideoScreen> {
-  final List<_Video> _videos = [
-    _Video(
-      id: '1',
-      title: 'Proper Brushing Technique',
-      description: 'Learn the correct way to brush your teeth',
-      duration: '12:45',
-      instructor: 'Dr. Sarah Johnson',
-      youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-      views: 15420,
-    ),
-    _Video(
-      id: '2',
-      title: 'Understanding Tooth Decay',
-      description: 'Discover the science behind cavity formation',
-      duration: '8:30',
-      instructor: 'Dr. Mike Chen',
-      youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-      views: 9852,
-    ),
-    _Video(
-      id: '3',
-      title: 'Gum Health Essentials',
-      description: 'Guide to maintaining healthy gums',
-      duration: '10:15',
-      instructor: 'Dr. Emily Rodriguez',
-      youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-      views: 7234,
-    ),
-    _Video(
-      id: '4',
-      title: 'Flossing Like a Pro',
-      description: 'Master the art of flossing',
-      duration: '6:20',
-      instructor: 'Dr. David Lee',
-      youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-      views: 5623,
-    ),
-  ];
+  late final Map<String, List<_Video>> videoData = {
+    'en': [
+      _Video(
+        id: '1',
+        title: 'Proper Brushing Technique',
+        description: 'Learn the correct way to brush your teeth effectively',
+        duration: '5:32',
+        instructor: 'Dr. Smith',
+        youtubeUrl: 'https://www.youtube.com/watch?v=3oG6Y9cFz6k',
+        views: 45000,
+      ),
+      _Video(
+        id: '2',
+        title: 'How to Choose Toothpaste',
+        description: 'Find the right toothpaste for your dental needs',
+        duration: '4:15',
+        instructor: 'Dr. Johnson',
+        youtubeUrl: 'https://www.youtube.com/watch?v=Jf9Zz1nRZ8c',
+        views: 32000,
+      ),
+      _Video(
+        id: '3',
+        title: 'Oral Hygiene Basics',
+        description: 'Master the fundamentals of oral hygiene',
+        duration: '6:20',
+        instructor: 'Dr. Lee',
+        youtubeUrl: 'https://www.youtube.com/watch?v=7dJ7k8b9g1k',
+        views: 58000,
+      ),
+      _Video(
+        id: '4',
+        title: 'Flossing Correctly',
+        description: 'Perfect your flossing technique',
+        duration: '3:45',
+        instructor: 'Dr. Brown',
+        youtubeUrl: 'https://www.youtube.com/watch?v=wxM7QvHc8s8',
+        views: 29000,
+      ),
+      _Video(
+        id: '5',
+        title: 'Prevent Tooth Decay',
+        description: 'Effective strategies to prevent cavities',
+        duration: '7:10',
+        instructor: 'Dr. Williams',
+        youtubeUrl: 'https://www.youtube.com/watch?v=VhP8Xz0s2f4',
+        views: 67000,
+      ),
+      _Video(
+        id: '6',
+        title: 'Morning & Night Routine',
+        description: 'Establish a healthy daily oral care routine',
+        duration: '5:00',
+        instructor: 'Dr. Miller',
+        youtubeUrl: 'https://www.youtube.com/watch?v=8F3m7gX2k3s',
+        views: 51000,
+      ),
+      _Video(
+        id: '7',
+        title: 'Toothpaste Ingredients Explained',
+        description: 'Understand what makes good toothpaste',
+        duration: '4:50',
+        instructor: 'Dr. Davis',
+        youtubeUrl: 'https://www.youtube.com/watch?v=R6nYk8f3L0o',
+        views: 38000,
+      ),
+      _Video(
+        id: '8',
+        title: 'Common Brushing Mistakes',
+        description: 'Avoid these common dental hygiene errors',
+        duration: '3:30',
+        instructor: 'Dr. Garcia',
+        youtubeUrl: 'https://www.youtube.com/watch?v=9gH2JkL4m2A',
+        views: 44000,
+      ),
+      _Video(
+        id: '9',
+        title: 'Kids Dental Care',
+        description: 'Tips for keeping children\'s teeth healthy',
+        duration: '6:15',
+        instructor: 'Dr. Martinez',
+        youtubeUrl: 'https://www.youtube.com/watch?v=Q7kT2F9n3s8',
+        views: 72000,
+      ),
+      _Video(
+        id: '10',
+        title: 'Healthy Teeth Tips',
+        description: 'General guidance for maintaining healthy teeth',
+        duration: '4:40',
+        instructor: 'Dr. Taylor',
+        youtubeUrl: 'https://www.youtube.com/watch?v=Z8kF3gL9p1Q',
+        views: 55000,
+      ),
+    ],
+    'ta': [
+      _Video(
+        id: '11',
+        title: 'சரியான பல் துலக்கும் முறை',
+        description: 'பல் துலக்கும் சரியான முறையை கற்றுக்கொள்ளுங்கள்',
+        duration: '5:32',
+        instructor: 'ডॉ. ஸ்மிથ்',
+        youtubeUrl: 'https://www.youtube.com/watch?v=2fKzQxXvG6Q',
+        views: 42000,
+      ),
+      _Video(
+        id: '12',
+        title: 'பல் துலக்கும் முக்கியம்',
+        description: 'தினந்தோறும் பல் துலக்குவதின் महत्ता',
+        duration: '4:20',
+        instructor: 'ডॉ. जонсन',
+        youtubeUrl: 'https://www.youtube.com/watch?v=5dR9kJ2nL8Y',
+        views: 35000,
+      ),
+      _Video(
+        id: '13',
+        title: 'வாய்நலம் பராமரிப்பு',
+        description: 'வாய்நலத்தை பராமரிப்பதற்கான வழிகள்',
+        duration: '6:00',
+        instructor: 'ডॉ. லீ',
+        youtubeUrl: 'https://www.youtube.com/watch?v=8gT2LkF3P1Q',
+        views: 48000,
+      ),
+      _Video(
+        id: '14',
+        title: 'பல் கெடுதல் தவிர்ப்பது எப்படி',
+        description: 'பல் கெடுவதை தவிர்ப்பதற்கான टिप्स',
+        duration: '5:45',
+        instructor: 'ডॉ. ब्राউन',
+        youtubeUrl: 'https://www.youtube.com/watch?v=7kJ2L9M4N0A',
+        views: 38000,
+      ),
+      _Video(
+        id: '15',
+        title: 'நல்ல பல் பழக்கங்கள்',
+        description: 'ஆரோக்கியமான பல் பழக்கங்களை பின்பற்றுங்கள்',
+        duration: '4:55',
+        instructor: 'ডॉ. williams',
+        youtubeUrl: 'https://www.youtube.com/watch?v=4pK9F3G2L8M',
+        views: 41000,
+      ),
+      _Video(
+        id: '16',
+        title: 'இரவு பல் துலக்கும் அவசியம்',
+        description: 'இரவு பல் துலக்குவதின் महत्ता',
+        duration: '3:50',
+        instructor: 'ডॉ. மिller',
+        youtubeUrl: 'https://www.youtube.com/watch?v=3F2kL9N8Q1X',
+        views: 33000,
+      ),
+      _Video(
+        id: '17',
+        title: 'பல் மருத்துவர் ஆலோசனை',
+        description: 'पल मरुत्वुवर एलोचनै',
+        duration: '5:30',
+        instructor: 'ডॉ. davis',
+        youtubeUrl: 'https://www.youtube.com/watch?v=6J8kF3M2P0L',
+        views: 36000,
+      ),
+      _Video(
+        id: '18',
+        title: 'பல் பாதுகாப்பு வழிகள்',
+        description: 'पल पाधुकप्पु वलिगल',
+        duration: '6:10',
+        instructor: 'ডौ. garcia',
+        youtubeUrl: 'https://www.youtube.com/watch?v=9K2L4F8G1M0',
+        views: 39000,
+      ),
+      _Video(
+        id: '19',
+        title: 'பல் துலக்கும் தவறுகள்',
+        description: 'पल दुलक्कुम तवरुकल',
+        duration: '4:25',
+        instructor: 'ডॉ. martinez',
+        youtubeUrl: 'https://www.youtube.com/watch?v=1F8K3L2M9Q0',
+        views: 34000,
+      ),
+      _Video(
+        id: '20',
+        title: 'வாய்நலம் முக்கியம்',
+        description: 'वय नलम मुक्कियम',
+        duration: '5:00',
+        instructor: 'ডॉ. taylor',
+        youtubeUrl: 'https://www.youtube.com/watch?v=5K2L9F3G8M1',
+        views: 43000,
+      ),
+    ],
+  };
 
   @override
   Widget build(BuildContext context) {
+    final String selectedLanguage = Localizations.localeOf(context).languageCode == 'ta' ? 'ta' : 'en';
+    final List<_Video> videos = videoData[selectedLanguage] ?? videoData['en'] ?? [];
+
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
@@ -60,10 +211,10 @@ class _VideoScreenState extends State<VideoScreen> {
       ),
       body: ListView(
         children: [
-          if (_videos.isNotEmpty)
+          if (videos.isNotEmpty)
             Padding(
               padding: const EdgeInsets.all(16),
-              child: _buildFeaturedVideoCard(context, _videos[0]),
+              child: _buildFeaturedVideoCard(context, videos.first),
             ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -76,11 +227,11 @@ class _VideoScreenState extends State<VideoScreen> {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             padding: const EdgeInsets.all(16),
-            itemCount: _videos.length - 1,
+            itemCount: videos.isNotEmpty ? videos.length - 1 : 0,
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.only(bottom: 12),
-                child: _buildVideoCard(context, _videos[index + 1]),
+                child: _buildVideoCard(context, videos[index + 1]),
               );
             },
           ),
@@ -101,7 +252,7 @@ class _VideoScreenState extends State<VideoScreen> {
             child: Container(
               width: double.infinity,
               height: 180,
-              color: AppTheme.primaryColor.withOpacity(0.1),
+              color: AppTheme.primaryColor.withAlpha((0.1 * 255).toInt()),
               child: const Stack(
                 alignment: Alignment.center,
                 children: [
@@ -150,7 +301,7 @@ class _VideoScreenState extends State<VideoScreen> {
             child: Container(
               width: 80,
               height: 60,
-              color: AppTheme.primaryColor.withOpacity(0.1),
+              color: AppTheme.primaryColor.withAlpha((0.1 * 255).toInt()),
               child: const Icon(Icons.play_circle_outline, size: 30, color: AppTheme.primaryColor),
             ),
           ),
@@ -188,11 +339,62 @@ class _VideoScreenState extends State<VideoScreen> {
 
   Future<void> _openVideo(_Video video) async {
     try {
-      if (await canLaunchUrl(Uri.parse(video.youtubeUrl))) {
-        await launchUrl(Uri.parse(video.youtubeUrl), mode: LaunchMode.externalApplication);
+      final Uri videoUri = Uri.parse(video.youtubeUrl);
+      
+      // Validate YouTube URL
+      if (!_isValidYouTubeUrl(videoUri)) {
+        _showErrorSnackBar('Invalid YouTube URL');
+        return;
+      }
+
+      // Check if URL can be launched
+      if (!await canLaunchUrl(videoUri)) {
+        _showErrorSnackBar('No app available to open this video');
+        return;
+      }
+
+      // Launch the URL
+      final bool launched = await launchUrl(
+        videoUri,
+        mode: LaunchMode.externalApplication,
+      );
+
+      if (!launched) {
+        _showErrorSnackBar('Could not open video');
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Could not open video: $e')));
+      _showErrorSnackBar('Error opening video: $e');
+    }
+  }
+
+  /// Validates if a URI is a valid YouTube URL
+  bool _isValidYouTubeUrl(Uri uri) {
+    final String host = uri.host.toLowerCase();
+    final String path = uri.path;
+
+    // Check for various YouTube URL formats
+    if (host.contains('youtube.com')) {
+      // Standard YouTube video: youtube.com/watch?v=VIDEO_ID
+      return uri.queryParameters.containsKey('v') && 
+             uri.queryParameters['v']!.isNotEmpty;
+    } else if (host.contains('youtu.be')) {
+      // Shortened YouTube URL: youtu.be/VIDEO_ID
+      return path.isNotEmpty && path.length > 1;
+    }
+
+    return false;
+  }
+
+  /// Shows error message in a SnackBar
+  void _showErrorSnackBar(String message) {
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+          backgroundColor: Colors.red[600],
+          duration: const Duration(seconds: 3),
+        ),
+      );
     }
   }
 }

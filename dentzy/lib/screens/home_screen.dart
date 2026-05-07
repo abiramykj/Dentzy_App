@@ -3,6 +3,7 @@ import '../widgets/custom_card.dart';
 import '../utils/theme.dart';
 import '../services/language_provider.dart';
 import '../l10n/app_localizations.dart';
+import 'dental_quiz_page.dart';
 import 'myth_checker_screen.dart';
 import 'learn_screen.dart';
 import 'video_screen.dart';
@@ -95,7 +96,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     onPressed: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const MythCheckerScreen()),
+                        builder: (context) => const DentalQuizPage(),
+                      ),
                     ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
@@ -231,8 +233,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 _buildActionCard(
                   context,
                   icon: Icons.timer,
-                  title: 'Brushing Timer',
-                  subtitle: '2-minute guided brush',
+                  title: loc.brushingTimer,
+                  subtitle: loc.twoMinuteGuidedBrush,
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -242,8 +244,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 _buildActionCard(
                   context,
                   icon: Icons.calendar_today,
-                  title: 'Brushing Tracker',
-                  subtitle: 'Track daily brushing',
+                  title: loc.brushingTracker,
+                  subtitle: loc.trackDailyBrushing,
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(

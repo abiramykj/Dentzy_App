@@ -12,14 +12,21 @@ class BrushingTimerScreen extends StatefulWidget {
 }
 
 class _BrushingTimerScreenState extends State<BrushingTimerScreen> {
-  late Timer _timer;
+  Timer? _timer;
   int _remainingSeconds = 120; // 2 minutes in seconds
   bool _isRunning = false;
   final int _totalSeconds = 120;
 
   @override
+  void initState() {
+    super.initState();
+    // Initialize timer as null - will be created when started
+    _timer = null;
+  }
+
+  @override
   void dispose() {
-    _timer.cancel();
+    _timer?.cancel();
     super.dispose();
   }
 
@@ -32,7 +39,7 @@ class _BrushingTimerScreenState extends State<BrushingTimerScreen> {
             _remainingSeconds--;
           } else {
             _isRunning = false;
-            _timer.cancel();
+            _timer?.cancel();
             _showCompletionDialog();
           }
         });
@@ -42,7 +49,7 @@ class _BrushingTimerScreenState extends State<BrushingTimerScreen> {
 
   void _pauseTimer() {
     if (_isRunning) {
-      _timer.cancel();
+      _timer?.cancel();
       setState(() {
         _isRunning = false;
       });
@@ -50,7 +57,7 @@ class _BrushingTimerScreenState extends State<BrushingTimerScreen> {
   }
 
   void _resetTimer() {
-    _timer.cancel();
+    _timer?.cancel();
     setState(() {
       _remainingSeconds = 120;
       _isRunning = false;
@@ -58,18 +65,19 @@ class _BrushingTimerScreenState extends State<BrushingTimerScreen> {
   }
 
   void _showCompletionDialog() {
+    final loc = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Great Job!'),
-        content: const Text('You completed your 2-minute brushing session!'),
+        title: Text(loc.greatJob),
+        content: Text(loc.completedBrushingSession),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.pop(context);
               _resetTimer();
             },
-            child: const Text('OK'),
+            child: Text(loc.ok),
           ),
         ],
       ),
@@ -90,7 +98,7 @@ class _BrushingTimerScreenState extends State<BrushingTimerScreen> {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
-        title: const Text('Brushing Timer'),
+        title: Text(loc.brushingTimer),
         elevation: 0,
       ),
       body: SingleChildScrollView(
@@ -107,7 +115,7 @@ class _BrushingTimerScreenState extends State<BrushingTimerScreen> {
                 child: Column(
                   children: [
                     Text(
-                      'Time Remaining',
+                      loc.timeRemaining,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             color: Colors.white70,
                           ),
@@ -135,10 +143,10 @@ class _BrushingTimerScreenState extends State<BrushingTimerScreen> {
                             value: progress,
                             strokeWidth: 8,
                             valueColor: AlwaysStoppedAnimation<Color>(
-                              Colors.white.withOpacity(0.3),
+                              Colors.white.withAlpha((0.3 * 255).toInt()),
                             ),
                             backgroundColor:
-                                Colors.white.withOpacity(0.1),
+                                Colors.white.withAlpha((0.1 * 255).toInt()),
                           ),
                         ),
                         Text(
@@ -171,18 +179,18 @@ class _BrushingTimerScreenState extends State<BrushingTimerScreen> {
                         const Icon(Icons.lightbulb, color: Colors.orange),
                         const SizedBox(width: 8),
                         Text(
-                          'Brushing Tips',
+                          loc.brushingTips,
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ],
                     ),
                     const SizedBox(height: 12),
-                    const Text(
-                      '• Brush for at least 2 minutes\n'
-                      '• Use gentle, circular motions\n'
-                      '• Don\'t forget your tongue\n'
-                      '• Brush twice daily',
-                      style: TextStyle(fontSize: 12),
+                    Text(
+                      '• ${loc.brushTip1}\n'
+                      '• ${loc.brushTip2}\n'
+                      '• ${loc.brushTip3}\n'
+                      '• ${loc.brushTip4}',
+                      style: const TextStyle(fontSize: 12),
                     ),
                   ],
                 ),
@@ -204,7 +212,7 @@ class _BrushingTimerScreenState extends State<BrushingTimerScreen> {
                               ? null
                               : (_remainingSeconds > 0 ? _startTimer : null),
                           icon: const Icon(Icons.play_arrow),
-                          label: const Text('Start'),
+                          label: Text(loc.start),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppTheme.successColor,
                             foregroundColor: Colors.white,
@@ -217,7 +225,7 @@ class _BrushingTimerScreenState extends State<BrushingTimerScreen> {
                         child: ElevatedButton.icon(
                           onPressed: _isRunning ? _pauseTimer : null,
                           icon: const Icon(Icons.pause),
-                          label: const Text('Pause'),
+                          label: Text(loc.pause),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppTheme.accentColor,
                             foregroundColor: Colors.white,
@@ -231,7 +239,7 @@ class _BrushingTimerScreenState extends State<BrushingTimerScreen> {
                   ElevatedButton.icon(
                     onPressed: _resetTimer,
                     icon: const Icon(Icons.restart_alt),
-                    label: const Text('Reset'),
+                    label: Text(loc.reset),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.errorColor,
                       foregroundColor: Colors.white,

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
-import 'screens/splash_screen.dart';
+import 'screens/language_screen.dart';
+import 'screens/home_screen.dart';
 import 'utils/theme.dart';
 import 'services/language_provider.dart';
 import 'services/family_provider.dart';
@@ -16,10 +17,8 @@ void main() async {
   
   final settingsProvider = SettingsProvider();
   await settingsProvider.initialize();
-  
   runApp(MyApp(languageProvider: languageProvider, settingsProvider: settingsProvider));
 }
-
 class MyApp extends StatefulWidget {
   final LanguageProvider languageProvider;
   final SettingsProvider settingsProvider;
@@ -29,15 +28,13 @@ class MyApp extends StatefulWidget {
     required this.languageProvider,
     required this.settingsProvider,
   });
-
   @override
   State<MyApp> createState() => _MyAppState();
 }
-
 class _MyAppState extends State<MyApp> {
   late LanguageProvider _languageProvider;
   late SettingsProvider _settingsProvider;
-
+  bool _languageSelected = false;
   @override
   void initState() {
     super.initState();
@@ -46,17 +43,21 @@ class _MyAppState extends State<MyApp> {
     
     _languageProvider.addListener(_onLanguageChanged);
   }
-
   @override
   void dispose() {
     _languageProvider.removeListener(_onLanguageChanged);
     super.dispose();
   }
-
   void _onLanguageChanged() {
     setState(() {});
   }
-
+  void _onLanguageSelected(String language) {
+    debugPrint('🎯 [main.dart] Language selected: $language');
+    setState(() {
+      _languageSelected = true;
+    });
+    debugPrint('✅ [main.dart] State updated, will rebuild to HomeScreen');
+  }
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -75,10 +76,14 @@ class _MyAppState extends State<MyApp> {
         localizationsDelegates: const [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,          GlobalCupertinoLocalizations.delegate,
         ],
-        home: SplashScreen(languageProvider: _languageProvider),
+        home: _languageSelected 
+            ? HomeScreen(languageProvider: _languageProvider)
+            : LanguageScreen(
+                languageProvider: _languageProvider,
+                onLanguageSelected: _onLanguageSelected,
+              ),
       ),
     );
   }

@@ -227,4 +227,230 @@ class AppLocalizationsTa extends AppLocalizations {
   String percentage(int value) {
     return '$value%';
   }
+
+  @override
+  String get brushingTimer => 'பல் துலக்கும் நேர வரிசையாக்கி';
+
+  @override
+  String get brushingTracker => 'பல் துலக்கும் கண்காணிப்பு';
+
+  @override
+  String get twoMinuteGuidedBrush => '2 நிமிட வழிகாட்டப்பட்ட துலக்குதல்';
+
+  @override
+  String get trackDailyBrushing => 'தினசரி பல் துலக்குதலைக் கண்காணி';
+
+  @override
+  String get timeRemaining => 'மீதமுள்ள நேரம்';
+
+  @override
+  String get brushingTips => 'பல் துலக்கும் குறிப்புகள்';
+
+  @override
+  String get brushTip1 => 'குறைந்தபட்சம் 2 நிமிடங்கள் பல் துலக்கவும்';
+
+  @override
+  String get brushTip2 => 'மென்மையான வட்டவடிவ இயக்கங்களைப் பயன்படுத்தவும்';
+
+  @override
+  String get brushTip3 => 'உங்கள் நாக்கை மறந்து விடாதீர்கள்';
+
+  @override
+  String get brushTip4 => 'தினமும் இரண்டு முறை பல் துலக்கவும்';
+
+  @override
+  String get greatJob => '멋진 வேலை!';
+
+  @override
+  String get completedBrushingSession =>
+      'நீங்கள் உங்கள் 2 நிமிட பல் துலக்கும் அமர்வை முடிந்துவிட்டீர்கள்!';
+
+  @override
+  String get start => 'தொடங்கவும்';
+
+  @override
+  String get pause => 'இடைநிறுத்தவும்';
+
+  @override
+  String get reset => 'மீட்டமை';
+
+  @override
+  String get noFamilyMembersAdded => 'குடும்ப உறுப்பினர்கள் சேர்க்கப்படவில்லை';
+
+  @override
+  String get addFamilyMembersProfile =>
+      'கண்காணிக்கத் தொடங்க சுயவிவரப் பிரிவில் குடும்ப உறுப்பினர்களைச் சேர்க்கவும்';
+
+  @override
+  String get daily => 'தினசரி';
+
+  @override
+  String get weekly => 'வாரம்';
+
+  @override
+  String get monthly => 'மாதம்';
+
+  @override
+  String get todaysBrushingStatus => 'இன்றைய பல் துலக்கும் நிலை';
+
+  @override
+  String get morning => 'காலை';
+
+  @override
+  String get night => 'இரவு';
+
+  @override
+  String get markMorning => 'காலை குறிக்க';
+
+  @override
+  String get markNight => 'இரவு குறிக்க';
+
+  @override
+  String get ok => 'சரி';
+
+  @override
+  String get profileFamily => 'சுயவிவரம் & குடும்பம்';
+
+  @override
+  String get myProfile => 'என் சுயவிவரம்';
+
+  @override
+  String get yourStatistics => 'உங்கள் புள்ளிவிவரங்கள்';
+
+  @override
+  String get familyMembers => 'குடும்ப உறுப்பினர்கள்';
+
+  @override
+  String get achievements => 'சாதனைகள்';
+
+  @override
+  String get add => 'சேர்';
+
+  @override
+  String get age => 'வயது';
+
+  @override
+  String get years => 'ஆண்டுகள்';
+
+  @override
+  String get achievementsUnlocked => 'திறக்கப்பட்ட சாதனைகள்';
+
+  @override
+  String get addFamilyMember => 'குடும்ப உறுப்பினரை சேர்க்கவும்';
+
+  @override
+  String get editFamilyMember => 'குடும்ப உறுப்பினரை திருத்தவும்';
+
+  @override
+  String get relationOptional => 'உறவு (விருப்பத்தேர்வு)';
+
+  @override
+  String get update => 'புதுப்பிக்கவும்';
+
+  @override
+  String get father => 'அப்பா';
+
+  @override
+  String get mother => 'அம்மா';
+
+  @override
+  String get child => 'குழந்தை';
+
+  @override
+  String get sibling => 'உடன்பிறந்தவர்';
+
+  @override
+  String get grandparent => 'தாத்தா/பாட்டி';
+
+  @override
+  String get auntUncle => 'அத்தை/மாமா';
+
+  @override
+  String get cousin => 'சகோதரப்பிள்ளை';
+
+  @override
+  String get friend => 'நண்பர்';
+
+  @override
+  String get mythsChecked => 'சரிபார்க்கப்பட்ட கட்டுக்கதைகள்';
+
+  @override
+  String get dayStreak => 'தொடர் நாட்கள்';
+
+  @override
+  String get noFamilyMembersYet => 'இன்னும் குடும்ப உறுப்பினர்கள் இல்லை';
+
+  @override
+  String get addFamilyMembersTrackBrushing =>
+      'அவர்களின் பல் துலக்கும் பழக்கத்தை கண்காணிக்க குடும்ப உறுப்பினர்களை சேர்க்கவும்';
+
+  @override
+  String get noAchievements => 'சாதனைகள் இல்லை';
+
+  @override
+  String get close => 'மூடு';
+
+  @override
+  String get brushingProgress => 'பல் துலக்கும் முன்னேற்றம்';
+
+  @override
+  String get selectFamilyMember => 'குடும்ப உறுப்பினரை தேர்ந்தெடுக்கவும்';
+
+  @override
+  String get errorLoadingProgressData => 'முன்னேற்ற தரவை ஏற்றுவதில் பிழை';
+
+  @override
+  String get noBrushingDataAvailable => 'பல் துலக்கும் தரவு கிடைக்கவில்லை';
+
+  @override
+  String get startBrushingToSeeProgress =>
+      'உங்கள் முன்னேற்றத்தை காண பல் துலக்கத் தொடங்கவும்!';
+
+  @override
+  String get today => 'இன்று';
+
+  @override
+  String get thisWeek => 'இந்த வாரம்';
+
+  @override
+  String get thisMonth => 'இந்த மாதம்';
+
+  @override
+  String get reminders => 'நினைவூட்டல்கள்';
+
+  @override
+  String get enableReminders => 'நினைவூட்டலை இயக்கவும்';
+
+  @override
+  String get receiveBrushingNotifications =>
+      'பல் துலக்கும் அறிவிப்புகளை பெறுங்கள்';
+
+  @override
+  String get remindersEnabled => 'நினைவூட்டல் இயக்கப்பட்டது';
+
+  @override
+  String get remindersDisabled => 'நினைவூட்டல் முடக்கப்பட்டது';
+
+  @override
+  String get morningReminder => 'காலை நினைவூட்டல்';
+
+  @override
+  String get nightReminder => 'இரவு நினைவூட்டல்';
+
+  @override
+  String get tapToChangeTime => 'நேரத்தை மாற்ற தட்டவும்';
+
+  @override
+  String get selectedForTracking => 'கண்காணிப்பிற்காக தேர்ந்தெடுக்கப்பட்டார்';
+
+  @override
+  String get name => 'பெயர்';
+
+  @override
+  String get deleteMemberQuestion => 'உறுப்பினரை நீக்கவா?';
+
+  @override
+  String confirmRemoveMember(String name) {
+    return '$name ஐ நீக்க விரும்புகிறீர்களா?';
+  }
 }

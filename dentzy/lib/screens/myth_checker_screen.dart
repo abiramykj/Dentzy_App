@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import '../services/advanced_myth_checker.dart';
 import '../widgets/custom_card.dart';
 import '../utils/theme.dart';
 import '../l10n/app_localizations.dart';
-import '../services/advanced_myth_checker.dart';
 import '../services/myth_api_service.dart';
 import '../models/myth_item.dart';
 
@@ -60,19 +61,21 @@ class _MythCheckerScreenState extends State<MythCheckerScreen> {
 
     setState(() {
       _isChecking = true;
+      _result = null;
     });
 
     MythCheckResult? result;
     try {
       result = await _apiService.classifyStatement(input);
 
-      if (result.label == 'Not Dental' && result.confidence <= 5 && _isDataLoaded) {
+      final normalizedLabel = result.label.toLowerCase().replaceAll('_', ' ');
+      if (normalizedLabel == 'not dental' && result.confidence <= 5 && _isDataLoaded) {
         final localResult = await AdvancedMythChecker.classify(
           input,
           _database,
         );
 
-        if (localResult.label != 'Not Dental') {
+        if (localResult.label.toLowerCase().replaceAll('_', ' ') != 'not dental') {
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
@@ -471,7 +474,7 @@ class _MythCheckerScreenState extends State<MythCheckerScreen> {
   }
 
   Color _getResultColor(String label) {
-    switch (label) {
+    switch (_normalizeLabel(label)) {
       case 'Myth':
         return Colors.red;
       case 'Fact':
@@ -486,7 +489,7 @@ class _MythCheckerScreenState extends State<MythCheckerScreen> {
   }
 
   IconData _getResultIcon(String label) {
-    switch (label) {
+    switch (_normalizeLabel(label)) {
       case 'Myth':
         return Icons.warning_rounded;
       case 'Fact':
@@ -531,5 +534,9 @@ class _MythCheckerScreenState extends State<MythCheckerScreen> {
         ),
       ],
     );
+  }
+
+  String _normalizeLabel(String label) {
+    return label.toLowerCase().replaceAll('_', ' ').trim();
   }
 }

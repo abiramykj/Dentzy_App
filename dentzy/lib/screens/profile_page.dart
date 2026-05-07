@@ -35,7 +35,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
-        title: const Text('Profile & Family'),
+        title: Text(loc.profileFamily),
         elevation: 0,
       ),
       body: SingleChildScrollView(
@@ -66,8 +66,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  const Text(
-                    'My Profile',
+                  Text(
+                    loc.myProfile,
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -85,7 +85,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Your Statistics',
+                    loc.yourStatistics,
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   const SizedBox(height: 12),
@@ -100,7 +100,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       fontSize: 22,
                                       fontWeight: FontWeight.bold)),
                               const SizedBox(height: 4),
-                              Text('Myths Checked',
+                                Text(loc.mythsChecked,
                                   style: Theme.of(context).textTheme.bodySmall),
                             ],
                           ),
@@ -116,7 +116,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       fontWeight: FontWeight.bold,
                                       color: AppTheme.successColor)),
                               const SizedBox(height: 4),
-                              Text('Accuracy',
+                                Text(loc.accuracy,
                                   style: Theme.of(context).textTheme.bodySmall),
                             ],
                           ),
@@ -132,7 +132,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       fontWeight: FontWeight.bold,
                                       color: AppTheme.accentColor)),
                               const SizedBox(height: 4),
-                              Text('Day Streak',
+                                Text(loc.dayStreak,
                                   style: Theme.of(context).textTheme.bodySmall),
                             ],
                           ),
@@ -151,13 +151,13 @@ class _ProfilePageState extends State<ProfilePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Family Members',
+                    loc.familyMembers,
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   ElevatedButton.icon(
                     onPressed: () => _showAddFamilyMemberDialog(context),
                     icon: const Icon(Icons.add, size: 18),
-                    label: const Text('Add'),
+                    label: Text(loc.add),
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 12, vertical: 8),
@@ -187,12 +187,12 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                           const SizedBox(height: 12),
                           Text(
-                            'No family members yet',
+                            loc.noFamilyMembersYet,
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            'Add family members to track their brushing habits',
+                            loc.addFamilyMembersTrackBrushing,
                             style: Theme.of(context).textTheme.bodySmall,
                             textAlign: TextAlign.center,
                           ),
@@ -220,7 +220,7 @@ class _ProfilePageState extends State<ProfilePage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                'Achievements 🏆',
+                '${loc.achievements} 🏆',
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
             ),
@@ -235,7 +235,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   }
 
                   if (!snapshot.hasData) {
-                    return const Center(child: Text('No achievements'));
+                    return Center(child: Text(loc.noAchievements));
                   }
 
                   final achievements = snapshot.data!;
@@ -260,7 +260,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                'Achievements Unlocked',
+                                loc.achievementsUnlocked,
                                 style:
                                     Theme.of(context).textTheme.bodySmall,
                               ),
@@ -285,7 +285,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     TextButton(
                                       onPressed: () =>
                                           Navigator.pop(context),
-                                      child: const Text('Close'),
+                                      child: Text(loc.close),
                                     ),
                                   ],
                                 ),
@@ -341,7 +341,7 @@ class _ProfilePageState extends State<ProfilePage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                'Brushing Progress 📊',
+                '${loc.brushingProgress} 📊',
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
             ),
@@ -356,7 +356,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: Padding(
                           padding: const EdgeInsets.all(16),
                           child: Text(
-                            'Select a family member to view progress',
+                            loc.selectFamilyMember,
                             style: Theme.of(context).textTheme.bodyMedium,
                             textAlign: TextAlign.center,
                           ),
@@ -378,7 +378,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: Padding(
                               padding: const EdgeInsets.all(16),
                               child: Text(
-                                'Error loading progress data',
+                                loc.errorLoadingProgressData,
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                             ),
@@ -408,12 +408,12 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: Column(
                               children: [
                                 Text(
-                                  'No brushing data available',
+                                  loc.noBrushingDataAvailable,
                                   style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                                 const SizedBox(height: 12),
                                 Text(
-                                  'Start brushing to see your progress!',
+                                  loc.startBrushingToSeeProgress,
                                   style: Theme.of(context).textTheme.bodySmall,
                                   textAlign: TextAlign.center,
                                 ),
@@ -454,8 +454,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                   crossAxisAlignment:
                                       CrossAxisAlignment.start,
                                   children: [
-                                    const Text(
-                                      'Today',
+                                    Text(
+                                      loc.today,
                                       style: TextStyle(
                                         fontSize: 14,
                                         color: AppTheme.textSecondary,
@@ -494,8 +494,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                   crossAxisAlignment:
                                       CrossAxisAlignment.start,
                                   children: [
-                                    const Text(
-                                      'This Week',
+                                    Text(
+                                      loc.thisWeek,
                                       style: TextStyle(
                                         fontSize: 14,
                                         color: AppTheme.textSecondary,
@@ -534,8 +534,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                   crossAxisAlignment:
                                       CrossAxisAlignment.start,
                                   children: [
-                                    const Text(
-                                      'This Month',
+                                    Text(
+                                      loc.thisMonth,
                                       style: TextStyle(
                                         fontSize: 14,
                                         color: AppTheme.textSecondary,
@@ -576,7 +576,7 @@ class _ProfilePageState extends State<ProfilePage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                'Reminders ⏰',
+                '${loc.reminders} ⏰',
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
             ),
@@ -598,7 +598,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Enable Reminders',
+                                  loc.enableReminders,
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyLarge
@@ -608,7 +608,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  'Receive brushing notifications',
+                                  loc.receiveBrushingNotifications,
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                               ],
@@ -621,8 +621,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                   SnackBar(
                                     content: Text(
                                       value
-                                          ? '🔔 Reminders enabled'
-                                          : '🔕 Reminders disabled',
+                                          ? '🔔 ${loc.remindersEnabled}'
+                                          : '🔕 ${loc.remindersDisabled}',
                                     ),
                                     duration: const Duration(seconds: 2),
                                   ),
@@ -654,15 +654,15 @@ class _ProfilePageState extends State<ProfilePage> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text(
-                                    'Morning Reminder',
+                                  Text(
+                                    loc.morningReminder,
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    'Tap to change time',
+                                    loc.tapToChangeTime,
                                     style:
                                         Theme.of(context).textTheme.bodySmall,
                                   ),
@@ -713,15 +713,15 @@ class _ProfilePageState extends State<ProfilePage> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text(
-                                    'Night Reminder',
+                                  Text(
+                                    loc.nightReminder,
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    'Tap to change time',
+                                    loc.tapToChangeTime,
                                     style:
                                         Theme.of(context).textTheme.bodySmall,
                                   ),
@@ -768,6 +768,7 @@ class _ProfilePageState extends State<ProfilePage> {
     FamilyMember member,
     FamilyProvider familyProvider,
   ) {
+    final loc = AppLocalizations.of(context)!;
     final isSelected = familyProvider.selectedMember?.id == member.id;
 
     return GestureDetector(
@@ -775,7 +776,7 @@ class _ProfilePageState extends State<ProfilePage> {
         familyProvider.selectFamilyMember(member);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('${member.name} selected for tracking'),
+            content: Text('${member.name} ${loc.selectedForTracking}'),
             duration: const Duration(seconds: 2),
           ),
         );
@@ -822,7 +823,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       if (member.relation != null)
                         Text(
-                          member.relation!,
+                          _localizeRelation(member.relation!, loc),
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.grey[600],
@@ -832,7 +833,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Age: ${member.age} years',
+                    '${loc.age}: ${member.age} ${loc.years}',
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.grey[600],
@@ -844,11 +845,11 @@ class _ProfilePageState extends State<ProfilePage> {
             PopupMenuButton(
               itemBuilder: (context) => [
                 PopupMenuItem(
-                  child: const Text('Edit'),
+                  child: Text(loc.edit),
                   onTap: () => _showEditFamilyMemberDialog(context, member),
                 ),
                 PopupMenuItem(
-                  child: const Text('Delete', style: TextStyle(color: Colors.red)),
+                  child: Text(loc.delete, style: const TextStyle(color: Colors.red)),
                   onTap: () => _confirmDelete(context, member, familyProvider),
                 ),
               ],
@@ -865,6 +866,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void _showAddFamilyMemberDialog(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     final nameController = TextEditingController();
     final ageController = TextEditingController();
     String? selectedRelation;
@@ -872,7 +874,7 @@ class _ProfilePageState extends State<ProfilePage> {
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: const Text('Add Family Member'),
+        title: Text(loc.addFamilyMember),
         content: StatefulBuilder(
           builder: (context, setState) => SingleChildScrollView(
             child: Column(
@@ -880,8 +882,8 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 TextField(
                   controller: nameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Name',
+                  decoration: InputDecoration(
+                    labelText: loc.name,
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -889,31 +891,22 @@ class _ProfilePageState extends State<ProfilePage> {
                 TextField(
                   controller: ageController,
                   keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    labelText: 'Age',
+                  decoration: InputDecoration(
+                    labelText: loc.age,
                     border: OutlineInputBorder(),
                   ),
                 ),
                 const SizedBox(height: 12),
                 DropdownButtonFormField<String>(
                   initialValue: selectedRelation,
-                  decoration: const InputDecoration(
-                    labelText: 'Relation (Optional)',
+                  decoration: InputDecoration(
+                    labelText: loc.relationOptional,
                     border: OutlineInputBorder(),
                   ),
-                  items: [
-                    'Father',
-                    'Mother',
-                    'Child',
-                    'Sibling',
-                    'Grandparent',
-                    'Aunt/Uncle',
-                    'Cousin',
-                    'Friend',
-                  ]
+                  items: _relationKeys
                       .map((relation) => DropdownMenuItem(
                             value: relation,
-                            child: Text(relation),
+                            child: Text(_localizeRelation(relation, loc)),
                           ))
                       .toList(),
                   onChanged: (value) {
@@ -929,7 +922,7 @@ class _ProfilePageState extends State<ProfilePage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialogContext),
-            child: const Text('Cancel'),
+            child: Text(loc.cancel),
           ),
           ElevatedButton(
             onPressed: () {
@@ -943,14 +936,49 @@ class _ProfilePageState extends State<ProfilePage> {
                 Navigator.pop(dialogContext);
               }
             },
-            child: const Text('Add'),
+            child: Text(loc.add),
           ),
         ],
       ),
     );
   }
 
+  static const List<String> _relationKeys = [
+    'Father',
+    'Mother',
+    'Child',
+    'Sibling',
+    'Grandparent',
+    'Aunt/Uncle',
+    'Cousin',
+    'Friend',
+  ];
+
+  String _localizeRelation(String relation, AppLocalizations loc) {
+    switch (relation) {
+      case 'Father':
+        return loc.father;
+      case 'Mother':
+        return loc.mother;
+      case 'Child':
+        return loc.child;
+      case 'Sibling':
+        return loc.sibling;
+      case 'Grandparent':
+        return loc.grandparent;
+      case 'Aunt/Uncle':
+        return loc.auntUncle;
+      case 'Cousin':
+        return loc.cousin;
+      case 'Friend':
+        return loc.friend;
+      default:
+        return relation;
+    }
+  }
+
   void _showEditFamilyMemberDialog(BuildContext context, FamilyMember member) {
+    final loc = AppLocalizations.of(context)!;
     final nameController = TextEditingController(text: member.name);
     final ageController = TextEditingController(text: member.age.toString());
     String? selectedRelation = member.relation;
@@ -958,7 +986,7 @@ class _ProfilePageState extends State<ProfilePage> {
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: const Text('Edit Family Member'),
+        title: Text(loc.editFamilyMember),
         content: StatefulBuilder(
           builder: (context, setState) => SingleChildScrollView(
             child: Column(
@@ -966,8 +994,8 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 TextField(
                   controller: nameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Name',
+                  decoration: InputDecoration(
+                    labelText: loc.name,
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -975,31 +1003,22 @@ class _ProfilePageState extends State<ProfilePage> {
                 TextField(
                   controller: ageController,
                   keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    labelText: 'Age',
+                  decoration: InputDecoration(
+                    labelText: loc.age,
                     border: OutlineInputBorder(),
                   ),
                 ),
                 const SizedBox(height: 12),
                 DropdownButtonFormField<String>(
                   initialValue: selectedRelation,
-                  decoration: const InputDecoration(
-                    labelText: 'Relation (Optional)',
+                  decoration: InputDecoration(
+                    labelText: loc.relationOptional,
                     border: OutlineInputBorder(),
                   ),
-                  items: [
-                    'Father',
-                    'Mother',
-                    'Child',
-                    'Sibling',
-                    'Grandparent',
-                    'Aunt/Uncle',
-                    'Cousin',
-                    'Friend',
-                  ]
+                  items: _relationKeys
                       .map((relation) => DropdownMenuItem(
                             value: relation,
-                            child: Text(relation),
+                            child: Text(_localizeRelation(relation, loc)),
                           ))
                       .toList(),
                   onChanged: (value) {
@@ -1015,7 +1034,7 @@ class _ProfilePageState extends State<ProfilePage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialogContext),
-            child: const Text('Cancel'),
+            child: Text(loc.cancel),
           ),
           ElevatedButton(
             onPressed: () {
@@ -1031,7 +1050,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Navigator.pop(dialogContext);
               }
             },
-            child: const Text('Update'),
+            child: Text(loc.update),
           ),
         ],
       ),
@@ -1040,15 +1059,16 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void _confirmDelete(BuildContext context, FamilyMember member,
       FamilyProvider familyProvider) {
+    final loc = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: const Text('Delete Member?'),
-        content: Text('Are you sure you want to remove ${member.name}?'),
+        title: Text(loc.deleteMemberQuestion),
+        content: Text(loc.confirmRemoveMember(member.name)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialogContext),
-            child: const Text('Cancel'),
+            child: Text(loc.cancel),
           ),
           ElevatedButton(
             onPressed: () {
@@ -1058,7 +1078,7 @@ class _ProfilePageState extends State<ProfilePage> {
             style: ElevatedButton.styleFrom(
               backgroundColor: AppTheme.errorColor,
             ),
-            child: const Text('Delete'),
+            child: Text(loc.delete),
           ),
         ],
       ),

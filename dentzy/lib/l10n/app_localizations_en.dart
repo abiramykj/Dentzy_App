@@ -225,4 +225,229 @@ class AppLocalizationsEn extends AppLocalizations {
   String percentage(int value) {
     return '$value%';
   }
+
+  @override
+  String get brushingTimer => 'Brushing Timer';
+
+  @override
+  String get brushingTracker => 'Brushing Tracker';
+
+  @override
+  String get twoMinuteGuidedBrush => '2-minute guided brush';
+
+  @override
+  String get trackDailyBrushing => 'Track daily brushing';
+
+  @override
+  String get timeRemaining => 'Time Remaining';
+
+  @override
+  String get brushingTips => 'Brushing Tips';
+
+  @override
+  String get brushTip1 => 'Brush for at least 2 minutes';
+
+  @override
+  String get brushTip2 => 'Use gentle, circular motions';
+
+  @override
+  String get brushTip3 => 'Don\'t forget your tongue';
+
+  @override
+  String get brushTip4 => 'Brush twice daily';
+
+  @override
+  String get greatJob => 'Great Job!';
+
+  @override
+  String get completedBrushingSession =>
+      'You completed your 2-minute brushing session!';
+
+  @override
+  String get start => 'Start';
+
+  @override
+  String get pause => 'Pause';
+
+  @override
+  String get reset => 'Reset';
+
+  @override
+  String get noFamilyMembersAdded => 'No family members added';
+
+  @override
+  String get addFamilyMembersProfile =>
+      'Add family members in the Profile section to start tracking';
+
+  @override
+  String get daily => 'Daily';
+
+  @override
+  String get weekly => 'Weekly';
+
+  @override
+  String get monthly => 'Monthly';
+
+  @override
+  String get todaysBrushingStatus => 'Today\'s Brushing Status';
+
+  @override
+  String get morning => 'Morning';
+
+  @override
+  String get night => 'Night';
+
+  @override
+  String get markMorning => 'Mark Morning';
+
+  @override
+  String get markNight => 'Mark Night';
+
+  @override
+  String get ok => 'OK';
+
+  @override
+  String get profileFamily => 'Profile & Family';
+
+  @override
+  String get myProfile => 'My Profile';
+
+  @override
+  String get yourStatistics => 'Your Statistics';
+
+  @override
+  String get familyMembers => 'Family Members';
+
+  @override
+  String get achievements => 'Achievements';
+
+  @override
+  String get add => 'Add';
+
+  @override
+  String get age => 'Age';
+
+  @override
+  String get years => 'years';
+
+  @override
+  String get achievementsUnlocked => 'Achievements Unlocked';
+
+  @override
+  String get addFamilyMember => 'Add Family Member';
+
+  @override
+  String get editFamilyMember => 'Edit Family Member';
+
+  @override
+  String get relationOptional => 'Relation (Optional)';
+
+  @override
+  String get update => 'Update';
+
+  @override
+  String get father => 'Father';
+
+  @override
+  String get mother => 'Mother';
+
+  @override
+  String get child => 'Child';
+
+  @override
+  String get sibling => 'Sibling';
+
+  @override
+  String get grandparent => 'Grandparent';
+
+  @override
+  String get auntUncle => 'Aunt/Uncle';
+
+  @override
+  String get cousin => 'Cousin';
+
+  @override
+  String get friend => 'Friend';
+
+  @override
+  String get mythsChecked => 'Myths Checked';
+
+  @override
+  String get dayStreak => 'Day Streak';
+
+  @override
+  String get noFamilyMembersYet => 'No family members yet';
+
+  @override
+  String get addFamilyMembersTrackBrushing =>
+      'Add family members to track their brushing habits';
+
+  @override
+  String get noAchievements => 'No achievements';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get brushingProgress => 'Brushing Progress';
+
+  @override
+  String get selectFamilyMember => 'Select Family Member';
+
+  @override
+  String get errorLoadingProgressData => 'Error loading progress data';
+
+  @override
+  String get noBrushingDataAvailable => 'No brushing data available';
+
+  @override
+  String get startBrushingToSeeProgress =>
+      'Start brushing to see your progress!';
+
+  @override
+  String get today => 'Today';
+
+  @override
+  String get thisWeek => 'This Week';
+
+  @override
+  String get thisMonth => 'This Month';
+
+  @override
+  String get reminders => 'Reminders';
+
+  @override
+  String get enableReminders => 'Enable Reminders';
+
+  @override
+  String get receiveBrushingNotifications => 'Receive brushing notifications';
+
+  @override
+  String get remindersEnabled => 'Reminders enabled';
+
+  @override
+  String get remindersDisabled => 'Reminders disabled';
+
+  @override
+  String get morningReminder => 'Morning Reminder';
+
+  @override
+  String get nightReminder => 'Night Reminder';
+
+  @override
+  String get tapToChangeTime => 'Tap to change time';
+
+  @override
+  String get selectedForTracking => 'selected for tracking';
+
+  @override
+  String get name => 'Name';
+
+  @override
+  String get deleteMemberQuestion => 'Delete Member?';
+
+  @override
+  String confirmRemoveMember(String name) {
+    return 'Are you sure you want to remove $name?';
+  }
 }

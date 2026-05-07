@@ -22,35 +22,60 @@ class _LanguageScreenState extends State<LanguageScreen> {
   String? selectedLang;
   bool _isLoading = false;
 
-  @override
-  void initState() {
-    super.initState();
-    selectedLang = widget.languageProvider.currentLanguageCode;
-  }
+  // Do NOT preselect any language - start with null
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   selectedLang = widget.languageProvider.currentLanguageCode;
+  // }
 
   /// Validate and save language
   Future<void> _handleContinue() async {
+    debugPrint('🎬 [LanguageScreen._handleContinue] START');
+    
     if (selectedLang == null) {
+      debugPrint('❌ [LanguageScreen._handleContinue] No language selected');
       _showErrorSnackBar('Please select a language');
       return;
     }
 
+    debugPrint('✓ [LanguageScreen._handleContinue] Language selected: $selectedLang');
     setState(() => _isLoading = true);
+    debugPrint('⏳ [LanguageScreen._handleContinue] Loading state set to true');
 
     try {
-      await widget.languageProvider.setLanguage(selectedLang!);
+      debugPrint('💾 [LanguageScreen._handleContinue] Calling setLanguage...');
+      final success = await widget.languageProvider.setLanguage(selectedLang!);
+      debugPrint('📊 [LanguageScreen._handleContinue] setLanguage returned: $success');
 
-      if (mounted) {
-        setState(() => _isLoading = false);
-        // Pass the selected language to callback
-        widget.onLanguageSelected(selectedLang!);
+      if (!mounted) {
+        debugPrint('⚠️  [LanguageScreen._handleContinue] Widget not mounted, aborting');
+        return;
       }
+
+      if (!success) {
+        debugPrint('❌ [LanguageScreen._handleContinue] Save failed (returned false)');
+        setState(() => _isLoading = false);
+        _showErrorSnackBar('Failed to save language preference');
+        return;
+      }
+
+      setState(() => _isLoading = false);
+      debugPrint('✅ [LanguageScreen._handleContinue] Language saved, calling onLanguageSelected...');
+      
+      // Navigate only after language save completes successfully
+      widget.onLanguageSelected(selectedLang!);
+      debugPrint('✅ [LanguageScreen._handleContinue] onLanguageSelected callback invoked');
     } catch (e) {
-      if (mounted) {
-        setState(() => _isLoading = false);
-        _showErrorSnackBar('Failed to save language');
+      debugPrint('❌ [LanguageScreen._handleContinue] EXCEPTION CAUGHT: $e');
+      
+      if (!mounted) {
+        debugPrint('⚠️  [LanguageScreen._handleContinue] Widget not mounted after error');
+        return;
       }
-      debugPrint('Error saving language: $e');
+
+      setState(() => _isLoading = false);
+      _showErrorSnackBar('Error: ${e.toString()}');
     }
   }
 
@@ -102,6 +127,8 @@ class _LanguageScreenState extends State<LanguageScreen> {
                     onTap: () {
                       setState(() {
                         selectedLang = language.key;
+                        // Update locale immediately for instant UI change
+                        widget.languageProvider.setLocaleOnly(language.key);
                       });
                     },
                     child: Container(
@@ -155,7 +182,10 @@ class _LanguageScreenState extends State<LanguageScreen> {
             Padding(
               padding: const EdgeInsets.all(24.0),
               child: ElevatedButton.icon(
-                onPressed: _isLoading ? null : _handleContinue,
+                // Disable Continue until language is selected
+                onPressed: (selectedLang == null || _isLoading) 
+                    ? null 
+                    : _handleContinue,
                 icon: _isLoading
                     ? const SizedBox(
                         width: 20,
@@ -167,13 +197,23 @@ class _LanguageScreenState extends State<LanguageScreen> {
                         ),
                       )
                     : const Icon(Icons.arrow_forward),
-                label: Text(_isLoading ? 'Saving...' : loc.continueBtn),
+                label: Text(
+                  _isLoading 
+                      ? 'Saving...' 
+                      : (selectedLang == null 
+                          ? loc.continueBtn  
+                          : loc.continueBtn),
+                ),
                 style: ElevatedButton.styleFrom(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 48, vertical: 14),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
+                  // Visual feedback for disabled state
+                  backgroundColor: selectedLang == null
+                      ? Colors.grey
+                      : null,
                 ),
               ),
             ),

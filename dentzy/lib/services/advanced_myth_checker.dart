@@ -95,6 +95,12 @@ class AdvancedMythChecker {
       confidence: 85,
       reason: 'Pea-sized amount is sufficient for cleaning',
     ),
+    PriorityRule(
+      regex: RegExp(r'morning\s+brushing\s+is\s+enough|brush(ing)?\s+once\s+(a\s+day|daily)|once\s+(a\s+day|daily)\s+brushing\s+is\s+enough', caseSensitive: false),
+      label: 'Myth',
+      confidence: 96,
+      reason: 'Brushing once daily is insufficient; brushing twice daily is recommended',
+    ),
   ];
 
   /// Classify user input using comprehensive matching

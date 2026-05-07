@@ -50,44 +50,23 @@ class _SplashScreenState extends State<SplashScreen>
   Future<void> _navigateToNextScreen() async {
     if (!mounted) return;
 
-    // Check if language is already selected (done by LanguageProvider during init)
-    if (widget.languageProvider.currentLanguageCode != 'en' ||
-        await _isLanguageSaved()) {
-      // Language already selected, go to HomePage
-      if (mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => HomeScreen(
-              languageProvider: widget.languageProvider,
-            ),
-          ),
-        );
-      }
-    } else {
-      // First time, show language selection
-      if (mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => LanguageScreen(
-              languageProvider: widget.languageProvider,
-              onLanguageSelected: (language) {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => HomeScreen(
-                      languageProvider: widget.languageProvider,
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        );
-      }
-    }
-  }
-
-  Future<bool> _isLanguageSaved() async {
-    return widget.languageProvider.currentLanguageCode != 'en';
+    // Always show language selection for each app launch (testing/demo flow).
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => LanguageScreen(
+          languageProvider: widget.languageProvider,
+          onLanguageSelected: (language) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => HomeScreen(
+                  languageProvider: widget.languageProvider,
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
   }
 
   @override

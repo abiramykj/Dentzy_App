@@ -102,5 +102,86 @@
         "type": "int"
       }
     }
+  },
+  "brushingTimer": "Brushing Timer",
+  "brushingTracker": "Brushing Tracker",
+  "twoMinuteGuidedBrush": "2-minute guided brush",
+  "trackDailyBrushing": "Track daily brushing",
+  "timeRemaining": "Time Remaining",
+  "brushingTips": "Brushing Tips",
+  "brushTip1": "Brush for at least 2 minutes",
+  "brushTip2": "Use gentle, circular motions",
+  "brushTip3": "Don't forget your tongue",
+  "brushTip4": "Brush twice daily",
+  "greatJob": "Great Job!",
+  "completedBrushingSession": "You completed your 2-minute brushing session!",
+  "start": "Start",
+  "pause": "Pause",
+  "reset": "Reset",
+  "noFamilyMembersAdded": "No family members added",
+  "addFamilyMembersProfile": "Add family members in the Profile section to start tracking",
+  "daily": "Daily",
+  "weekly": "Weekly",
+  "monthly": "Monthly",
+  "todaysBrushingStatus": "Today's Brushing Status",
+  "morning": "Morning",
+  "night": "Night",
+  "markMorning": "Mark Morning",
+  "markNight": "Mark Night",
+  "ok": "OK",
+  "profileFamily": "Profile & Family",
+  "myProfile": "My Profile",
+  "yourStatistics": "Your Statistics",
+  "familyMembers": "Family Members",
+  "achievements": "Achievements",
+  "add": "Add",
+  "age": "Age",
+  "years": "years",
+  "achievementsUnlocked": "Achievements Unlocked",
+  "addFamilyMember": "Add Family Member",
+  "editFamilyMember": "Edit Family Member",
+  "relationOptional": "Relation (Optional)",
+  "update": "Update",
+  "father": "Father",
+  "mother": "Mother",
+  "child": "Child",
+  "sibling": "Sibling",
+  "grandparent": "Grandparent",
+  "auntUncle": "Aunt/Uncle",
+  "cousin": "Cousin",
+  "friend": "Friend"
+  ,"mythsChecked": "Myths Checked"
+  ,"dayStreak": "Day Streak"
+  ,"noFamilyMembersYet": "No family members yet"
+  ,"addFamilyMembersTrackBrushing": "Add family members to track their brushing habits"
+  ,"noAchievements": "No achievements"
+  ,"close": "Close"
+  ,"brushingProgress": "Brushing Progress"
+  ,"selectFamilyMember": "Select Family Member"
+  ,"errorLoadingProgressData": "Error loading progress data"
+  ,"noBrushingDataAvailable": "No brushing data available"
+  ,"startBrushingToSeeProgress": "Start brushing to see your progress!"
+  ,"today": "Today"
+  ,"thisWeek": "This Week"
+  ,"thisMonth": "This Month"
+  ,"reminders": "Reminders"
+  ,"enableReminders": "Enable Reminders"
+  ,"receiveBrushingNotifications": "Receive brushing notifications"
+  ,"remindersEnabled": "Reminders enabled"
+  ,"remindersDisabled": "Reminders disabled"
+  ,"morningReminder": "Morning Reminder"
+  ,"nightReminder": "Night Reminder"
+  ,"tapToChangeTime": "Tap to change time"
+  ,"selectedForTracking": "selected for tracking"
+  ,"name": "Name"
+  ,"deleteMemberQuestion": "Delete Member?"
+  ,"confirmRemoveMember": "Are you sure you want to remove {name}?"
+  ,"@confirmRemoveMember": {
+    "description": "Delete confirmation with member name",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
   }
 }

@@ -1,11 +1,12 @@
 from __future__ import annotations
 
+import re
 from typing import Dict, Tuple
 
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
-from data import all_facts, all_myths
+from backend.data import all_facts, all_myths
 
 _MODEL = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
 
@@ -53,6 +54,31 @@ _DENTAL_EMBEDDINGS = _MODEL.encode(
 _DENTAL_RELEVANCE_THRESHOLD = 0.35
 _HIGH_THRESHOLD = 0.6
 _MEDIUM_THRESHOLD = 0.4
+
+_MYTH_OVERRIDE_RULES = [
+    {
+        "pattern": re.compile(
+            r"(morning\s+brushing\s+is\s+enough|brush(?:ing)?\s+once\s+(?:a\s+day|daily)|once\s+(?:a\s+day|daily)\s+brushing\s+is\s+enough)",
+            flags=re.I,
+        ),
+        "explanation": "Brushing only once a day is not enough. Most dental guidelines recommend brushing twice daily (morning and before bed) for 2 minutes.",
+        "tip": "Brush twice daily with fluoride toothpaste, especially before bedtime.",
+        "confidence": 0.95,
+    },
+]
+
+
+def _match_override_rule(sentence: str) -> Dict[str, object] | None:
+    text = (sentence or "").strip()
+    for rule in _MYTH_OVERRIDE_RULES:
+        if rule["pattern"].search(text):
+            return {
+                "type": "myth",
+                "explanation": rule["explanation"],
+                "tip": rule["tip"],
+                "confidence": float(rule["confidence"]),
+            }
+    return None
 
 
 def _best_match(scores: np.ndarray) -> tuple[int, float]:
@@ -107,6 +133,10 @@ def classify(sentence: str) -> Dict[str, object]:
     """
     if not sentence or not sentence.strip():
         raise ValueError("Input text is empty.")
+
+    override = _match_override_rule(sentence)
+    if override is not None:
+        return override
     
     # STAGE 1: Dental Relevance Detection
     is_dental_related, dental_confidence = is_dental(sentence)
@@ -152,19 +182,22 @@ def classify(sentence: str) -> Dict[str, object]:
             "confidence": float(best_myth_score),
         }
     
-    # Medium confidence match - classify as fact (safe fallback)
+    # Medium confidence match - use top score type instead of always returning fact
     if max(best_fact_score, best_myth_score) > _MEDIUM_THRESHOLD:
-        best_fact = all_facts[best_fact_index]
+        is_fact = best_fact_score >= best_myth_score
+        best_item = all_facts[best_fact_index] if is_fact else all_myths[best_myth_index]
         return {
-            "type": "fact",
-            "explanation": "This statement is related to dental care but not found in the knowledge base.",
+            "type": "fact" if is_fact else "myth",
+            "explanation": best_item.get("explanation") or "This statement is related to dental care but not found clearly in the knowledge base.",
+            "tip": best_item.get("tip", ""),
             "confidence": float(max(best_fact_score, best_myth_score)),
         }
     
-    # Low confidence but still dental-related - return fact with generic explanation
+    # Low confidence but still dental-related - return unknown-style not_dental to force LLM fallback in API layer
     best_score = float(max(best_fact_score, best_myth_score, dental_confidence))
     return {
-        "type": "fact",
-        "explanation": "This statement is related to dental care but not found in the knowledge base.",
+        "type": "not_dental",
+        "explanation": "Low-confidence local match for a dental statement; trying AI fallback is recommended.",
+        "tip": "Please rephrase with more detail for better classification.",
         "confidence": best_score,
     }

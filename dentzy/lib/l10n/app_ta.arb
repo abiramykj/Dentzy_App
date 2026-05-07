@@ -102,5 +102,86 @@
         "type": "int"
       }
     }
+  },
+  "brushingTimer": "பல் துலக்கும் நேர வரிசையாக்கி",
+  "brushingTracker": "பல் துலக்கும் கண்காணிப்பு",
+  "twoMinuteGuidedBrush": "2 நிமிட வழிகாட்டப்பட்ட துலக்குதல்",
+  "trackDailyBrushing": "தினசரி பல் துலக்குதலைக் கண்காணி",
+  "timeRemaining": "மீதமுள்ள நேரம்",
+  "brushingTips": "பல் துலக்கும் குறிப்புகள்",
+  "brushTip1": "குறைந்தபட்சம் 2 நிமிடங்கள் பல் துலக்கவும்",
+  "brushTip2": "மென்மையான வட்டவடிவ இயக்கங்களைப் பயன்படுத்தவும்",
+  "brushTip3": "உங்கள் நாக்கை மறந்து விடாதீர்கள்",
+  "brushTip4": "தினமும் இரண்டு முறை பல் துலக்கவும்",
+  "greatJob": "멋진 வேலை!",
+  "completedBrushingSession": "நீங்கள் உங்கள் 2 நிமிட பல் துலக்கும் அமர்வை முடிந்துவிட்டீர்கள்!",
+  "start": "தொடங்கவும்",
+  "pause": "இடைநிறுத்தவும்",
+  "reset": "மீட்டமை",
+  "noFamilyMembersAdded": "குடும்ப உறுப்பினர்கள் சேர்க்கப்படவில்லை",
+  "addFamilyMembersProfile": "கண்காணிக்கத் தொடங்க சுயவிவரப் பிரிவில் குடும்ப உறுப்பினர்களைச் சேர்க்கவும்",
+  "daily": "தினசரி",
+  "weekly": "வாரம்",
+  "monthly": "மாதம்",
+  "todaysBrushingStatus": "இன்றைய பல் துலக்கும் நிலை",
+  "morning": "காலை",
+  "night": "இரவு",
+  "markMorning": "காலை குறிக்க",
+  "markNight": "இரவு குறிக்க",
+  "ok": "சரி",
+  "profileFamily": "சுயவிவரம் & குடும்பம்",
+  "myProfile": "என் சுயவிவரம்",
+  "yourStatistics": "உங்கள் புள்ளிவிவரங்கள்",
+  "familyMembers": "குடும்ப உறுப்பினர்கள்",
+  "achievements": "சாதனைகள்",
+  "add": "சேர்",
+  "age": "வயது",
+  "years": "ஆண்டுகள்",
+  "achievementsUnlocked": "திறக்கப்பட்ட சாதனைகள்",
+  "addFamilyMember": "குடும்ப உறுப்பினரை சேர்க்கவும்",
+  "editFamilyMember": "குடும்ப உறுப்பினரை திருத்தவும்",
+  "relationOptional": "உறவு (விருப்பத்தேர்வு)",
+  "update": "புதுப்பிக்கவும்",
+  "father": "அப்பா",
+  "mother": "அம்மா",
+  "child": "குழந்தை",
+  "sibling": "உடன்பிறந்தவர்",
+  "grandparent": "தாத்தா/பாட்டி",
+  "auntUncle": "அத்தை/மாமா",
+  "cousin": "சகோதரப்பிள்ளை",
+  "friend": "நண்பர்"
+  ,"mythsChecked": "சரிபார்க்கப்பட்ட கட்டுக்கதைகள்"
+  ,"dayStreak": "தொடர் நாட்கள்"
+  ,"noFamilyMembersYet": "இன்னும் குடும்ப உறுப்பினர்கள் இல்லை"
+  ,"addFamilyMembersTrackBrushing": "அவர்களின் பல் துலக்கும் பழக்கத்தை கண்காணிக்க குடும்ப உறுப்பினர்களை சேர்க்கவும்"
+  ,"noAchievements": "சாதனைகள் இல்லை"
+  ,"close": "மூடு"
+  ,"brushingProgress": "பல் துலக்கும் முன்னேற்றம்"
+  ,"selectFamilyMember": "குடும்ப உறுப்பினரை தேர்ந்தெடுக்கவும்"
+  ,"errorLoadingProgressData": "முன்னேற்ற தரவை ஏற்றுவதில் பிழை"
+  ,"noBrushingDataAvailable": "பல் துலக்கும் தரவு கிடைக்கவில்லை"
+  ,"startBrushingToSeeProgress": "உங்கள் முன்னேற்றத்தை காண பல் துலக்கத் தொடங்கவும்!"
+  ,"today": "இன்று"
+  ,"thisWeek": "இந்த வாரம்"
+  ,"thisMonth": "இந்த மாதம்"
+  ,"reminders": "நினைவூட்டல்கள்"
+  ,"enableReminders": "நினைவூட்டலை இயக்கவும்"
+  ,"receiveBrushingNotifications": "பல் துலக்கும் அறிவிப்புகளை பெறுங்கள்"
+  ,"remindersEnabled": "நினைவூட்டல் இயக்கப்பட்டது"
+  ,"remindersDisabled": "நினைவூட்டல் முடக்கப்பட்டது"
+  ,"morningReminder": "காலை நினைவூட்டல்"
+  ,"nightReminder": "இரவு நினைவூட்டல்"
+  ,"tapToChangeTime": "நேரத்தை மாற்ற தட்டவும்"
+  ,"selectedForTracking": "கண்காணிப்பிற்காக தேர்ந்தெடுக்கப்பட்டார்"
+  ,"name": "பெயர்"
+  ,"deleteMemberQuestion": "உறுப்பினரை நீக்கவா?"
+  ,"confirmRemoveMember": "{name} ஐ நீக்க விரும்புகிறீர்களா?"
+  ,"@confirmRemoveMember": {
+    "description": "Delete confirmation with member name",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
   }
 }

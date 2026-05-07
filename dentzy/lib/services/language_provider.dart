@@ -2,37 +2,94 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LanguageProvider extends ChangeNotifier {
-  static const String _languageKey = 'app_language';
+  static const String _languageKey = 'language';
+  static const String _legacyLanguageKey = 'app_language';
   static const Locale _defaultLocale = Locale('en');
-  
+
   late Locale _currentLocale;
-  late SharedPreferences _prefs;
 
   Locale get currentLocale => _currentLocale;
-  
+
   String get currentLanguageCode => _currentLocale.languageCode;
 
   LanguageProvider() : _currentLocale = _defaultLocale;
 
-  /// Initialize the provider and load saved language
+  /// Initialize the provider - always start with English (default)
+  /// Saved language is only loaded AFTER user explicitly selects it
   Future<void> initialize() async {
-    _prefs = await SharedPreferences.getInstance();
-    final savedLanguage = _prefs.getString(_languageKey);
-    
-    if (savedLanguage != null) {
-      _currentLocale = Locale(savedLanguage);
-    } else {
+    try {
+      debugPrint('🔄 [LanguageProvider] Initializing...');
+      final prefs = await SharedPreferences.getInstance();
+      debugPrint('✅ [LanguageProvider] SharedPreferences loaded');
+      
+      // Always start with English on app launch
+      _currentLocale = _defaultLocale;
+      debugPrint('ℹ️  [LanguageProvider] Starting with default language: ${_defaultLocale.languageCode}');
+      
+      // NOTE: Saved language preference can be loaded later after user makes initial selection
+      // For now, always show English at startup
+    } catch (e) {
+      debugPrint('❌ [LanguageProvider] Initialize error: $e');
       _currentLocale = _defaultLocale;
     }
   }
 
-  /// Change the current language and save it
-  Future<void> setLanguage(String languageCode) async {
-    if (languageCode == _currentLocale.languageCode) return;
+  /// Change locale immediately (for instant UI update) without saving
+  /// The save happens only when user taps Continue
+  void setLocaleOnly(String languageCode) {
+    debugPrint('🎯 [LanguageProvider.setLocaleOnly] Setting locale to: $languageCode');
     
-    _currentLocale = Locale(languageCode);
-    await _prefs.setString(_languageKey, languageCode);
-    notifyListeners();
+    if (languageCode == 'en' || languageCode == 'ta') {
+      _currentLocale = Locale(languageCode);
+      notifyListeners();
+      debugPrint('✅ [LanguageProvider.setLocaleOnly] Locale updated and listeners notified');
+    }
+  }
+
+  /// Change the current language and save it
+  Future<bool> setLanguage(String languageCode) async {
+    debugPrint('🔤 [LanguageProvider.setLanguage] START - Setting language to: $languageCode');
+    
+    try {
+      // Validate input
+      if (languageCode != 'en' && languageCode != 'ta') {
+        throw Exception('Invalid language code: $languageCode. Must be "en" or "ta"');
+      }
+      debugPrint('✓ [LanguageProvider.setLanguage] Language code validated');
+
+      // Get SharedPreferences instance
+      debugPrint('🔄 [LanguageProvider.setLanguage] Getting SharedPreferences instance...');
+      final prefs = await SharedPreferences.getInstance();
+      debugPrint('✅ [LanguageProvider.setLanguage] SharedPreferences instance obtained');
+
+      // Save language
+      debugPrint('💾 [LanguageProvider.setLanguage] Calling setString("$_languageKey", "$languageCode")...');
+      final saved = await prefs.setString(_languageKey, languageCode);
+      debugPrint('📊 [LanguageProvider.setLanguage] setString returned: $saved');
+
+      if (!saved) {
+        throw Exception('setString() returned false - could not save to SharedPreferences');
+      }
+
+      // Verify save
+      final verified = prefs.getString(_languageKey);
+      debugPrint('🔍 [LanguageProvider.setLanguage] Verification - saved value: $verified');
+
+      // Update local state
+      _currentLocale = Locale(languageCode);
+      debugPrint('🎯 [LanguageProvider.setLanguage] Local locale updated to: $languageCode');
+
+      // Notify listeners
+      notifyListeners();
+      debugPrint('📢 [LanguageProvider.setLanguage] Listeners notified');
+      
+      debugPrint('✅ [LanguageProvider.setLanguage] COMPLETE - Success!');
+      return true;
+    } catch (e, stackTrace) {
+      debugPrint('❌ [LanguageProvider.setLanguage] ERROR: $e');
+      debugPrint('❌ [LanguageProvider.setLanguage] STACK: $stackTrace');
+      return false;
+    }
   }
 
   /// Get current language display name
