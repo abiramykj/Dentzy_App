@@ -6,7 +6,10 @@ from typing import Dict, Tuple
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
-from backend.data import all_facts, all_myths
+try:
+    from backend.data import all_facts, all_myths
+except Exception:
+    from data import all_facts, all_myths
 
 _MODEL = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
 
@@ -27,6 +30,7 @@ _MYTH_EMBEDDINGS = _MODEL.encode(
 
 # Define general dental concepts for semantic relevance detection
 _DENTAL_CONCEPTS = [
+    # English concepts
     "tooth health and care",
     "gum disease and treatment",
     "oral hygiene practices",
@@ -37,10 +41,23 @@ _DENTAL_CONCEPTS = [
     "mouth and tooth health",
     "enamel and dental sensitivity",
     "plaque and tartar buildup",
-    "பல் ஆரோக்கியம் மற்றும் பராமரிப்பு",
-    "ஈறு நோய் மற்றும் சிகிச்சை",
-    "வாய் சுகாதாரம் நடைமுறைகள்",
-    "பல் அழுக்கு மற்றும் குழி",
+    "dental infections and root canals",
+    "teeth whitening and cosmetic dentistry",
+    "orthodontics and teeth alignment",
+    "dental implants and bridges",
+    "tooth extraction and replacement",
+    
+    # Tamil concepts (உதாரணம் - Examples)
+    "பல் ஆரோக்கியம் மற்றும் பராமரிப்பு",  # tooth health and care
+    "ஈறு நோய் மற்றும் சிகிச்சை",  # gum disease and treatment
+    "வாய் சுகாதாரம் நடைமுறைகள்",  # oral hygiene practices
+    "பல் துலக்குதல் நுட்பம்",  # tooth brushing technique
+    "பல் அழுக்கு மற்றும் குழி",  # plaque and cavities
+    "பல் சுளுவு மற்றும் சிதைவு",  # tooth decay and cavities
+    "வாய் உடம்பு ஆரோக்கியம்",  # oral health
+    "பல் வெள்ளை செய்தல்",  # teeth whitening
+    "ஈறுகளை பாதுகாக்க",  # protect gums
+    "வாயில் சொத்த",  # cleaning in mouth
 ]
 
 # Precompute embeddings for dental concepts at startup
@@ -74,8 +91,8 @@ def _match_override_rule(sentence: str) -> Dict[str, object] | None:
         if rule["pattern"].search(text):
             return {
                 "type": "myth",
-                "explanation": rule["explanation"],
-                "tip": rule["tip"],
+                "explanation": rule["explanation"] or "This statement is a dental myth.",
+                "tip": rule["tip"] or "Check the advice with a dentist.",
                 "confidence": float(rule["confidence"]),
             }
     return None
@@ -167,8 +184,8 @@ def classify(sentence: str) -> Dict[str, object]:
         best_fact = all_facts[best_fact_index]
         return {
             "type": "fact",
-            "explanation": best_fact["explanation"],
-            "tip": best_fact["tip"],
+            "explanation": best_fact.get("explanation") or "This statement is consistent with common dental knowledge.",
+            "tip": best_fact.get("tip") or "Keep following a regular oral hygiene routine.",
             "confidence": float(best_fact_score),
         }
     
@@ -177,8 +194,8 @@ def classify(sentence: str) -> Dict[str, object]:
         best_myth = all_myths[best_myth_index]
         return {
             "type": "myth",
-            "explanation": best_myth["explanation"],
-            "tip": best_myth["tip"],
+            "explanation": best_myth.get("explanation") or "This statement is a dental myth.",
+            "tip": best_myth.get("tip") or "Use trusted dental guidance instead.",
             "confidence": float(best_myth_score),
         }
     
@@ -189,7 +206,7 @@ def classify(sentence: str) -> Dict[str, object]:
         return {
             "type": "fact" if is_fact else "myth",
             "explanation": best_item.get("explanation") or "This statement is related to dental care but not found clearly in the knowledge base.",
-            "tip": best_item.get("tip", ""),
+            "tip": best_item.get("tip") or "Please check the wording with a dental professional.",
             "confidence": float(max(best_fact_score, best_myth_score)),
         }
     

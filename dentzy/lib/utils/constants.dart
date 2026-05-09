@@ -30,8 +30,8 @@ class AppConstants {
     'ta': 'Tamil',
   };
 
-  // Timeouts - FIXED: 6 seconds instead of 30
-  static const Duration apiTimeout = Duration(seconds: 6);
+  // Timeouts - changed to 20 seconds for backend API calls
+  static const Duration apiTimeout = Duration(seconds: 20);
   static const Duration dbTimeout = Duration(seconds: 10);
   
   // Backend URL - FIXED for local development

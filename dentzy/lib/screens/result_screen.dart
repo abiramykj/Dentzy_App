@@ -1,7 +1,4 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 import '../widgets/custom_card.dart';
 import '../services/myth_api_service.dart';
@@ -36,29 +33,17 @@ class _ResultScreenState extends State<ResultScreen> {
     });
 
     try {
-      final response = await http.post(
-        Uri.parse('${_apiService.baseUrl}/classify'),
-        headers: const {
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode({
-          'text': widget.inputText,
-        }),
-      );
-
-      if (response.statusCode < 200 || response.statusCode >= 300) {
-        throw Exception('Unexpected status: ${response.statusCode}');
-      }
-
-      final Map<String, dynamic> data =
-          jsonDecode(response.body) as Map<String, dynamic>;
-
+      final mythResult = await _apiService.classifyStatement(widget.inputText);
       if (!mounted) {
         return;
       }
 
       setState(() {
-        result = data;
+        result = {
+          'type': mythResult.label.toLowerCase().replaceAll(' ', '_'),
+          'explanation': mythResult.explanation,
+          'tip': mythResult.reason,
+        };
         isLoading = false;
       });
     } catch (error) {

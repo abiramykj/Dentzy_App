@@ -3,8 +3,12 @@ from pathlib import Path
 
 import pandas as pd
 
-# Resolve assets relative to the repo root so the backend can run from any CWD.
-_ASSETS_DIR = Path(__file__).resolve().parents[1] / "assets"
+# Resolve assets relative to the Flutter app assets directory, with a fallback
+# for alternate layouts used in local development.
+_REPO_ROOT = Path(__file__).resolve().parents[1]
+_ASSETS_DIR = _REPO_ROOT / "dentzy" / "assets"
+if not _ASSETS_DIR.exists():
+    _ASSETS_DIR = _REPO_ROOT / "assets"
 
 
 def _asset_path(filename: str) -> Path:

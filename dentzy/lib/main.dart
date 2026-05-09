@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
+import 'dart:async';
 import 'screens/language_screen.dart';
 import 'screens/home_screen.dart';
 import 'utils/theme.dart';
@@ -13,10 +14,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
   final languageProvider = LanguageProvider();
-  await languageProvider.initialize();
-  
   final settingsProvider = SettingsProvider();
-  await settingsProvider.initialize();
   runApp(MyApp(languageProvider: languageProvider, settingsProvider: settingsProvider));
 }
 class MyApp extends StatefulWidget {
@@ -42,6 +40,12 @@ class _MyAppState extends State<MyApp> {
     _settingsProvider = widget.settingsProvider;
     
     _languageProvider.addListener(_onLanguageChanged);
+
+    // Defer provider initialization until after the first frame so app startup
+    // does not block rendering on SharedPreferences or notification setup.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      unawaited(_bootstrapAsync());
+    });
   }
   @override
   void dispose() {
@@ -51,6 +55,21 @@ class _MyAppState extends State<MyApp> {
   void _onLanguageChanged() {
     setState(() {});
   }
+
+  Future<void> _bootstrapAsync() async {
+    try {
+      await Future.wait([
+        _languageProvider.initialize(),
+        _settingsProvider.initialize(),
+      ]);
+      if (mounted) {
+        setState(() {});
+      }
+    } catch (e) {
+      debugPrint('⚠️ [main.dart] Background initialization failed: $e');
+    }
+  }
+
   void _onLanguageSelected(String language) {
     debugPrint('🎯 [main.dart] Language selected: $language');
     setState(() {

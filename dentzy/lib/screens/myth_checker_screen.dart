@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import '../services/advanced_myth_checker.dart';
 import '../widgets/custom_card.dart';
 import '../utils/theme.dart';
 import '../l10n/app_localizations.dart';
@@ -20,28 +19,20 @@ class _MythCheckerScreenState extends State<MythCheckerScreen> {
   MythCheckResult? _result;
   bool _isChecking = false;
   bool _isDataLoaded = false;
-  List<MythItem> _database = [];
   String? _loadError;
 
   @override
   void initState() {
     super.initState();
-    _loadDatasets();
+    _simulateInitialLoad();
   }
 
-  /// Load datasets on init
-  void _loadDatasets() async {
-    try {
-      final data = await MythDataLoader.loadAllDatasets();
-      setState(() {
-        _database = data;
-        _isDataLoaded = true;
-      });
-    } catch (e) {
-      setState(() {
-        _loadError = 'Error loading datasets: $e';
-      });
-    }
+  Future<void> _simulateInitialLoad() async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    if (!mounted) return;
+    setState(() {
+      _isDataLoaded = true;
+    });
   }
 
   @override
@@ -51,6 +42,10 @@ class _MythCheckerScreenState extends State<MythCheckerScreen> {
   }
 
   void _checkInput() async {
+    if (_isChecking) {
+      return;
+    }
+
     final input = _inputController.text.trim();
     if (input.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -64,52 +59,21 @@ class _MythCheckerScreenState extends State<MythCheckerScreen> {
       _result = null;
     });
 
-    MythCheckResult? result;
+    MythCheckResult result;
     try {
+      debugPrint('[MythCheckerScreen] request text="$input"');
       result = await _apiService.classifyStatement(input);
-
-      final normalizedLabel = result.label.toLowerCase().replaceAll('_', ' ');
-      if (normalizedLabel == 'not dental' && result.confidence <= 5 && _isDataLoaded) {
-        final localResult = await AdvancedMythChecker.classify(
-          input,
-          _database,
-        );
-
-        if (localResult.label.toLowerCase().replaceAll('_', ' ') != 'not dental') {
-          if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Low-confidence backend result, using offline data'),
-              ),
-            );
-          }
-          result = localResult;
-        }
-      }
+      debugPrint(
+        '[MythCheckerScreen] result label=${result.label} confidence=${result.confidence} category=${result.category} reason=${result.reason}',
+      );
     } catch (_) {
-      if (!_isDataLoaded) {
-        if (mounted) {
-          setState(() {
-            _isChecking = false;
-          });
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Backend unavailable and datasets still loading.'),
-            ),
-          );
-        }
-        return;
-      }
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Backend unavailable, using offline data')),
-        );
-      }
-
-      result = await AdvancedMythChecker.classify(
-        input,
-        _database,
+      debugPrint('[MythCheckerScreen] classify failed, using fallback');
+      result = MythCheckResult(
+        label: 'Not Dental',
+        explanation: 'Unable to classify statement right now.',
+        confidence: 0,
+        category: 'NOT_DENTAL',
+        reason: 'Unable to classify statement right now.',
       );
     }
 
@@ -287,8 +251,7 @@ class _MythCheckerScreenState extends State<MythCheckerScreen> {
                       // Category
                       if (_result!.category.isNotEmpty &&
                           _result!.category != 'Non-Dental' &&
-                          _result!.category != 'Input Validation' &&
-                          _result!.category != 'Unknown')
+                          _result!.category != 'Input Validation')
                         Padding(
                           padding: const EdgeInsets.only(bottom: 12),
                           child: Row(
@@ -398,7 +361,7 @@ class _MythCheckerScreenState extends State<MythCheckerScreen> {
                       if (_result!.reason.isNotEmpty) ...[
                         const SizedBox(height: 12),
                         Text(
-                          'Reason: ${_result!.reason}',
+                          'Reason: ${_result!.explanation}',
                           style: TextStyle(
                             fontSize: 11,
                             color: Colors.grey[600],
@@ -475,14 +438,12 @@ class _MythCheckerScreenState extends State<MythCheckerScreen> {
 
   Color _getResultColor(String label) {
     switch (_normalizeLabel(label)) {
-      case 'Myth':
+      case 'myth':
         return Colors.red;
-      case 'Fact':
+      case 'fact':
         return Colors.green;
-      case 'Not Dental':
-        return Colors.orange;
-      case 'Unknown':
-        return Colors.blueGrey;
+      case 'not dental':
+        return Colors.grey;
       default:
         return Colors.grey;
     }
@@ -490,13 +451,11 @@ class _MythCheckerScreenState extends State<MythCheckerScreen> {
 
   IconData _getResultIcon(String label) {
     switch (_normalizeLabel(label)) {
-      case 'Myth':
+      case 'myth':
         return Icons.warning_rounded;
-      case 'Fact':
+      case 'fact':
         return Icons.verified_rounded;
-      case 'Not Dental':
-        return Icons.help_outline_rounded;
-      case 'Unknown':
+      case 'not dental':
         return Icons.help_outline_rounded;
       default:
         return Icons.question_mark_rounded;
