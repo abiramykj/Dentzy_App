@@ -67,29 +67,60 @@ def _detect_language(text: str) -> str:
 
 
 SYSTEM_PROMPT = """
-You are a multilingual dental myth classifier.
+You are an advanced multilingual dental myth classifier.
 
-Languages:
-- Tamil
+Supported languages:
 - English
+- Tamil
 - Tanglish
 
-Classify into:
-FACT
-MYTH
+FIRST TASK:
+Determine whether the statement is related to:
+- teeth
+- gums
+- mouth
+- oral hygiene
+- dental care
+- cavities
+- brushing
+- flossing
+- dentist
+- oral health
+
+If the statement is unrelated to dentistry or oral health,
+ALWAYS return:
 NOT_DENTAL
 
+Examples of NOT_DENTAL:
+- fish flying
+- weather
+- cars
+- sports
+- programming
+- movies
+- animals
+- space
+- politics
+
+SECOND TASK:
+If the statement IS dental-related:
+- classify as FACT or MYTH
+
+Definitions:
+FACT = scientifically correct dental information
+MYTH = false or misleading dental information
+NOT_DENTAL = unrelated to oral/dental health
+
 IMPORTANT:
-- Explanation must be under 20 words.
-- Keep response extremely short.
-- If input is Tamil, explanation must be Tamil.
+- Tamil input → Tamil explanation
+- English input → English explanation
+- Keep explanations short (under 20 words)
 
 Return ONLY valid JSON:
-
 {
-"type":"FACT",
-"confidence":95,
-"explanation":"short explanation"
+  "type":"FACT",
+  "confidence":95,
+  "explanation":"short explanation"
 }
 """
 
@@ -118,7 +149,74 @@ def _safe_text(value: Any, fallback: str) -> str:
     return text if text else fallback
 
 
-def _is_dental_related(sentence: str) -> bool:
+def _has_dental_keywords(text: str) -> bool:
+    """
+    Quick pre-check: does the text contain ANY dental-related keywords?
+    If not, return NOT_DENTAL immediately without calling GROQ.
+    """
+    text_lower = text.lower()
+    
+    # English and Tanglish keywords
+    dental_keywords = {
+        "tooth", "teeth", "dental", "dentist", "brush", "brushing",
+        "floss", "flossing", "gum", "gums", "cavity", "cavities",
+        "plaque", "tartar", "enamel", "mouth", "oral", "fluoride",
+        "toothpaste", "toothbrush", "whitening", "cleaning", "decay",
+        "canine", "molar", "incisor", "root", "sensitivity",
+        "bleeding", "infection", "crown", "bridge", "implant",
+        "gingivitis", "caries", "gingiva",
+    }
+    
+    # Tanglish keywords
+    tanglish_keywords = {
+        "pal", "pale", "paal", "paale", "iragu", "irukal", "irugalai",
+        "sulagu", "tulagu", "soothae", "vaay", "aarokkiam", "arogyam",
+        "noi", "theai", "kedu", "pul", "kodi", "pulvaithiyam", "pulvaithiyan",
+        "tulakkum", "soothukku",
+    }
+    
+    # Tamil keywords (check in original text, not lowercased)
+    tamil_keywords = {
+        "பல்", "ஈறு", "வாய்", "பல்வைத்", "பல்வைத்யம்", "பல்வைத்யன்",
+        "ஆரோக்கியம்", "சொத்த", "கெட்ட", "நோய்", "துலக்க", "துலக்கு",
+        "சீற", "சீறல்", "சீற", "சுளுவ", "சுளுவு", "புண்", "தேய்", "கொப்பளிப்பு",
+    }
+    
+    # Check English/Tanglish (case-insensitive)
+    for keyword in dental_keywords:
+        if keyword in text_lower:
+            return True
+    
+    for keyword in tanglish_keywords:
+        if keyword in text_lower:
+            return True
+    
+    # Check Tamil (case-sensitive)
+    for keyword in tamil_keywords:
+        if keyword in text:
+            return True
+    
+    return False
+
+
+def _not_dental_response(detected_language: str) -> dict[str, Any]:
+    """
+    Return NOT_DENTAL response in the detected language.
+    """
+    if detected_language == "tamil":
+        explanation = "இந்த வாக்கியம் பல் அல்லது வாய்நலத்துடன் தொடர்புடையதல்ல."
+    elif detected_language == "mixed":
+        explanation = "This statement is not related to dental or oral health."
+    else:
+        explanation = "This statement is not related to dental or oral health."
+    
+    return {
+        "type": "NOT_DENTAL",
+        "confidence": 100,
+        "explanation": explanation,
+    }
+
+
     """Check if sentence is related to dental health (English, Tamil, and Tanglish)."""
     text = (sentence or "").lower()
     
@@ -316,6 +414,17 @@ async def _classify_with_groq(sentence: str) -> dict[str, Any]:
     logger.info("Detected language=%s", detected_language)
     logger.info("Input text=%r", sentence)
     logger.info("Input length=%d chars", len(sentence))
+
+    # PRE-CHECK: Does the statement have dental-related keywords?
+    # If not, return NOT_DENTAL immediately without calling GROQ
+    if not _has_dental_keywords(sentence):
+        logger.info("PRE-CHECK: No dental keywords found, returning NOT_DENTAL immediately")
+        result = _not_dental_response(detected_language)
+        logger.info("=" * 80)
+        logger.info("GROQ CLASSIFICATION RESULT (PRE-CHECK): type=%s confidence=%d",
+                    result["type"], result["confidence"])
+        logger.info("=" * 80)
+        return result
 
     headers = {
         "Authorization": f"Bearer {GROQ_API_KEY}",
