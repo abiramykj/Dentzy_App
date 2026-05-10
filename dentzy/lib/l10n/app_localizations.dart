@@ -1309,6 +1309,288 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{days}d ago'**
   String daysAgo(int days);
+
+  /// No description provided for @appTour.
+  ///
+  /// In en, this message translates to:
+  /// **'App Tour'**
+  String get appTour;
+
+  /// No description provided for @replayAppTour.
+  ///
+  /// In en, this message translates to:
+  /// **'Replay Guided Tour'**
+  String get replayAppTour;
+
+  /// No description provided for @tourWelcomeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Dentzy'**
+  String get tourWelcomeTitle;
+
+  /// No description provided for @tourWelcomeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Your AI-powered dental health companion. Let\'s explore the app together!'**
+  String get tourWelcomeDescription;
+
+  /// No description provided for @tourMythCheckerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Myth Checker'**
+  String get tourMythCheckerTitle;
+
+  /// No description provided for @tourMythCheckerDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Check whether a dental statement is a fact, myth, or unrelated to oral health with AI-powered analysis.'**
+  String get tourMythCheckerDescription;
+
+  /// No description provided for @tourMythInputTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Your Statement'**
+  String get tourMythInputTitle;
+
+  /// No description provided for @tourMythInputDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Type or paste any dental statement here to check if it\'s true or false.'**
+  String get tourMythInputDescription;
+
+  /// No description provided for @tourMythCheckButtonTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Check Statement'**
+  String get tourMythCheckButtonTitle;
+
+  /// No description provided for @tourMythCheckButtonDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap this button to analyze your statement with AI.'**
+  String get tourMythCheckButtonDescription;
+
+  /// No description provided for @tourMythResultsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Results'**
+  String get tourMythResultsTitle;
+
+  /// No description provided for @tourMythResultsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'See the verdict (Fact, Myth, or Not Dental), confidence level, and detailed explanation.'**
+  String get tourMythResultsDescription;
+
+  /// No description provided for @tourBrushingTrackerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Brushing Tracker'**
+  String get tourBrushingTrackerTitle;
+
+  /// No description provided for @tourBrushingTrackerDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Track your morning and night brushing habits and maintain healthy streaks.'**
+  String get tourBrushingTrackerDescription;
+
+  /// No description provided for @tourBrushingDailyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Brushing'**
+  String get tourBrushingDailyTitle;
+
+  /// No description provided for @tourBrushingDailyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark your morning and night brushing sessions here and see your daily progress.'**
+  String get tourBrushingDailyDescription;
+
+  /// No description provided for @tourBrushingWeeklyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly Progress'**
+  String get tourBrushingWeeklyTitle;
+
+  /// No description provided for @tourBrushingWeeklyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Monitor your brushing consistency over 7 days with a visual progress bar.'**
+  String get tourBrushingWeeklyDescription;
+
+  /// No description provided for @tourBrushingMonthlyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Stats'**
+  String get tourBrushingMonthlyTitle;
+
+  /// No description provided for @tourBrushingMonthlyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'View your monthly brushing statistics, completion rate, and patterns.'**
+  String get tourBrushingMonthlyDescription;
+
+  /// No description provided for @tourBrushingTimerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Brushing Timer'**
+  String get tourBrushingTimerTitle;
+
+  /// No description provided for @tourBrushingTimerDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the guided 2-minute timer to brush your teeth properly and build healthy habits.'**
+  String get tourBrushingTimerDescription;
+
+  /// No description provided for @tourBrushingTimerStartTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Your Session'**
+  String get tourBrushingTimerStartTitle;
+
+  /// No description provided for @tourBrushingTimerStartDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap Start to begin a guided 2-minute brushing session.'**
+  String get tourBrushingTimerStartDescription;
+
+  /// No description provided for @tourLearnTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn'**
+  String get tourLearnTitle;
+
+  /// No description provided for @tourLearnDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore educational articles about dental health, myths, and prevention techniques.'**
+  String get tourLearnDescription;
+
+  /// No description provided for @tourLearnCategoriesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Categories'**
+  String get tourLearnCategoriesTitle;
+
+  /// No description provided for @tourLearnCategoriesDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter articles by category or read featured content about dental care.'**
+  String get tourLearnCategoriesDescription;
+
+  /// No description provided for @tourProgressTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Progress'**
+  String get tourProgressTitle;
+
+  /// No description provided for @tourProgressDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Monitor your learning accuracy, quiz streaks, and dental health consistency metrics.'**
+  String get tourProgressDescription;
+
+  /// No description provided for @tourVideoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Videos'**
+  String get tourVideoTitle;
+
+  /// No description provided for @tourVideoDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch educational video lessons about brushing techniques, oral health, and dental care.'**
+  String get tourVideoDescription;
+
+  /// No description provided for @tourSettingsLanguageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Language Settings'**
+  String get tourSettingsLanguageTitle;
+
+  /// No description provided for @tourSettingsLanguageDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch between English and Tamil anytime in your settings.'**
+  String get tourSettingsLanguageDescription;
+
+  /// No description provided for @tourSettingsNotificationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get tourSettingsNotificationsTitle;
+
+  /// No description provided for @tourSettingsNotificationsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable reminders for morning and evening brushing sessions.'**
+  String get tourSettingsNotificationsDescription;
+
+  /// No description provided for @tourBottomNavTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Navigation'**
+  String get tourBottomNavTitle;
+
+  /// No description provided for @tourBottomNavDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap any tab to explore Myth Checker, Learn, Progress, Videos, and more.'**
+  String get tourBottomNavDescription;
+
+  /// No description provided for @tourFABTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Action'**
+  String get tourFABTitle;
+
+  /// No description provided for @tourFABDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the floating button for quick access to your most-used features.'**
+  String get tourFABDescription;
+
+  /// No description provided for @tourFinishTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re All Set!'**
+  String get tourFinishTitle;
+
+  /// No description provided for @tourFinishDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'You now know all about Dentzy. Let\'s start improving your dental health!'**
+  String get tourFinishDescription;
+
+  /// No description provided for @tourNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get tourNext;
+
+  /// No description provided for @tourPrevious.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get tourPrevious;
+
+  /// No description provided for @tourSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip Tour'**
+  String get tourSkip;
+
+  /// No description provided for @tourFinish.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish'**
+  String get tourFinish;
+
+  /// No description provided for @tourGetStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get tourGetStarted;
 }
 
 class _AppLocalizationsDelegate

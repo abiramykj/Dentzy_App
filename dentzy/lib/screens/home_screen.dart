@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/custom_card.dart';
 import '../utils/theme.dart';
 import '../services/language_provider.dart';
+import '../services/app_tour_service.dart';
 import '../l10n/app_localizations.dart';
 import 'brushing_timer_screen.dart';
 import 'dental_quiz_page.dart';
@@ -26,6 +27,26 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  bool _tourInitiated = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_tourInitiated) {
+      _tourInitiated = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _checkAndShowTour();
+      });
+    }
+  }
+
+  Future<void> _checkAndShowTour() async {
+    final hasSeenTour = await AppTourService.hasSeenTour();
+    if (!hasSeenTour && mounted) {
+      await AppTourService.showAppTour(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;

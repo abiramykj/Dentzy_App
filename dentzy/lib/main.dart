@@ -8,6 +8,7 @@ import 'utils/theme.dart';
 import 'services/language_provider.dart';
 import 'services/family_provider.dart';
 import 'services/settings_provider.dart';
+import 'services/app_tour_service.dart';
 import 'l10n/app_localizations.dart';
 
 void main() async {
@@ -61,6 +62,7 @@ class _MyAppState extends State<MyApp> {
       await Future.wait([
         _languageProvider.initialize(),
         _settingsProvider.initialize(),
+        AppTourService.initialize(),
       ]);
       if (mounted) {
         setState(() {});

@@ -654,4 +654,165 @@ class AppLocalizationsTa extends AppLocalizations {
   String daysAgo(int days) {
     return '$daysநாட்கள் முன்';
   }
+
+  @override
+  String get appTour => 'அப்ப சுற்றுலா';
+
+  @override
+  String get replayAppTour => 'வழிகாட்டப்பட்ட சுற்றுலாவை மீண்டும் இயக்கவும்';
+
+  @override
+  String get tourWelcomeTitle => 'டென்ட்ஸிக்கு வரவேற்கிறோம்';
+
+  @override
+  String get tourWelcomeDescription =>
+      'உங்கள் AI-ஆல் இயக்கப்படும் பல் சுகாதாரக் கூட்டாளி. நம் சேர்ந்து அப்பை ஆராய்வோம்!';
+
+  @override
+  String get tourMythCheckerTitle => 'கட்டுக்கதை சரிபார்ப்பான்';
+
+  @override
+  String get tourMythCheckerDescription =>
+      'AI-ஆல் இயக்கப்படும் பகுப்பாய்வு மூலம் பல் கூற்று உண்மை, கட்டுக்கதை அல்லது பல் தொடர்பற்றது என்பதை சரிபார்க்கவும்.';
+
+  @override
+  String get tourMythInputTitle => 'உங்கள் கூற்றை உள்ளிடவும்';
+
+  @override
+  String get tourMythInputDescription =>
+      'என்னதாவது பல் கூற்றை இங்கு தட்டச்சு அல்லது ஒட்டி சரிபார்க்கவும்.';
+
+  @override
+  String get tourMythCheckButtonTitle => 'கூற்றைச் சரிபார்க்கவும்';
+
+  @override
+  String get tourMythCheckButtonDescription =>
+      'AI ஆல் உங்கள் கூற்றை பகுப்பாய்வு செய்ய இந்த பொத்தானைத் தட்டவும்.';
+
+  @override
+  String get tourMythResultsTitle => 'முடிவுகள்';
+
+  @override
+  String get tourMythResultsDescription =>
+      'தீர்ப்பு (உண்மை, கட்டுக்கதை அல்லது பல் தொடர்பற்றது), நம்பிக்கை நிலை மற்றும் விரிவான விளக்கம் பார்க்கவும்.';
+
+  @override
+  String get tourBrushingTrackerTitle => 'பல் துலக்கும் ட்ராக்கர்';
+
+  @override
+  String get tourBrushingTrackerDescription =>
+      'உங்கள் காலை மற்றும் இரவு பல் துலக்குதல் பழக்கத்தைக் கண்காணிக்கவும் மற்றும் ஆரோக்கியமான சுவடுகள் பராமரிக்கவும்.';
+
+  @override
+  String get tourBrushingDailyTitle => 'தினசரி பல் துலக்குதல்';
+
+  @override
+  String get tourBrushingDailyDescription =>
+      'உங்கள் காலை மற்றும் இரவு பல் துலக்குதல் அமர்வுகளைக் குறிக்கவும் மற்றும் உங்கள் தினசரி முன்னேற்றத்தைப் பார்க்கவும்.';
+
+  @override
+  String get tourBrushingWeeklyTitle => 'வாரத்தின் முன்னேற்றம்';
+
+  @override
+  String get tourBrushingWeeklyDescription =>
+      '7 நாட்களில் உங்கள் பல் துலக்குதல் நிலைத்தன்மையைக் கவனிக்கவும் ஒரு ஒளி முன்னேற்ற பட்டையுடன்.';
+
+  @override
+  String get tourBrushingMonthlyTitle => 'மாதத்தின் புள்ளிவிவரங்கள்';
+
+  @override
+  String get tourBrushingMonthlyDescription =>
+      'உங்கள் மாதிக பல் துலக்குதல் புள்ளிவிவரங்கள், முடிப்பு விகிதம் மற்றும் வடிவங்களைக் காண்க.';
+
+  @override
+  String get tourBrushingTimerTitle => 'பல் துலக்குதல் நேரமாপி';
+
+  @override
+  String get tourBrushingTimerDescription =>
+      'சரியாக பல் துலக்க மற்றும் ஆரோக்கியமான பழக்கங்களை உருவாக்க வழிகாட்டப்பட்ட 2-நிமிட நேரமாபியைப் பயன்படுத்தவும்.';
+
+  @override
+  String get tourBrushingTimerStartTitle => 'உங்கள் அமர்வைத் தொடங்கவும்';
+
+  @override
+  String get tourBrushingTimerStartDescription =>
+      'வழிகாட்டப்பட்ட 2-நிமிட பல் துலக்குதல் அமர்வைத் தொடங்க தொடங்கவை தட்டவும்.';
+
+  @override
+  String get tourLearnTitle => 'கற்க';
+
+  @override
+  String get tourLearnDescription =>
+      'பல் சுகாதாரம், கட்டுக்கதைகள் மற்றும் தடுப்பு நுட்பங்கள் பற்றிய கல்வி கட்டுரைகள் ஆராய்ந்து கொள்ளவும்.';
+
+  @override
+  String get tourLearnCategoriesTitle => 'வகைகள்';
+
+  @override
+  String get tourLearnCategoriesDescription =>
+      'வகையின் மூலம் கட்டுரைகளை வடிகட்டவும் அல்லது பல் பராமரிப்பு பற்றிய உள்ளடக்கத்தைப் படிக்கவும்.';
+
+  @override
+  String get tourProgressTitle => 'முன்னேற்றம்';
+
+  @override
+  String get tourProgressDescription =>
+      'உங்கள் கற்றல் துல்லியத்தை, வினாடி வினா சுவடுகளை மற்றும் பல் சுகாதாரம் நிலைத்தன்மை மெட்ரிக்ஸை கண்காணிக்கவும்.';
+
+  @override
+  String get tourVideoTitle => 'வீடியோக்கள்';
+
+  @override
+  String get tourVideoDescription =>
+      'பல் துலக்குதல் நுட்பங்கள், வாய்வழி சுகாதாரம் மற்றும் பல் பராமரிப்பு பற்றிய கல்வி வீடியோ பாடங்களைப் பாருங்கள்.';
+
+  @override
+  String get tourSettingsLanguageTitle => 'மொழி அமைப்புகள்';
+
+  @override
+  String get tourSettingsLanguageDescription =>
+      'உங்கள் அமைப்புகளில் எப்போது வேண்டுமானாலும் ஆங்கிலம் மற்றும் தமிழ்க்கு இடையே மாறவும்.';
+
+  @override
+  String get tourSettingsNotificationsTitle => 'அறிவிப்புகள்';
+
+  @override
+  String get tourSettingsNotificationsDescription =>
+      'காலை மற்றும் இரவு பல் துலக்குதல் அமர்வுகளுக்கு நினைவூட்டல்களை செயல்படுத்தவும்.';
+
+  @override
+  String get tourBottomNavTitle => 'வழிசெலுத்தல்';
+
+  @override
+  String get tourBottomNavDescription =>
+      'கட்டுக்கதை சரிபார்ப்பான், கற்க, முன்னேற்றம், வீடியோக்கள் மற்றும் பலவற்றை ஆராய்வதற்கு ஏதேனும் தாவலைத் தட்டவும்.';
+
+  @override
+  String get tourFABTitle => 'விரைவு செயல்';
+
+  @override
+  String get tourFABDescription =>
+      'உங்கள் பெரிதும் பயன்படுத்தப்படும் அம்சங்களுக்கு விரைவு அணுகலுக்கு மிதக்கும் பொத்தானைத் தட்டவும்.';
+
+  @override
+  String get tourFinishTitle => 'நீங்கள் அனைவரும் தயாரா!';
+
+  @override
+  String get tourFinishDescription =>
+      'நீங்கள் இப்போது டென்ட்ஸி பற்றி அனைவரும் அறிந்தீர்கள். உங்கள் பல் சுகாதாரத்தை மேம்படுத்தத் தொடங்கிவிடுவோம்!';
+
+  @override
+  String get tourNext => 'அடுத்தது';
+
+  @override
+  String get tourPrevious => 'முந்தையது';
+
+  @override
+  String get tourSkip => 'சுற்றுலாவைத் தவிர்க்கவும்';
+
+  @override
+  String get tourFinish => 'முடிப்பு';
+
+  @override
+  String get tourGetStarted => 'தொடங்க';
 }

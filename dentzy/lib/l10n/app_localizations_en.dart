@@ -649,4 +649,165 @@ class AppLocalizationsEn extends AppLocalizations {
   String daysAgo(int days) {
     return '${days}d ago';
   }
+
+  @override
+  String get appTour => 'App Tour';
+
+  @override
+  String get replayAppTour => 'Replay Guided Tour';
+
+  @override
+  String get tourWelcomeTitle => 'Welcome to Dentzy';
+
+  @override
+  String get tourWelcomeDescription =>
+      'Your AI-powered dental health companion. Let\'s explore the app together!';
+
+  @override
+  String get tourMythCheckerTitle => 'Myth Checker';
+
+  @override
+  String get tourMythCheckerDescription =>
+      'Check whether a dental statement is a fact, myth, or unrelated to oral health with AI-powered analysis.';
+
+  @override
+  String get tourMythInputTitle => 'Enter Your Statement';
+
+  @override
+  String get tourMythInputDescription =>
+      'Type or paste any dental statement here to check if it\'s true or false.';
+
+  @override
+  String get tourMythCheckButtonTitle => 'Check Statement';
+
+  @override
+  String get tourMythCheckButtonDescription =>
+      'Tap this button to analyze your statement with AI.';
+
+  @override
+  String get tourMythResultsTitle => 'Results';
+
+  @override
+  String get tourMythResultsDescription =>
+      'See the verdict (Fact, Myth, or Not Dental), confidence level, and detailed explanation.';
+
+  @override
+  String get tourBrushingTrackerTitle => 'Brushing Tracker';
+
+  @override
+  String get tourBrushingTrackerDescription =>
+      'Track your morning and night brushing habits and maintain healthy streaks.';
+
+  @override
+  String get tourBrushingDailyTitle => 'Daily Brushing';
+
+  @override
+  String get tourBrushingDailyDescription =>
+      'Mark your morning and night brushing sessions here and see your daily progress.';
+
+  @override
+  String get tourBrushingWeeklyTitle => 'Weekly Progress';
+
+  @override
+  String get tourBrushingWeeklyDescription =>
+      'Monitor your brushing consistency over 7 days with a visual progress bar.';
+
+  @override
+  String get tourBrushingMonthlyTitle => 'Monthly Stats';
+
+  @override
+  String get tourBrushingMonthlyDescription =>
+      'View your monthly brushing statistics, completion rate, and patterns.';
+
+  @override
+  String get tourBrushingTimerTitle => 'Brushing Timer';
+
+  @override
+  String get tourBrushingTimerDescription =>
+      'Use the guided 2-minute timer to brush your teeth properly and build healthy habits.';
+
+  @override
+  String get tourBrushingTimerStartTitle => 'Start Your Session';
+
+  @override
+  String get tourBrushingTimerStartDescription =>
+      'Tap Start to begin a guided 2-minute brushing session.';
+
+  @override
+  String get tourLearnTitle => 'Learn';
+
+  @override
+  String get tourLearnDescription =>
+      'Explore educational articles about dental health, myths, and prevention techniques.';
+
+  @override
+  String get tourLearnCategoriesTitle => 'Categories';
+
+  @override
+  String get tourLearnCategoriesDescription =>
+      'Filter articles by category or read featured content about dental care.';
+
+  @override
+  String get tourProgressTitle => 'Progress';
+
+  @override
+  String get tourProgressDescription =>
+      'Monitor your learning accuracy, quiz streaks, and dental health consistency metrics.';
+
+  @override
+  String get tourVideoTitle => 'Videos';
+
+  @override
+  String get tourVideoDescription =>
+      'Watch educational video lessons about brushing techniques, oral health, and dental care.';
+
+  @override
+  String get tourSettingsLanguageTitle => 'Language Settings';
+
+  @override
+  String get tourSettingsLanguageDescription =>
+      'Switch between English and Tamil anytime in your settings.';
+
+  @override
+  String get tourSettingsNotificationsTitle => 'Notifications';
+
+  @override
+  String get tourSettingsNotificationsDescription =>
+      'Enable reminders for morning and evening brushing sessions.';
+
+  @override
+  String get tourBottomNavTitle => 'Navigation';
+
+  @override
+  String get tourBottomNavDescription =>
+      'Tap any tab to explore Myth Checker, Learn, Progress, Videos, and more.';
+
+  @override
+  String get tourFABTitle => 'Quick Action';
+
+  @override
+  String get tourFABDescription =>
+      'Tap the floating button for quick access to your most-used features.';
+
+  @override
+  String get tourFinishTitle => 'You\'re All Set!';
+
+  @override
+  String get tourFinishDescription =>
+      'You now know all about Dentzy. Let\'s start improving your dental health!';
+
+  @override
+  String get tourNext => 'Next';
+
+  @override
+  String get tourPrevious => 'Previous';
+
+  @override
+  String get tourSkip => 'Skip Tour';
+
+  @override
+  String get tourFinish => 'Finish';
+
+  @override
+  String get tourGetStarted => 'Get Started';
 }

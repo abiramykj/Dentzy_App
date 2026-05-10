@@ -8,6 +8,7 @@ import '../services/settings_provider.dart';
 import '../services/brushing_service.dart';
 import '../services/achievement_service.dart';
 import '../services/progress_service.dart';
+import '../services/app_tour_service.dart';
 import '../models/family_member.dart';
 import '../models/achievement.dart';
 
@@ -753,6 +754,70 @@ class _ProfilePageState extends State<ProfilePage> {
                     ],
                   );
                 },
+              ),
+            ),
+
+            const SizedBox(height: 24),
+
+            // App Tour Section
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                '${loc.appTour} 🎯',
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: CustomCard(
+                onTap: () async {
+                  await AppTourService.resetTour();
+                  if (mounted) {
+                    await AppTourService.showAppTour(context);
+                  }
+                },
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppTheme.primaryColor.withOpacity(0.15),
+                      ),
+                      child: const Icon(
+                        Icons.play_circle_outline_rounded,
+                        color: AppTheme.primaryColor,
+                        size: 26,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            loc.replayAppTour,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(fontWeight: FontWeight.w700),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Learn all features step-by-step',
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Icon(Icons.arrow_forward_rounded, color: Colors.grey[400]),
+                  ],
+                ),
               ),
             ),
 
