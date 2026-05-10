@@ -31,12 +31,12 @@ class AppConstants {
   };
 
   // Timeouts - changed to 20 seconds for backend API calls
-  static const Duration apiTimeout = Duration(seconds: 20);
+  static const Duration apiTimeout = Duration(seconds: 25);
   static const Duration dbTimeout = Duration(seconds: 10);
   
   // Backend URL - FIXED for local development
-  // For Android Emulator: http://10.0.2.2:8000
-  // For Real Device: http://<YOUR_PC_IP>:8000 (e.g., 192.168.1.100:8000)
+  // For Android Emulator: http://10.0.2.2:8081
+  // For Real Device: http://<YOUR_PC_IP>:8081 (e.g., 192.168.1.100:8081)
   // Change this based on your setup
-  static const String localBackendUrl = 'http://10.0.2.2:8000'; // Android emulator
+  static const String localBackendUrl = 'http://10.0.2.2:8081'; // Android emulator
 }

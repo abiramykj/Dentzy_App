@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+from services.myth_classifier_service import _classify_with_groq, _detect_language, _has_dental_keywords, classify_statement
+
+classify = classify_statement
+from __future__ import annotations
+
 import re
 from typing import Dict, Tuple
 

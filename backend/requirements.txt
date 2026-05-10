@@ -7,3 +7,17 @@ numpy
 pandas
 google-genai
 python-dotenv
+sqlalchemy
+pymysql
+passlib[bcrypt]
+python-jose[cryptography]
+python-multipart
+fastapi
+uvicorn
+httpx
+sentence-transformers
+scikit-learn
+numpy
+pandas
+google-genai
+python-dotenv

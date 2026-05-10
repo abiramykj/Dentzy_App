@@ -114,14 +114,14 @@ class MythApiService {
 
   static String _defaultBackendUrl() {
     if (kIsWeb) {
-      return 'http://localhost:8080';
+      return AppConstants.localBackendUrl.replaceFirst('10.0.2.2', 'localhost');
     }
 
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        return 'http://10.0.2.2:8080';
+        return AppConstants.localBackendUrl;
       default:
-        return 'http://127.0.0.1:8080';
+        return AppConstants.localBackendUrl.replaceFirst('10.0.2.2', '127.0.0.1');
     }
   }
 

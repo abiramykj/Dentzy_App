@@ -2,21 +2,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';
-import 'screens/language_screen.dart';
-import 'screens/home_screen.dart';
+import 'screens/startup_flow_screen.dart';
 import 'utils/theme.dart';
 import 'services/language_provider.dart';
 import 'services/family_provider.dart';
 import 'services/settings_provider.dart';
+import 'services/auth_service.dart';
 import 'services/app_tour_service.dart';
 import 'l10n/app_localizations.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  debugPrint('▶️  [main] App startup STARTING...');
   
-  final languageProvider = LanguageProvider();
-  final settingsProvider = SettingsProvider();
-  runApp(MyApp(languageProvider: languageProvider, settingsProvider: settingsProvider));
+  try {
+    debugPrint('▶️  [main] Calling WidgetsFlutterBinding.ensureInitialized()...');
+    WidgetsFlutterBinding.ensureInitialized();
+    debugPrint('✅ [main] WidgetsFlutterBinding initialized');
+    
+    debugPrint('▶️  [main] Creating providers...');
+    final languageProvider = LanguageProvider();
+    final settingsProvider = SettingsProvider();
+    debugPrint('✅ [main] Providers created');
+    
+    debugPrint('▶️  [main] Calling runApp()...');
+    runApp(MyApp(
+      languageProvider: languageProvider,
+      settingsProvider: settingsProvider,
+    ));
+    debugPrint('✅ [main] runApp() called - UI should render now');
+  } catch (e) {
+    debugPrint('❌ [main] FATAL ERROR during startup: $e');
+    rethrow;
+  }
 }
 class MyApp extends StatefulWidget {
   final LanguageProvider languageProvider;
@@ -33,7 +50,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   late LanguageProvider _languageProvider;
   late SettingsProvider _settingsProvider;
-  bool _languageSelected = false;
+
   @override
   void initState() {
     super.initState();
@@ -58,29 +75,72 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _bootstrapAsync() async {
+    debugPrint('🔄 [_bootstrapAsync] Background initialization starting...');
+    
     try {
-      await Future.wait([
-        _languageProvider.initialize(),
-        _settingsProvider.initialize(),
-        AppTourService.initialize(),
-      ]);
+      // Initialize language provider with timeout
+      debugPrint('🔄 [_bootstrapAsync] Initializing LanguageProvider...');
+      try {
+        await _languageProvider.initialize()
+            .timeout(const Duration(seconds: 5));
+        debugPrint('✅ [_bootstrapAsync] LanguageProvider initialized');
+      } catch (e) {
+        debugPrint('⚠️  [_bootstrapAsync] LanguageProvider init timeout/error: $e');
+        // Continue with default language
+      }
+
+      // Initialize app tour service with timeout
+      debugPrint('🔄 [_bootstrapAsync] Initializing AppTourService...');
+      try {
+        await AppTourService.initialize()
+            .timeout(const Duration(seconds: 5));
+        debugPrint('✅ [_bootstrapAsync] AppTourService initialized');
+      } catch (e) {
+        debugPrint('⚠️  [_bootstrapAsync] AppTourService init timeout/error: $e');
+        // Continue without tour if it fails
+      }
+
+      // Initialize auth service for login/signup/session flow
+      debugPrint('🔄 [_bootstrapAsync] Initializing AuthService...');
+      try {
+        await AuthService.initialize()
+            .timeout(const Duration(seconds: 5));
+        debugPrint('✅ [_bootstrapAsync] AuthService initialized');
+      } catch (e) {
+        debugPrint('⚠️  [_bootstrapAsync] AuthService init timeout/error: $e');
+      }
+
+      // Initialize settings SEPARATELY to prevent notification issues from blocking everything
+      debugPrint('🔄 [_bootstrapAsync] Initializing SettingsProvider...');
+      try {
+        // Use a longer timeout for settings since it includes notification init
+        await _settingsProvider.initialize()
+            .timeout(const Duration(seconds: 10));
+        debugPrint('✅ [_bootstrapAsync] SettingsProvider initialized');
+      } on TimeoutException catch (e) {
+        debugPrint('⚠️  [_bootstrapAsync] SettingsProvider init TIMEOUT - continuing anyway');
+        debugPrint('⚠️  [_bootstrapAsync] Timeout details: $e');
+        // Don't rethrow - let app continue without notifications
+      } catch (e) {
+        debugPrint('⚠️  [_bootstrapAsync] SettingsProvider init error: $e');
+        // Don't rethrow - let app continue without notifications
+      }
+
       if (mounted) {
+        debugPrint('🔄 [_bootstrapAsync] Triggering UI rebuild...');
         setState(() {});
+        debugPrint('✅ [_bootstrapAsync] Background initialization COMPLETE');
       }
     } catch (e) {
-      debugPrint('⚠️ [main.dart] Background initialization failed: $e');
+      debugPrint('❌ [_bootstrapAsync] Unexpected error: $e');
+      // Still continue - don't crash the app
     }
   }
 
-  void _onLanguageSelected(String language) {
-    debugPrint('🎯 [main.dart] Language selected: $language');
-    setState(() {
-      _languageSelected = true;
-    });
-    debugPrint('✅ [main.dart] State updated, will rebuild to HomeScreen');
-  }
   @override
   Widget build(BuildContext context) {
+    debugPrint('🏗️  [MyApp.build] Building MyApp - startup flow active');
+    
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => FamilyProvider()),
@@ -99,12 +159,7 @@ class _MyAppState extends State<MyApp> {
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,          GlobalCupertinoLocalizations.delegate,
         ],
-        home: _languageSelected 
-            ? HomeScreen(languageProvider: _languageProvider)
-            : LanguageScreen(
-                languageProvider: _languageProvider,
-                onLanguageSelected: _onLanguageSelected,
-              ),
+        home: StartupFlowScreen(languageProvider: _languageProvider),
       ),
     );
   }

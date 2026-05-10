@@ -57,7 +57,162 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noData => 'No data available';
 
   @override
+  String get success => 'Success';
+
+  @override
   String get welcome => 'Welcome Back!';
+
+  @override
+  String get loginSubtitle => 'Manage your dental health smarter.';
+
+  @override
+  String get loginEmailHint => 'Enter your email';
+
+  @override
+  String get loginPasswordHint => 'Enter your password';
+
+  @override
+  String get loginShowPassword => 'Show';
+
+  @override
+  String get loginHidePassword => 'Hide';
+
+  @override
+  String get loginForgotPassword => 'Forgot password?';
+
+  @override
+  String get loginSignIn => 'Sign In';
+
+  @override
+  String get loginNoAccount => 'Don\'t have an account?';
+
+  @override
+  String get loginSignUp => 'Sign Up';
+
+  @override
+  String get authCreateAccount => 'Create Account';
+
+  @override
+  String get authCreateAccountSubtitle => 'Set up your secure Dentzy account.';
+
+  @override
+  String get authFullNameHint => 'Full name';
+
+  @override
+  String get authConfirmPasswordHint => 'Confirm password';
+
+  @override
+  String get authCreateAccountButton => 'Create Account';
+
+  @override
+  String get authBackToLogin => 'Back to Login';
+
+  @override
+  String get authFillAllFields => 'Please fill all fields.';
+
+  @override
+  String get authInvalidEmail => 'Please enter a valid email address.';
+
+  @override
+  String get authWeakPassword => 'Password does not meet all requirements.';
+
+  @override
+  String get authPasswordsDoNotMatch => 'Passwords do not match';
+
+  @override
+  String get authSomethingWentWrong =>
+      'Something went wrong. Please try again.';
+
+  @override
+  String get authRuleMinChars => '8 characters';
+
+  @override
+  String get authRuleUppercase => 'uppercase letter';
+
+  @override
+  String get authRuleLowercase => 'lowercase letter';
+
+  @override
+  String get authRuleNumber => 'number';
+
+  @override
+  String get authRuleSpecial => 'special character';
+
+  @override
+  String get authForgotPasswordTitle => 'Forgot Password?';
+
+  @override
+  String get authForgotPasswordSubtitle =>
+      'Enter your email to reset your password.';
+
+  @override
+  String get authSendResetLink => 'Send Reset Link';
+
+  @override
+  String get authNoAccountForEmail => 'No account found for this email.';
+
+  @override
+  String get authResetLinkSent => 'Verification code sent. Check your email.';
+
+  @override
+  String get authResetLinkSentTitle => 'Reset Link Sent';
+
+  @override
+  String get authResetLinkSentSubtitle =>
+      'We sent a password reset verification code to your email.';
+
+  @override
+  String get authVerifyOtp => 'Verify OTP';
+
+  @override
+  String get authOtpSubtitle =>
+      'Enter the 6-digit verification code we sent to your email.';
+
+  @override
+  String get authVerificationCode => 'Verification code';
+
+  @override
+  String get authVerificationCodeHint => 'Enter 6-digit code';
+
+  @override
+  String get authInvalidOtp => 'Invalid verification code';
+
+  @override
+  String get authOtpExpired => 'Verification code expired. Please resend.';
+
+  @override
+  String get authResendCode => 'Resend code';
+
+  @override
+  String authResendInSeconds(int seconds) {
+    return 'Resend code in ${seconds}s';
+  }
+
+  @override
+  String get authResetPasswordTitle => 'Reset Password';
+
+  @override
+  String get authResetPasswordSubtitle =>
+      'Create a new secure password for your Dentzy account.';
+
+  @override
+  String get authNewPasswordHint => 'New password';
+
+  @override
+  String get authResetPasswordButton => 'Reset Password';
+
+  @override
+  String get authPasswordResetSuccess => 'Password reset successfully.';
+
+  @override
+  String get logoutSubtitle => 'Securely sign out from this device';
+
+  @override
+  String get logoutConfirmTitle => 'Logout?';
+
+  @override
+  String get logoutConfirmMessage =>
+      'Are you sure you want to logout from Dentzy?';
 
   @override
   String get readyForQuiz => 'Ready to bust some myths today?';

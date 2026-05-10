@@ -31,19 +31,30 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void didChangeDependencies() {
+    debugPrint('🏠 [HomeScreen.didChangeDependencies] Called');
     super.didChangeDependencies();
     if (!_tourInitiated) {
       _tourInitiated = true;
+      debugPrint('🏠 [HomeScreen.didChangeDependencies] Scheduling tour check...');
       WidgetsBinding.instance.addPostFrameCallback((_) {
+        debugPrint('🏠 [HomeScreen] Post-frame callback - checking tour...');
         _checkAndShowTour();
       });
     }
   }
 
   Future<void> _checkAndShowTour() async {
-    final hasSeenTour = await AppTourService.hasSeenTour();
-    if (!hasSeenTour && mounted) {
-      await AppTourService.showAppTour(context);
+    debugPrint('🏠 [_checkAndShowTour] Starting...');
+    try {
+      final hasSeenTour = await AppTourService.hasSeenTour();
+      debugPrint('🏠 [_checkAndShowTour] hasSeenTour: $hasSeenTour');
+      if (!hasSeenTour && mounted) {
+        debugPrint('🏠 [_checkAndShowTour] Showing tour...');
+        await AppTourService.showAppTour(context);
+        debugPrint('🏠 [_checkAndShowTour] Tour complete');
+      }
+    } catch (e) {
+      debugPrint('❌ [_checkAndShowTour] Error: $e');
     }
   }
 
@@ -108,7 +119,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           onTap: () => Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const ProfilePage(),
+                              builder: (context) => ProfilePage(
+                                languageProvider: widget.languageProvider,
+                              ),
                             ),
                           ),
                         ),

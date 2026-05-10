@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -28,13 +30,43 @@ class SettingsProvider extends ChangeNotifier {
 
   // Initialize settings and notifications
   Future<void> initialize() async {
-    await _loadSettings();
-    await _initializeNotifications();
+    debugPrint('🔄 [SettingsProvider.initialize] Starting initialization...');
+    
+    try {
+      debugPrint('🔄 [SettingsProvider.initialize] Loading settings from SharedPreferences...');
+      await _loadSettings();
+      debugPrint('✅ [SettingsProvider.initialize] Settings loaded');
+    } catch (e) {
+      debugPrint('⚠️  [SettingsProvider.initialize] Error loading settings: $e');
+    }
+
+    try {
+      debugPrint('🔄 [SettingsProvider.initialize] Initializing notifications...');
+      await _initializeNotifications()
+          .timeout(const Duration(seconds: 8));
+      debugPrint('✅ [SettingsProvider.initialize] Notifications initialized');
+    } on TimeoutException catch (e) {
+      debugPrint('⚠️  [SettingsProvider.initialize] Notifications init TIMEOUT - continuing anyway');
+      debugPrint('⚠️  [SettingsProvider.initialize] Timeout details: $e');
+      // Don't crash the app if notifications take too long
+    } catch (e) {
+      debugPrint('⚠️  [SettingsProvider.initialize] Notifications init error: $e');
+      // Don't crash the app if notifications fail
+    }
 
     // Schedule reminders if enabled
     if (_remindersEnabled) {
-      await scheduleReminders();
+      try {
+        debugPrint('🔄 [SettingsProvider.initialize] Scheduling reminders...');
+        await scheduleReminders()
+            .timeout(const Duration(seconds: 5));
+        debugPrint('✅ [SettingsProvider.initialize] Reminders scheduled');
+      } catch (e) {
+        debugPrint('⚠️  [SettingsProvider.initialize] Error scheduling reminders: $e');
+      }
     }
+    
+    debugPrint('✅ [SettingsProvider.initialize] Initialization COMPLETE');
   }
 
   // Load settings from SharedPreferences
@@ -102,27 +134,33 @@ class SettingsProvider extends ChangeNotifier {
   // Initialize local notifications
   Future<void> _initializeNotifications() async {
     try {
+      debugPrint('🔔 [_initializeNotifications] Creating FlutterLocalNotificationsPlugin...');
       _notificationsPlugin = FlutterLocalNotificationsPlugin();
 
       // Android initialization - use a default system icon if app_icon doesn't exist
       const androidInitSettings = AndroidInitializationSettings(
         'app_icon',
       );
+      debugPrint('🔔 [_initializeNotifications] Android settings created');
 
       // General initialization
       final initSettings = InitializationSettings(
         android: androidInitSettings,
       );
+      debugPrint('🔔 [_initializeNotifications] Init settings created');
 
+      debugPrint('🔔 [_initializeNotifications] Calling plugin.initialize()...');
       await _notificationsPlugin.initialize(
         initSettings,
         onDidReceiveNotificationResponse: (NotificationResponse response) {
-          print('Notification tapped: ${response.payload}');
+          debugPrint('🔔 [onDidReceiveNotificationResponse] Notification tapped: ${response.payload}');
         },
       );
+      debugPrint('✅ [_initializeNotifications] Plugin initialized successfully');
     } catch (e) {
-      print('Error initializing notifications: $e');
+      debugPrint('❌ [_initializeNotifications] Error: $e');
       // Continue app execution even if notifications fail to initialize
+      rethrow; // Will be caught by caller with timeout handling
     }
   }
 

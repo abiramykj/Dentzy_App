@@ -58,7 +58,169 @@ class AppLocalizationsTa extends AppLocalizations {
   String get noData => 'தரவு கிடைக்கவில்லை';
 
   @override
+  String get success => 'வெற்றி';
+
+  @override
   String get welcome => 'மீண்டும் வரவேற்கிறோம்!';
+
+  @override
+  String get loginSubtitle =>
+      'உங்கள் பல் ஆரோக்கியத்தை புத்திசாலித்தனமாக நிர்வகிக்கவும்.';
+
+  @override
+  String get loginEmailHint => 'உங்கள் மின்னஞ்சலை உள்ளிடவும்';
+
+  @override
+  String get loginPasswordHint => 'உங்கள் கடவுச்சொல்லை உள்ளிடவும்';
+
+  @override
+  String get loginShowPassword => 'காட்டு';
+
+  @override
+  String get loginHidePassword => 'மறை';
+
+  @override
+  String get loginForgotPassword => 'கடவுச்சொல்லை மறந்துவிட்டீர்களா?';
+
+  @override
+  String get loginSignIn => 'உள்நுழைக';
+
+  @override
+  String get loginNoAccount => 'கணக்கு இல்லையா?';
+
+  @override
+  String get loginSignUp => 'பதிவு செய்க';
+
+  @override
+  String get authCreateAccount => 'கணக்கை உருவாக்கவும்';
+
+  @override
+  String get authCreateAccountSubtitle =>
+      'உங்கள் பாதுகாப்பான Dentzy கணக்கை அமைக்கவும்.';
+
+  @override
+  String get authFullNameHint => 'முழு பெயர்';
+
+  @override
+  String get authConfirmPasswordHint => 'கடவுச்சொல்லை உறுதிப்படுத்தவும்';
+
+  @override
+  String get authCreateAccountButton => 'கணக்கை உருவாக்கவும்';
+
+  @override
+  String get authBackToLogin => 'உள்நுழைவுக்கு திரும்பவும்';
+
+  @override
+  String get authFillAllFields => 'அனைத்து புலங்களையும் நிரப்பவும்.';
+
+  @override
+  String get authInvalidEmail => 'சரியான மின்னஞ்சல் முகவரியை உள்ளிடவும்.';
+
+  @override
+  String get authWeakPassword =>
+      'கடவுச்சொல் அனைத்து தேவைகளையும் பூர்த்தி செய்யவில்லை.';
+
+  @override
+  String get authPasswordsDoNotMatch => 'கடவுச்சொற்கள் பொருந்தவில்லை';
+
+  @override
+  String get authSomethingWentWrong =>
+      'ஏதோ தவறு ஏற்பட்டது. மீண்டும் முயற்சிக்கவும்.';
+
+  @override
+  String get authRuleMinChars => '8 எழுத்துகள்';
+
+  @override
+  String get authRuleUppercase => 'பெரிய எழுத்து';
+
+  @override
+  String get authRuleLowercase => 'சிறிய எழுத்து';
+
+  @override
+  String get authRuleNumber => 'எண்';
+
+  @override
+  String get authRuleSpecial => 'சிறப்பு குறி';
+
+  @override
+  String get authForgotPasswordTitle => 'கடவுச்சொல்லை மறந்துவிட்டீர்களா?';
+
+  @override
+  String get authForgotPasswordSubtitle =>
+      'கடவுச்சொல்லை மாற்ற உங்கள் மின்னஞ்சலை உள்ளிடவும்.';
+
+  @override
+  String get authSendResetLink => 'ரீசெட் இணைப்பை அனுப்பவும்';
+
+  @override
+  String get authNoAccountForEmail => 'இந்த மின்னஞ்சலுக்கு கணக்கு இல்லை.';
+
+  @override
+  String get authResetLinkSent =>
+      'சரிபார்ப்பு குறியீடு அனுப்பப்பட்டது. உங்கள் மின்னஞ்சலை பார்க்கவும்.';
+
+  @override
+  String get authResetLinkSentTitle => 'ரீசெட் இணைப்பு அனுப்பப்பட்டது';
+
+  @override
+  String get authResetLinkSentSubtitle =>
+      'உங்கள் மின்னஞ்சலுக்கு கடவுச்சொல் மாற்றச் சரிபார்ப்பு குறியீட்டை அனுப்பியுள்ளோம்.';
+
+  @override
+  String get authVerifyOtp => 'OTP சரிபார்க்கவும்';
+
+  @override
+  String get authOtpSubtitle =>
+      'உங்கள் மின்னஞ்சலுக்கு அனுப்பிய 6 இலக்க சரிபார்ப்பு குறியீட்டை உள்ளிடவும்.';
+
+  @override
+  String get authVerificationCode => 'சரிபார்ப்பு குறியீடு';
+
+  @override
+  String get authVerificationCodeHint => '6 இலக்க குறியீட்டை உள்ளிடவும்';
+
+  @override
+  String get authInvalidOtp => 'தவறான சரிபார்ப்பு குறியீடு';
+
+  @override
+  String get authOtpExpired =>
+      'சரிபார்ப்பு குறியீடு காலாவதியானது. மீண்டும் அனுப்பவும்.';
+
+  @override
+  String get authResendCode => 'குறியீட்டை மீண்டும் அனுப்பவும்';
+
+  @override
+  String authResendInSeconds(int seconds) {
+    return '$seconds வினாடிகளில் குறியீட்டை மீண்டும் அனுப்பவும்';
+  }
+
+  @override
+  String get authResetPasswordTitle => 'கடவுச்சொல்லை மாற்றவும்';
+
+  @override
+  String get authResetPasswordSubtitle =>
+      'உங்கள் Dentzy கணக்கிற்கு புதிய பாதுகாப்பான கடவுச்சொல்லை உருவாக்கவும்.';
+
+  @override
+  String get authNewPasswordHint => 'புதிய கடவுச்சொல்';
+
+  @override
+  String get authResetPasswordButton => 'கடவுச்சொல்லை மாற்றவும்';
+
+  @override
+  String get authPasswordResetSuccess =>
+      'கடவுச்சொல் வெற்றிகரமாக மாற்றப்பட்டது.';
+
+  @override
+  String get logoutSubtitle =>
+      'இந்த சாதனத்தில் இருந்து பாதுகாப்பாக வெளியேறவும்';
+
+  @override
+  String get logoutConfirmTitle => 'வெளியேறவா?';
+
+  @override
+  String get logoutConfirmMessage =>
+      'Dentzy-இல் இருந்து வெளியேற விரும்புகிறீர்களா?';
 
   @override
   String get readyForQuiz => 'இன்று கட்டுக்கதைகளை உடைக்க தயாரா?';

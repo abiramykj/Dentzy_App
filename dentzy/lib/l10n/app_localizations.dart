@@ -194,11 +194,305 @@ abstract class AppLocalizations {
   /// **'No data available'**
   String get noData;
 
+  /// No description provided for @success.
+  ///
+  /// In en, this message translates to:
+  /// **'Success'**
+  String get success;
+
   /// No description provided for @welcome.
   ///
   /// In en, this message translates to:
   /// **'Welcome Back!'**
   String get welcome;
+
+  /// No description provided for @loginSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your dental health smarter.'**
+  String get loginSubtitle;
+
+  /// No description provided for @loginEmailHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email'**
+  String get loginEmailHint;
+
+  /// No description provided for @loginPasswordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your password'**
+  String get loginPasswordHint;
+
+  /// No description provided for @loginShowPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Show'**
+  String get loginShowPassword;
+
+  /// No description provided for @loginHidePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide'**
+  String get loginHidePassword;
+
+  /// No description provided for @loginForgotPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot password?'**
+  String get loginForgotPassword;
+
+  /// No description provided for @loginSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In'**
+  String get loginSignIn;
+
+  /// No description provided for @loginNoAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account?'**
+  String get loginNoAccount;
+
+  /// No description provided for @loginSignUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Up'**
+  String get loginSignUp;
+
+  /// No description provided for @authCreateAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get authCreateAccount;
+
+  /// No description provided for @authCreateAccountSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up your secure Dentzy account.'**
+  String get authCreateAccountSubtitle;
+
+  /// No description provided for @authFullNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Full name'**
+  String get authFullNameHint;
+
+  /// No description provided for @authConfirmPasswordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm password'**
+  String get authConfirmPasswordHint;
+
+  /// No description provided for @authCreateAccountButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get authCreateAccountButton;
+
+  /// No description provided for @authBackToLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Login'**
+  String get authBackToLogin;
+
+  /// No description provided for @authFillAllFields.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill all fields.'**
+  String get authFillAllFields;
+
+  /// No description provided for @authInvalidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email address.'**
+  String get authInvalidEmail;
+
+  /// No description provided for @authWeakPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Password does not meet all requirements.'**
+  String get authWeakPassword;
+
+  /// No description provided for @authPasswordsDoNotMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get authPasswordsDoNotMatch;
+
+  /// No description provided for @authSomethingWentWrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get authSomethingWentWrong;
+
+  /// No description provided for @authRuleMinChars.
+  ///
+  /// In en, this message translates to:
+  /// **'8 characters'**
+  String get authRuleMinChars;
+
+  /// No description provided for @authRuleUppercase.
+  ///
+  /// In en, this message translates to:
+  /// **'uppercase letter'**
+  String get authRuleUppercase;
+
+  /// No description provided for @authRuleLowercase.
+  ///
+  /// In en, this message translates to:
+  /// **'lowercase letter'**
+  String get authRuleLowercase;
+
+  /// No description provided for @authRuleNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'number'**
+  String get authRuleNumber;
+
+  /// No description provided for @authRuleSpecial.
+  ///
+  /// In en, this message translates to:
+  /// **'special character'**
+  String get authRuleSpecial;
+
+  /// No description provided for @authForgotPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot Password?'**
+  String get authForgotPasswordTitle;
+
+  /// No description provided for @authForgotPasswordSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email to reset your password.'**
+  String get authForgotPasswordSubtitle;
+
+  /// No description provided for @authSendResetLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Reset Link'**
+  String get authSendResetLink;
+
+  /// No description provided for @authNoAccountForEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'No account found for this email.'**
+  String get authNoAccountForEmail;
+
+  /// No description provided for @authResetLinkSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification code sent. Check your email.'**
+  String get authResetLinkSent;
+
+  /// No description provided for @authResetLinkSentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Link Sent'**
+  String get authResetLinkSentTitle;
+
+  /// No description provided for @authResetLinkSentSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We sent a password reset verification code to your email.'**
+  String get authResetLinkSentSubtitle;
+
+  /// No description provided for @authVerifyOtp.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify OTP'**
+  String get authVerifyOtp;
+
+  /// No description provided for @authOtpSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the 6-digit verification code we sent to your email.'**
+  String get authOtpSubtitle;
+
+  /// No description provided for @authVerificationCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification code'**
+  String get authVerificationCode;
+
+  /// No description provided for @authVerificationCodeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter 6-digit code'**
+  String get authVerificationCodeHint;
+
+  /// No description provided for @authInvalidOtp.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid verification code'**
+  String get authInvalidOtp;
+
+  /// No description provided for @authOtpExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification code expired. Please resend.'**
+  String get authOtpExpired;
+
+  /// No description provided for @authResendCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend code'**
+  String get authResendCode;
+
+  /// Countdown label before resend is enabled
+  ///
+  /// In en, this message translates to:
+  /// **'Resend code in {seconds}s'**
+  String authResendInSeconds(int seconds);
+
+  /// No description provided for @authResetPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Password'**
+  String get authResetPasswordTitle;
+
+  /// No description provided for @authResetPasswordSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a new secure password for your Dentzy account.'**
+  String get authResetPasswordSubtitle;
+
+  /// No description provided for @authNewPasswordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'New password'**
+  String get authNewPasswordHint;
+
+  /// No description provided for @authResetPasswordButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Password'**
+  String get authResetPasswordButton;
+
+  /// No description provided for @authPasswordResetSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Password reset successfully.'**
+  String get authPasswordResetSuccess;
+
+  /// No description provided for @logoutSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Securely sign out from this device'**
+  String get logoutSubtitle;
+
+  /// No description provided for @logoutConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Logout?'**
+  String get logoutConfirmTitle;
+
+  /// No description provided for @logoutConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to logout from Dentzy?'**
+  String get logoutConfirmMessage;
 
   /// No description provided for @readyForQuiz.
   ///

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../utils/theme.dart';
 import '../widgets/custom_card.dart';
 import '../l10n/app_localizations.dart';
+import '../services/auth_service.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -13,6 +14,42 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   bool _isEditing = false;
+
+  Future<void> _handleLogout() async {
+    final loc = AppLocalizations.of(context)!;
+    
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(loc.logout),
+          content: const Text('Are you sure you want to logout?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: Text(loc.cancel),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: Text(loc.logout),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmed == true) {
+      await AuthService.initialize();
+      await AuthService.setLoggedOut();
+      
+      if (mounted) {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          '/',
+          (route) => false,
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -186,7 +223,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         const SizedBox(height: 12),
                         FilledButton.icon(
-                          onPressed: () {},
+                          onPressed: _handleLogout,
                           icon: const Icon(Icons.logout_rounded),
                           label: Text(AppLocalizations.of(context)?.logout ?? 'Logout'),
                           style: FilledButton.styleFrom(

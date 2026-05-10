@@ -3,17 +3,25 @@ import 'package:provider/provider.dart';
 import '../widgets/custom_card.dart';
 import '../utils/theme.dart';
 import '../l10n/app_localizations.dart';
+import '../services/auth_service.dart';
 import '../services/family_provider.dart';
 import '../services/settings_provider.dart';
 import '../services/brushing_service.dart';
 import '../services/achievement_service.dart';
 import '../services/progress_service.dart';
 import '../services/app_tour_service.dart';
+import '../services/language_provider.dart';
 import '../models/family_member.dart';
 import '../models/achievement.dart';
+import 'startup_flow_screen.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  final LanguageProvider languageProvider;
+
+  const ProfilePage({
+    super.key,
+    required this.languageProvider,
+  });
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -821,10 +829,110 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
 
+            const SizedBox(height: 12),
+
+            // Logout Section
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                loc.preferences,
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: CustomCard(
+                onTap: _showLogoutConfirmation,
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                gradient: const LinearGradient(
+                  colors: [Color(0xFFFFF7F7), Colors.white],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 46,
+                      height: 46,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color(0x1AF05A5A),
+                      ),
+                      child: const Icon(
+                        Icons.logout_rounded,
+                        color: Color(0xFFE74C3C),
+                      ),
+                    ),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            loc.logout,
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.w800,
+                                  color: const Color(0xFFE74C3C),
+                                ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            loc.logoutSubtitle,
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Icon(Icons.arrow_forward_ios_rounded, size: 16, color: Color(0xFFE57373)),
+                  ],
+                ),
+              ),
+            ),
+
             const SizedBox(height: 32),
           ],
         ),
       ),
+    );
+  }
+
+  Future<void> _showLogoutConfirmation() async {
+    final loc = AppLocalizations.of(context)!;
+    final shouldLogout = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: Text(loc.logoutConfirmTitle),
+          content: Text(loc.logoutConfirmMessage),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: Text(loc.cancel),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.of(dialogContext).pop(true),
+              style: FilledButton.styleFrom(backgroundColor: const Color(0xFFE74C3C)),
+              child: Text(loc.logout),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (shouldLogout != true) return;
+
+    await AuthService.initialize();
+    await AuthService.setLoggedOut();
+
+    if (!mounted) return;
+
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(
+        builder: (_) => StartupFlowScreen(languageProvider: widget.languageProvider),
+      ),
+      (route) => false,
     );
   }
 
