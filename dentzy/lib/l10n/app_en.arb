@@ -184,4 +184,92 @@
       }
     }
   }
-}
+  ,"resultUnavailable": "Result unavailable"
+  ,"checkAnotherStatement": "Check Another Statement"
+  ,"aiDentalScreening": "AI dental screening"
+  ,"scanMyths": "Check dental myths with one clean scan."
+  ,"mythPremiumDescription": "Short answers, clear reasoning, and a premium medical-style result layout."
+  ,"yourStatement": "Your statement"
+  ,"statementExample": "E.g., Brushing teeth twice daily prevents cavities"
+  ,"statistics": "Statistics"
+  ,"preferences": "Preferences"
+  ,"darkMode": "Dark mode"
+  ,"privacyPolicy": "Privacy policy"
+  ,"yearly": "Yearly"
+  ,"performancePeriod": "{period} Performance"
+  ,"@performancePeriod": {
+    "description": "Performance header with selected period",
+    "placeholders": { "period": { "type": "String" } }
+  }
+  ,"noExplanationAvailable": "No explanation available."
+  ,"moreVideos": "More Videos"
+  ,"invalidYouTubeUrl": "Invalid YouTube URL"
+  ,"noAppToOpenVideo": "No app available to open video"
+  ,"couldNotOpenVideo": "Could not open video"
+  ,"fullName": "Full name"
+  ,"emailLabel": "Email"
+  ,"phoneLabel": "Phone"
+  ,"languageLabel": "Language"
+  ,"personalInformation": "Personal information"
+  ,"helpAndSupport": "Help & support"
+  ,"liveResult": "Live result"
+  ,"resultsWillAppearHere": "Results will appear here"
+  ,"tryDentalStatement": "Try a dental statement to see a fact, myth, or not-dental verdict in a clean card layout."
+  ,"whatAIchecksFirst": "What the AI checks first"
+  ,"dentalRelevance": "Dental relevance"
+  ,"dentalRelevanceDesc": "Teeth, gums, mouth, brushing, flossing, and oral care."
+  ,"thenClassify": "Then classify"
+  ,"thenClassifyDesc": "If dental-related, the model decides whether it is FACT or MYTH."
+  ,"enterStatementToCheck": "Please enter a statement to check"
+  ,"quiz": "Quiz"
+  ,"testYourKnowledgeAI": "Test your knowledge with AI-powered dental quizzes"
+  ,"aiLabel": "AI"
+   ,"weeklyProgress": "Weekly Progress"
+   ,"monthlyProgress": "Monthly Progress"
+   ,"brushingTipsLabel": "Brushing Tips"
+   ,"statisticsLabel": "Statistics"
+   ,"totalBrushings": "Total Brushings"
+   ,"completionRate": "Completion Rate"
+   ,"daysTracked": "Days Tracked"
+   ,"averagePerDay": "Average per Day"
+   ,"brushTipsBulletPoints": "• Brush for at least 2 minutes\n• Brush twice daily (morning & night)\n• Use gentle, circular motions\n• Don't forget the back teeth\n• Floss after brushing"
+   ,"healthySmilesTracker": "Healthy Smile Tracker"
+   ,"trackBrushingHabits": "Track your brushing habits daily"
+   ,"morningBrushingReminder": "Morning Brushing Reminder"
+   ,"morningBrushingDescription": "Time to brush your teeth! Remember to brush for 2 minutes."
+   ,"quizAchievement": "Quiz Achievement"
+   ,"quizAchievementDescription": "Great job! You completed 5 quizzes today. Keep it up!"
+   ,"brushingStreak": "Brushing Streak"
+   ,"brushingStreakDescription": "You're on a 7-day brushing streak! Amazing dedication!"
+   ,"eveningBrushingReminder": "Evening Brushing Reminder"
+   ,"eveningBrushingDescription": "Don't forget to brush before bedtime."
+   ,"markAllAsRead": "Mark All as Read"
+   ,"justNow": "Just now"
+   ,"minutesAgo": "{minutes}m ago"
+   ,"@minutesAgo": {
+     "description": "Time format for minutes ago",
+     "placeholders": {
+       "minutes": {
+         "type": "int"
+       }
+     }
+   }
+   ,"hoursAgo": "{hours}h ago"
+   ,"@hoursAgo": {
+     "description": "Time format for hours ago",
+     "placeholders": {
+       "hours": {
+         "type": "int"
+       }
+     }
+   }
+   ,"daysAgo": "{days}d ago"
+   ,"@daysAgo": {
+     "description": "Time format for days ago",
+     "placeholders": {
+       "days": {
+         "type": "int"
+       }
+     }
+   }
+ }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../utils/theme.dart';
 import '../widgets/custom_card.dart';
+import '../l10n/app_localizations.dart';
 
 class DentalQuizPage extends StatefulWidget {
   const DentalQuizPage({super.key});
@@ -320,7 +321,7 @@ class _DentalQuizPageState extends State<DentalQuizPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
-      appBar: AppBar(title: const Text('Dental Habit Assessment')),
+      appBar: AppBar(title: Text(_t(context, 'Dental Habit Assessment', 'பல் பழக்க மதிப்பீடு'))),
       body: SafeArea(
         child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 250),
@@ -345,21 +346,21 @@ class _DentalQuizPageState extends State<DentalQuizPage> {
 
     if (name.isEmpty) {
       setState(() {
-        _nameError = 'Please enter your name';
+        _nameError = _t(context, 'Please enter your name', 'உங்கள் பெயரை உள்ளிடவும்');
       });
       return;
     }
 
     if (age == null || age <= 0) {
       setState(() {
-        _ageError = 'Please enter a valid age';
+        _ageError = _t(context, 'Please enter a valid age', 'செல்லுபடியாகும் வயதை உள்ளிடவும்');
       });
       return;
     }
 
     if (_selectedArea == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select your area')),
+        SnackBar(content: Text(_t(context, 'Please select your area', 'தயவுசெய்து உங்கள் பகுதியைத் தேர்ந்தெடுக்கவும்'))),
       );
       return;
     }
@@ -392,7 +393,7 @@ class _DentalQuizPageState extends State<DentalQuizPage> {
   void _goNext() {
     if (_currentAnswer == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select an option to continue')),
+        SnackBar(content: Text(_t(context, 'Please select an option to continue', 'தொடர ஒரு விருப்பத்தைத் தேர்ந்தெடுக்கவும்'))),
       );
       return;
     }
@@ -552,6 +553,8 @@ class _DentalQuizPageState extends State<DentalQuizPage> {
   }
 
   Widget _buildDetailsPage() {
+    final loc = AppLocalizations.of(context)!;
+
     return SingleChildScrollView(
       key: const ValueKey('details'),
       padding: const EdgeInsets.all(16),
@@ -560,13 +563,13 @@ class _DentalQuizPageState extends State<DentalQuizPage> {
         children: [
           CustomCard(
             gradient: AppTheme.primaryGradient,
-            child: const Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Icon(Icons.health_and_safety, color: Colors.white, size: 36),
                 SizedBox(height: 16),
                 Text(
-                  'Dental Habit Assessment',
+                  _t(context, 'Dental Habit Assessment', 'பல் பழக்க மதிப்பீடு'),
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 24,
@@ -575,7 +578,11 @@ class _DentalQuizPageState extends State<DentalQuizPage> {
                 ),
                 SizedBox(height: 8),
                 Text(
-                  'This assessment reviews daily oral care habits and gives personalized improvement tips.',
+                  _t(
+                    context,
+                    'This assessment reviews daily oral care habits and gives personalized improvement tips.',
+                    'இந்த மதிப்பீடு தினசரி வாய்ப்பராமரிப்பு பழக்கங்களை மதிப்பாய்வு செய்து தனிப்பட்ட மேம்பாட்டு குறிப்புகளை வழங்குகிறது.',
+                  ),
                   style: TextStyle(color: Colors.white70),
                 ),
               ],
@@ -586,13 +593,13 @@ class _DentalQuizPageState extends State<DentalQuizPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('User Details', style: Theme.of(context).textTheme.headlineSmall),
+                Text(_t(context, 'User Details', 'பயனர் விவரங்கள்'), style: Theme.of(context).textTheme.headlineSmall),
                 const SizedBox(height: 16),
                 TextField(
                   controller: _nameController,
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
-                    labelText: 'Name',
+                    labelText: loc.name,
                     prefixIcon: const Icon(Icons.person_outline),
                     errorText: _nameError,
                   ),
@@ -602,7 +609,7 @@ class _DentalQuizPageState extends State<DentalQuizPage> {
                   controller: _ageController,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    labelText: 'Age',
+                    labelText: loc.age,
                     prefixIcon: const Icon(Icons.cake_outlined),
                     errorText: _ageError,
                   ),
@@ -610,13 +617,13 @@ class _DentalQuizPageState extends State<DentalQuizPage> {
                 const SizedBox(height: 12),
                 DropdownButtonFormField<String>(
                   value: _selectedArea,
-                  decoration: const InputDecoration(
-                    labelText: 'Area',
-                    prefixIcon: Icon(Icons.location_on_outlined),
+                  decoration: InputDecoration(
+                    labelText: _t(context, 'Area', 'பகுதி'),
+                    prefixIcon: const Icon(Icons.location_on_outlined),
                   ),
-                  items: const [
-                    DropdownMenuItem(value: 'Urban', child: Text('Urban')),
-                    DropdownMenuItem(value: 'Rural', child: Text('Rural')),
+                  items: [
+                    DropdownMenuItem(value: 'Urban', child: Text(_t(context, 'Urban', 'நகர்ப்புறம்'))),
+                    DropdownMenuItem(value: 'Rural', child: Text(_t(context, 'Rural', 'கிராமப்புறம்'))),
                   ],
                   onChanged: (value) {
                     setState(() {
@@ -633,7 +640,7 @@ class _DentalQuizPageState extends State<DentalQuizPage> {
             child: ElevatedButton.icon(
               onPressed: _startAssessment,
               icon: const Icon(Icons.play_arrow),
-              label: const Text('Start Assessment'),
+              label: Text(_t(context, 'Start Assessment', 'மதிப்பீட்டைத் தொடங்கவும்')),
             ),
           ),
         ],
@@ -642,6 +649,7 @@ class _DentalQuizPageState extends State<DentalQuizPage> {
   }
 
   Widget _buildQuestionPage() {
+    final loc = AppLocalizations.of(context)!;
     final progress = (_currentQuestionIndex + 1) / _totalQuestions;
     final questionText = _currentQuestion['question'] as String;
     final options = List<Map<String, dynamic>>.from(_currentQuestion['options'] as List);
@@ -663,7 +671,7 @@ class _DentalQuizPageState extends State<DentalQuizPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Question ${_currentQuestionIndex + 1} of $_totalQuestions',
+                            loc.questionNumber(_currentQuestionIndex + 1, _totalQuestions),
                             style: Theme.of(context).textTheme.labelLarge,
                           ),
                           const SizedBox(height: 8),
@@ -740,7 +748,7 @@ class _DentalQuizPageState extends State<DentalQuizPage> {
               Expanded(
                 child: OutlinedButton(
                   onPressed: _goPrevious,
-                  child: const Text('Previous'),
+                        child: Text(loc.previous),
                 ),
               ),
               const SizedBox(width: 12),
@@ -748,7 +756,7 @@ class _DentalQuizPageState extends State<DentalQuizPage> {
                 child: ElevatedButton(
                   onPressed: _goNext,
                   child: Text(
-                    _currentQuestionIndex == _totalQuestions - 1 ? 'View Result' : 'Next',
+                    _currentQuestionIndex == _totalQuestions - 1 ? _t(context, 'View Result', 'முடிவைப் பார்க்கவும்') : loc.next,
                   ),
                 ),
               ),
@@ -760,6 +768,7 @@ class _DentalQuizPageState extends State<DentalQuizPage> {
   }
 
   Widget _buildResultPage() {
+    final loc = AppLocalizations.of(context)!;
     final maxScore = _totalQuestions * 5;
 
     return SingleChildScrollView(
@@ -797,12 +806,12 @@ class _DentalQuizPageState extends State<DentalQuizPage> {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'Score: $_totalScore / $maxScore',
+                  _t(context, 'Score', 'மதிப்பெண்') + ': $_totalScore / $maxScore',
                   style: const TextStyle(color: Colors.white, fontSize: 16),
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'Category: $_category',
+                  _t(context, 'Category', 'வகை') + ': $_category',
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -817,11 +826,11 @@ class _DentalQuizPageState extends State<DentalQuizPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Assessment Summary', style: Theme.of(context).textTheme.headlineSmall),
+                Text(_t(context, 'Assessment Summary', 'மதிப்பீட்டு சுருக்கம்'), style: Theme.of(context).textTheme.headlineSmall),
                 const SizedBox(height: 12),
-                _buildSummaryRow('Age', '${userData['age']}'),
-                _buildSummaryRow('Area', '${userData['area']}'),
-                _buildSummaryRow('Total Questions', '$_totalQuestions'),
+                _buildSummaryRow(loc.age, '${userData['age']}'),
+                _buildSummaryRow(_t(context, 'Area', 'பகுதி'), '${userData['area']}'),
+                _buildSummaryRow(_t(context, 'Total Questions', 'மொத்த கேள்விகள்'), '$_totalQuestions'),
               ],
             ),
           ),
@@ -834,13 +843,13 @@ class _DentalQuizPageState extends State<DentalQuizPage> {
                   children: [
                     const Icon(Icons.report_problem, color: AppTheme.warningColor),
                     const SizedBox(width: 8),
-                    Text('Areas to Improve', style: Theme.of(context).textTheme.headlineSmall),
+                    Text(_t(context, 'Areas to Improve', 'மேம்படுத்த வேண்டிய பகுதிகள்'), style: Theme.of(context).textTheme.headlineSmall),
                   ],
                 ),
                 const SizedBox(height: 12),
                 if (_weakAreas.isEmpty)
-                  const Text(
-                    'No major weak habits were detected.',
+                  Text(
+                    _t(context, 'No major weak habits were detected.', 'முக்கியமான பலவீனமான பழக்கங்கள் எதுவும் கண்டறியப்படவில்லை.'),
                     style: TextStyle(fontSize: 14),
                   )
                 else
@@ -876,7 +885,7 @@ class _DentalQuizPageState extends State<DentalQuizPage> {
                   children: [
                     const Icon(Icons.tips_and_updates_outlined, color: AppTheme.primaryColor),
                     const SizedBox(width: 8),
-                    Text('Personalized Suggestions', style: Theme.of(context).textTheme.headlineSmall),
+                    Text(_t(context, 'Personalized Suggestions', 'தனிப்பட்ட பரிந்துரைகள்'), style: Theme.of(context).textTheme.headlineSmall),
                   ],
                 ),
                 const SizedBox(height: 12),
@@ -890,7 +899,7 @@ class _DentalQuizPageState extends State<DentalQuizPage> {
             child: ElevatedButton.icon(
               onPressed: _resetAssessment,
               icon: const Icon(Icons.refresh),
-              label: const Text('Retake Assessment'),
+              label: Text(_t(context, 'Retake Assessment', 'மதிப்பீட்டை மீண்டும் செய்யவும்')),
             ),
           ),
         ],
@@ -937,13 +946,17 @@ class _DentalQuizPageState extends State<DentalQuizPage> {
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 5),
-            Text('Problem: ${suggestion['issue'] ?? ''}'),
-            Text('Why: ${suggestion['detail'] ?? ''}'),
-            Text('Solution: ${suggestion['solution'] ?? ''}'),
+            Text(_t(context, 'Problem', 'பிரச்சனை') + ': ${suggestion['issue'] ?? ''}'),
+            Text(_t(context, 'Why', 'ஏன்') + ': ${suggestion['detail'] ?? ''}'),
+            Text(_t(context, 'Solution', 'தீர்வு') + ': ${suggestion['solution'] ?? ''}'),
           ],
         ),
       ),
     );
+  }
+
+  String _t(BuildContext context, String english, String tamil) {
+    return Localizations.localeOf(context).languageCode == 'ta' ? tamil : english;
   }
 
   void _resetAssessment() {

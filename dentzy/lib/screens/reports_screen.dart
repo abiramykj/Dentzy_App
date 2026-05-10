@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/custom_card.dart';
 import '../utils/theme.dart';
+import '../l10n/app_localizations.dart';
 
 class ReportsScreen extends StatefulWidget {
   const ReportsScreen({super.key});
@@ -14,10 +15,11 @@ class _ReportsScreenState extends State<ReportsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
-        title: const Text('Reports'),
+        title: Text(loc.reports),
         elevation: 0,
       ),
       body: SingleChildScrollView(
@@ -29,11 +31,11 @@ class _ReportsScreenState extends State<ReportsScreen> {
               padding: const EdgeInsets.all(16),
               child: Row(
                 children: [
-                  _buildPeriodButton('Weekly'),
+                  _buildPeriodButton(loc.weekly),
                   const SizedBox(width: 8),
-                  _buildPeriodButton('Monthly'),
+                  _buildPeriodButton(loc.monthly),
                   const SizedBox(width: 8),
-                  _buildPeriodButton('Yearly'),
+                  _buildPeriodButton(loc.yearly),
                 ],
               ),
             ),
@@ -45,7 +47,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '$_selectedPeriod Performance',
+                    loc.performancePeriod(_selectedPeriod),
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   const SizedBox(height: 12),
@@ -115,7 +117,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Category Breakdown',
+                    loc.category,
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   const SizedBox(height: 16),
@@ -123,13 +125,13 @@ class _ReportsScreenState extends State<ReportsScreen> {
                     padding: const EdgeInsets.all(20),
                     child: Column(
                       children: [
-                        _buildCategoryRow(context, 'Health', 12, 15, AppTheme.primaryColor),
+                        _buildCategoryRow(context, loc.health, 12, 15, AppTheme.primaryColor),
                         const SizedBox(height: 16),
-                        _buildCategoryRow(context, 'Science', 10, 12, AppTheme.successColor),
+                        _buildCategoryRow(context, loc.science, 10, 12, AppTheme.successColor),
                         const SizedBox(height: 16),
-                        _buildCategoryRow(context, 'Technology', 9, 11, AppTheme.accentColor),
+                        _buildCategoryRow(context, loc.technology, 9, 11, AppTheme.accentColor),
                         const SizedBox(height: 16),
-                        _buildCategoryRow(context, 'History', 8, 7, AppTheme.secondaryColor),
+                        _buildCategoryRow(context, loc.history, 8, 7, AppTheme.secondaryColor),
                       ],
                     ),
                   ),
@@ -146,7 +148,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Achievements',
+                    loc.achievements,
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   const SizedBox(height: 12),

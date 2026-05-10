@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../widgets/custom_card.dart';
 import '../utils/theme.dart';
+import '../l10n/app_localizations.dart';
 
 class VideoScreen extends StatefulWidget {
   const VideoScreen({super.key});
@@ -200,13 +201,14 @@ class _VideoScreenState extends State<VideoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     final String selectedLanguage = Localizations.localeOf(context).languageCode == 'ta' ? 'ta' : 'en';
     final List<_Video> videos = videoData[selectedLanguage] ?? videoData['en'] ?? [];
 
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
-        title: const Text('Video Lessons'),
+        title: Text(loc.videoLessons),
         elevation: 0,
       ),
       body: ListView(
@@ -219,7 +221,7 @@ class _VideoScreenState extends State<VideoScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
-              'More Videos',
+              AppLocalizations.of(context)?.videoLessons ?? 'More Videos', // TODO: add specific key for "More Videos"
               style: Theme.of(context).textTheme.headlineSmall,
             ),
           ),
@@ -343,13 +345,13 @@ class _VideoScreenState extends State<VideoScreen> {
       
       // Validate YouTube URL
       if (!_isValidYouTubeUrl(videoUri)) {
-        _showErrorSnackBar('Invalid YouTube URL');
+        _showErrorSnackBar(AppLocalizations.of(context)?.error ?? 'Invalid YouTube URL'); // TODO: add specific key
         return;
       }
 
       // Check if URL can be launched
       if (!await canLaunchUrl(videoUri)) {
-        _showErrorSnackBar('No app available to open this video');
+        _showErrorSnackBar(AppLocalizations.of(context)?.error ?? 'No app available to open this video'); // TODO: add specific key
         return;
       }
 
@@ -360,10 +362,10 @@ class _VideoScreenState extends State<VideoScreen> {
       );
 
       if (!launched) {
-        _showErrorSnackBar('Could not open video');
+        _showErrorSnackBar(AppLocalizations.of(context)?.error ?? 'Could not open video'); // TODO: add specific key
       }
     } catch (e) {
-      _showErrorSnackBar('Error opening video: $e');
+      _showErrorSnackBar(AppLocalizations.of(context)?.error ?? 'Error opening video: $e');
     }
   }
 

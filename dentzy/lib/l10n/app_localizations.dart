@@ -949,6 +949,366 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Are you sure you want to remove {name}?'**
   String confirmRemoveMember(String name);
+
+  /// No description provided for @resultUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Result unavailable'**
+  String get resultUnavailable;
+
+  /// No description provided for @checkAnotherStatement.
+  ///
+  /// In en, this message translates to:
+  /// **'Check Another Statement'**
+  String get checkAnotherStatement;
+
+  /// No description provided for @aiDentalScreening.
+  ///
+  /// In en, this message translates to:
+  /// **'AI dental screening'**
+  String get aiDentalScreening;
+
+  /// No description provided for @scanMyths.
+  ///
+  /// In en, this message translates to:
+  /// **'Check dental myths with one clean scan.'**
+  String get scanMyths;
+
+  /// No description provided for @mythPremiumDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Short answers, clear reasoning, and a premium medical-style result layout.'**
+  String get mythPremiumDescription;
+
+  /// No description provided for @yourStatement.
+  ///
+  /// In en, this message translates to:
+  /// **'Your statement'**
+  String get yourStatement;
+
+  /// No description provided for @statementExample.
+  ///
+  /// In en, this message translates to:
+  /// **'E.g., Brushing teeth twice daily prevents cavities'**
+  String get statementExample;
+
+  /// No description provided for @statistics.
+  ///
+  /// In en, this message translates to:
+  /// **'Statistics'**
+  String get statistics;
+
+  /// No description provided for @preferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferences'**
+  String get preferences;
+
+  /// No description provided for @darkMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark mode'**
+  String get darkMode;
+
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy policy'**
+  String get privacyPolicy;
+
+  /// No description provided for @yearly.
+  ///
+  /// In en, this message translates to:
+  /// **'Yearly'**
+  String get yearly;
+
+  /// Performance header with selected period
+  ///
+  /// In en, this message translates to:
+  /// **'{period} Performance'**
+  String performancePeriod(String period);
+
+  /// No description provided for @noExplanationAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No explanation available.'**
+  String get noExplanationAvailable;
+
+  /// No description provided for @moreVideos.
+  ///
+  /// In en, this message translates to:
+  /// **'More Videos'**
+  String get moreVideos;
+
+  /// No description provided for @invalidYouTubeUrl.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid YouTube URL'**
+  String get invalidYouTubeUrl;
+
+  /// No description provided for @noAppToOpenVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'No app available to open video'**
+  String get noAppToOpenVideo;
+
+  /// No description provided for @couldNotOpenVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open video'**
+  String get couldNotOpenVideo;
+
+  /// No description provided for @fullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full name'**
+  String get fullName;
+
+  /// No description provided for @emailLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get emailLabel;
+
+  /// No description provided for @phoneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get phoneLabel;
+
+  /// No description provided for @languageLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get languageLabel;
+
+  /// No description provided for @personalInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal information'**
+  String get personalInformation;
+
+  /// No description provided for @helpAndSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Help & support'**
+  String get helpAndSupport;
+
+  /// No description provided for @liveResult.
+  ///
+  /// In en, this message translates to:
+  /// **'Live result'**
+  String get liveResult;
+
+  /// No description provided for @resultsWillAppearHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Results will appear here'**
+  String get resultsWillAppearHere;
+
+  /// No description provided for @tryDentalStatement.
+  ///
+  /// In en, this message translates to:
+  /// **'Try a dental statement to see a fact, myth, or not-dental verdict in a clean card layout.'**
+  String get tryDentalStatement;
+
+  /// No description provided for @whatAIchecksFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'What the AI checks first'**
+  String get whatAIchecksFirst;
+
+  /// No description provided for @dentalRelevance.
+  ///
+  /// In en, this message translates to:
+  /// **'Dental relevance'**
+  String get dentalRelevance;
+
+  /// No description provided for @dentalRelevanceDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Teeth, gums, mouth, brushing, flossing, and oral care.'**
+  String get dentalRelevanceDesc;
+
+  /// No description provided for @thenClassify.
+  ///
+  /// In en, this message translates to:
+  /// **'Then classify'**
+  String get thenClassify;
+
+  /// No description provided for @thenClassifyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'If dental-related, the model decides whether it is FACT or MYTH.'**
+  String get thenClassifyDesc;
+
+  /// No description provided for @enterStatementToCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a statement to check'**
+  String get enterStatementToCheck;
+
+  /// No description provided for @quiz.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz'**
+  String get quiz;
+
+  /// No description provided for @testYourKnowledgeAI.
+  ///
+  /// In en, this message translates to:
+  /// **'Test your knowledge with AI-powered dental quizzes'**
+  String get testYourKnowledgeAI;
+
+  /// No description provided for @aiLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'AI'**
+  String get aiLabel;
+
+  /// No description provided for @weeklyProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly Progress'**
+  String get weeklyProgress;
+
+  /// No description provided for @monthlyProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Progress'**
+  String get monthlyProgress;
+
+  /// No description provided for @brushingTipsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Brushing Tips'**
+  String get brushingTipsLabel;
+
+  /// No description provided for @statisticsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Statistics'**
+  String get statisticsLabel;
+
+  /// No description provided for @totalBrushings.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Brushings'**
+  String get totalBrushings;
+
+  /// No description provided for @completionRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Completion Rate'**
+  String get completionRate;
+
+  /// No description provided for @daysTracked.
+  ///
+  /// In en, this message translates to:
+  /// **'Days Tracked'**
+  String get daysTracked;
+
+  /// No description provided for @averagePerDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Average per Day'**
+  String get averagePerDay;
+
+  /// No description provided for @brushTipsBulletPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'• Brush for at least 2 minutes\n• Brush twice daily (morning & night)\n• Use gentle, circular motions\n• Don\'t forget the back teeth\n• Floss after brushing'**
+  String get brushTipsBulletPoints;
+
+  /// No description provided for @healthySmilesTracker.
+  ///
+  /// In en, this message translates to:
+  /// **'Healthy Smile Tracker'**
+  String get healthySmilesTracker;
+
+  /// No description provided for @trackBrushingHabits.
+  ///
+  /// In en, this message translates to:
+  /// **'Track your brushing habits daily'**
+  String get trackBrushingHabits;
+
+  /// No description provided for @morningBrushingReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning Brushing Reminder'**
+  String get morningBrushingReminder;
+
+  /// No description provided for @morningBrushingDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Time to brush your teeth! Remember to brush for 2 minutes.'**
+  String get morningBrushingDescription;
+
+  /// No description provided for @quizAchievement.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz Achievement'**
+  String get quizAchievement;
+
+  /// No description provided for @quizAchievementDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Great job! You completed 5 quizzes today. Keep it up!'**
+  String get quizAchievementDescription;
+
+  /// No description provided for @brushingStreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Brushing Streak'**
+  String get brushingStreak;
+
+  /// No description provided for @brushingStreakDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re on a 7-day brushing streak! Amazing dedication!'**
+  String get brushingStreakDescription;
+
+  /// No description provided for @eveningBrushingReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening Brushing Reminder'**
+  String get eveningBrushingReminder;
+
+  /// No description provided for @eveningBrushingDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t forget to brush before bedtime.'**
+  String get eveningBrushingDescription;
+
+  /// No description provided for @markAllAsRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark All as Read'**
+  String get markAllAsRead;
+
+  /// No description provided for @justNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Just now'**
+  String get justNow;
+
+  /// Time format for minutes ago
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes}m ago'**
+  String minutesAgo(int minutes);
+
+  /// Time format for hours ago
+  ///
+  /// In en, this message translates to:
+  /// **'{hours}h ago'**
+  String hoursAgo(int hours);
+
+  /// Time format for days ago
+  ///
+  /// In en, this message translates to:
+  /// **'{days}d ago'**
+  String daysAgo(int days);
 }
 
 class _AppLocalizationsDelegate

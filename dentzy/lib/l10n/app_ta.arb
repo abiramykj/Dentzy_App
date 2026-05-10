@@ -184,4 +184,92 @@
       }
     }
   }
-}
+  ,"resultUnavailable": "முடிவுகள் கிடைக்கவில்லை"
+  ,"checkAnotherStatement": "மற்ற ஒரு கூற்றை சரிபார்க்கவும்"
+  ,"aiDentalScreening": "AI பல் பரிசோதனை"
+  ,"scanMyths": "ஒரு சுத்தமான ஸ்கேன் மூலம் பல் கட்டுக்கதைகளை சரிபார்க்கவும்."
+  ,"mythPremiumDescription": "சுருக்கமான பதில்கள், தெளிவான காரணங்கள், மற்றும் ஒரு பிரீமியம் மருத்துவப் பாணி முடிவு தோற்றம்."
+  ,"yourStatement": "உங்கள் கூற்று"
+  ,"statementExample": "உதாரணம்: தினமும் இரண்டு முறை பல் துலக்கும் போது காவிடீஸ் தவிர்க்கப்படுமா"
+  ,"statistics": "புள்ளிவிவரங்கள்"
+  ,"preferences": "முன்னுரைகள்"
+  ,"darkMode": "இருள் வழிமுறை"
+  ,"privacyPolicy": "தனியுரிமை கொள்கை"
+  ,"yearly": "வருடாந்திரம்"
+  ,"performancePeriod": "{period} செயல்திறன்"
+  ,"@performancePeriod": {
+    "description": "Performance header with selected period",
+    "placeholders": { "period": { "type": "String" } }
+  }
+  ,"noExplanationAvailable": "விரிவான விளக்கம் கிடைக்கவில்லை."
+  ,"moreVideos": "மேலும் வீடியோக்கள்"
+  ,"invalidYouTubeUrl": "செல்லுகிற YouTube URL அல்ல"
+  ,"noAppToOpenVideo": "வீடியோ திறக்க பயன்பாடு இல்லை"
+  ,"couldNotOpenVideo": "வீடியோ திறக்க முடியவில்லை"
+  ,"fullName": "முழு பெயர்"
+  ,"emailLabel": "மின்னஞ்சல்"
+  ,"phoneLabel": "தொலைபேசி"
+  ,"languageLabel": "மொழி"
+  ,"personalInformation": "தனிப்பட்ட தகவல்கள்"
+  ,"helpAndSupport": "உதவி மற்றும் ஆதரவு"
+  ,"liveResult": "நேரடி முடிவு"
+  ,"resultsWillAppearHere": "முடிவுகள் இங்கே தோன்றும்"
+  ,"tryDentalStatement": "ஒரு பல் கூற்றை முயற்சி செய்யுங்கள், அது உண்மை, கட்டுக்கதை அல்லது பல்-வலைதளமில்லாத தீர்மானம் ஆகுமோ என்பதை பார்க்கவும்."
+  ,"whatAIchecksFirst": "AI முதலில் என்ன பரிசோதிக்கிறது"
+  ,"dentalRelevance": "பல் தொடர்புடைய பொருத்தம்"
+  ,"dentalRelevanceDesc": "பற்கள், மற்றும் இடை, வாய், துலக்குதல், பிளாஸிங் மற்றும் வாய்ப்பராமரிப்பு."
+  ,"thenClassify": "பின்னர் வகைப்படுத்து"
+  ,"thenClassifyDesc": "பல் தொடர்புடையதாக இருந்தால், மாதிரிகள் FACT அல்லது MYTH என்பதை தீர்மானிக்கிறது."
+  ,"enterStatementToCheck": "சரிபார்க்க ஒரு கூற்றை உள்ளிடவும்"
+  ,"quiz": "வினாடி வினா"
+  ,"testYourKnowledgeAI": "AI-செயல்படுத்தப்பட்ட பல் வினாடி வினாக்களுடன் உங்கள் அறிவைப் பரிசோதிக்கவும்"
+  ,"aiLabel": "AI"
+   ,"weeklyProgress": "வாரத்தின் முன்னேற்றம்"
+   ,"monthlyProgress": "மாதத்தின் முன்னேற்றம்"
+   ,"brushingTipsLabel": "பல் துலக்கும் குறிப்புகள்"
+   ,"statisticsLabel": "புள்ளிவிவரங்கள்"
+   ,"totalBrushings": "மொத்த பல் துலக்குதல்"
+   ,"completionRate": "முடிப்பு விகிதம்"
+   ,"daysTracked": "கண்காணிக்கப்பட்ட நாட்கள்"
+   ,"averagePerDay": "ஒரு நாளுக்கு சராசரி"
+   ,"brushTipsBulletPoints": "• குறைந்தபட்சம் 2 நிமிடங்கள் பல் துலக்கவும்\n• தினமும் இரண்டு முறை பல் துலக்கவும் (காலை மற்றும் இரவு)\n• மென்மையான, வட்டவடிவ இயக்கங்களைப் பயன்படுத்தவும்\n• பின்களை பற்களை மறந்து விடாதீர்கள்\n• பல் துலக்கிய பின்னர் பிளாஸ் செய்யவும்"
+   ,"healthySmilesTracker": "ஆரோக்கியமான புன்னகை கண்காணிப்பான்"
+   ,"trackBrushingHabits": "உங்கள் பல் துலக்கும் பழக்கங்களை தினசரி கண்காணி"
+   ,"morningBrushingReminder": "காலை பல் துலக்கும் நினைவூட்டல்"
+   ,"morningBrushingDescription": "பற்களை துலக்க வேண்டிய நேரம்! 2 நிமிடங்கள் துலக்க மறக்காதீர்கள்."
+   ,"quizAchievement": "வினாடி வினா சாதனை"
+   ,"quizAchievementDescription": "அருமை! இன்று நீங்கள் 5 வினாடி வினாக்களை முடித்துள்ளீர்கள். தொடர்ந்து செய்யுங்கள்!"
+   ,"brushingStreak": "தொடர்ச்சியான பல் துலக்கம்"
+   ,"brushingStreakDescription": "நீங்கள் 7 நாட்கள் தொடர்ந்து பல் துலக்கியுள்ளீர்கள்! அபூர்வமான அர்ப்பணிப்பு!"
+   ,"eveningBrushingReminder": "இரவு பல் துலக்கும் நினைவூட்டல்"
+   ,"eveningBrushingDescription": "தூங்குவதற்கு முன் பல் துலக்க மறக்காதீர்கள்."
+   ,"markAllAsRead": "அனைத்தையும் படிக்கப்பட்டதாகக் குறிக்கவும்"
+   ,"justNow": "இப்போது"
+   ,"minutesAgo": "{minutes}நி முன்"
+   ,"@minutesAgo": {
+     "description": "Time format for minutes ago",
+     "placeholders": {
+       "minutes": {
+         "type": "int"
+       }
+     }
+   }
+   ,"hoursAgo": "{hours}மணி முன்"
+   ,"@hoursAgo": {
+     "description": "Time format for hours ago",
+     "placeholders": {
+       "hours": {
+         "type": "int"
+       }
+     }
+   }
+   ,"daysAgo": "{days}நாட்கள் முன்"
+   ,"@daysAgo": {
+     "description": "Time format for days ago",
+     "placeholders": {
+       "days": {
+         "type": "int"
+       }
+     }
+   }
+ }

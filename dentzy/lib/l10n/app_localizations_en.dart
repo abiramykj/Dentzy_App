@@ -450,4 +450,203 @@ class AppLocalizationsEn extends AppLocalizations {
   String confirmRemoveMember(String name) {
     return 'Are you sure you want to remove $name?';
   }
+
+  @override
+  String get resultUnavailable => 'Result unavailable';
+
+  @override
+  String get checkAnotherStatement => 'Check Another Statement';
+
+  @override
+  String get aiDentalScreening => 'AI dental screening';
+
+  @override
+  String get scanMyths => 'Check dental myths with one clean scan.';
+
+  @override
+  String get mythPremiumDescription =>
+      'Short answers, clear reasoning, and a premium medical-style result layout.';
+
+  @override
+  String get yourStatement => 'Your statement';
+
+  @override
+  String get statementExample =>
+      'E.g., Brushing teeth twice daily prevents cavities';
+
+  @override
+  String get statistics => 'Statistics';
+
+  @override
+  String get preferences => 'Preferences';
+
+  @override
+  String get darkMode => 'Dark mode';
+
+  @override
+  String get privacyPolicy => 'Privacy policy';
+
+  @override
+  String get yearly => 'Yearly';
+
+  @override
+  String performancePeriod(String period) {
+    return '$period Performance';
+  }
+
+  @override
+  String get noExplanationAvailable => 'No explanation available.';
+
+  @override
+  String get moreVideos => 'More Videos';
+
+  @override
+  String get invalidYouTubeUrl => 'Invalid YouTube URL';
+
+  @override
+  String get noAppToOpenVideo => 'No app available to open video';
+
+  @override
+  String get couldNotOpenVideo => 'Could not open video';
+
+  @override
+  String get fullName => 'Full name';
+
+  @override
+  String get emailLabel => 'Email';
+
+  @override
+  String get phoneLabel => 'Phone';
+
+  @override
+  String get languageLabel => 'Language';
+
+  @override
+  String get personalInformation => 'Personal information';
+
+  @override
+  String get helpAndSupport => 'Help & support';
+
+  @override
+  String get liveResult => 'Live result';
+
+  @override
+  String get resultsWillAppearHere => 'Results will appear here';
+
+  @override
+  String get tryDentalStatement =>
+      'Try a dental statement to see a fact, myth, or not-dental verdict in a clean card layout.';
+
+  @override
+  String get whatAIchecksFirst => 'What the AI checks first';
+
+  @override
+  String get dentalRelevance => 'Dental relevance';
+
+  @override
+  String get dentalRelevanceDesc =>
+      'Teeth, gums, mouth, brushing, flossing, and oral care.';
+
+  @override
+  String get thenClassify => 'Then classify';
+
+  @override
+  String get thenClassifyDesc =>
+      'If dental-related, the model decides whether it is FACT or MYTH.';
+
+  @override
+  String get enterStatementToCheck => 'Please enter a statement to check';
+
+  @override
+  String get quiz => 'Quiz';
+
+  @override
+  String get testYourKnowledgeAI =>
+      'Test your knowledge with AI-powered dental quizzes';
+
+  @override
+  String get aiLabel => 'AI';
+
+  @override
+  String get weeklyProgress => 'Weekly Progress';
+
+  @override
+  String get monthlyProgress => 'Monthly Progress';
+
+  @override
+  String get brushingTipsLabel => 'Brushing Tips';
+
+  @override
+  String get statisticsLabel => 'Statistics';
+
+  @override
+  String get totalBrushings => 'Total Brushings';
+
+  @override
+  String get completionRate => 'Completion Rate';
+
+  @override
+  String get daysTracked => 'Days Tracked';
+
+  @override
+  String get averagePerDay => 'Average per Day';
+
+  @override
+  String get brushTipsBulletPoints =>
+      '• Brush for at least 2 minutes\n• Brush twice daily (morning & night)\n• Use gentle, circular motions\n• Don\'t forget the back teeth\n• Floss after brushing';
+
+  @override
+  String get healthySmilesTracker => 'Healthy Smile Tracker';
+
+  @override
+  String get trackBrushingHabits => 'Track your brushing habits daily';
+
+  @override
+  String get morningBrushingReminder => 'Morning Brushing Reminder';
+
+  @override
+  String get morningBrushingDescription =>
+      'Time to brush your teeth! Remember to brush for 2 minutes.';
+
+  @override
+  String get quizAchievement => 'Quiz Achievement';
+
+  @override
+  String get quizAchievementDescription =>
+      'Great job! You completed 5 quizzes today. Keep it up!';
+
+  @override
+  String get brushingStreak => 'Brushing Streak';
+
+  @override
+  String get brushingStreakDescription =>
+      'You\'re on a 7-day brushing streak! Amazing dedication!';
+
+  @override
+  String get eveningBrushingReminder => 'Evening Brushing Reminder';
+
+  @override
+  String get eveningBrushingDescription =>
+      'Don\'t forget to brush before bedtime.';
+
+  @override
+  String get markAllAsRead => 'Mark All as Read';
+
+  @override
+  String get justNow => 'Just now';
+
+  @override
+  String minutesAgo(int minutes) {
+    return '${minutes}m ago';
+  }
+
+  @override
+  String hoursAgo(int hours) {
+    return '${hours}h ago';
+  }
+
+  @override
+  String daysAgo(int days) {
+    return '${days}d ago';
+  }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../widgets/custom_card.dart';
 import '../services/myth_api_service.dart';
 import '../utils/theme.dart';
+import '../l10n/app_localizations.dart';
 
 class ResultScreen extends StatefulWidget {
   final String inputText;
@@ -57,7 +58,7 @@ class _ResultScreenState extends State<ResultScreen> {
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to fetch result')),
+        SnackBar(content: Text(AppLocalizations.of(context)?.error ?? 'Error')),
       );
     }
   }
@@ -104,12 +105,16 @@ class _ResultScreenState extends State<ResultScreen> {
   LinearGradient _resultGradient(String? type) {
     switch (type) {
       case 'fact':
-        return AppTheme.successGradient;
+        return const LinearGradient(
+          colors: [Color(0xFF36B37E), Color(0xFF8AE3B8)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        );
       case 'not_dental':
         return LinearGradient(
           colors: [
-            Colors.grey[400]!,
-            Colors.grey[600]!,
+            Colors.grey[350]!,
+            Colors.grey[500]!,
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -118,8 +123,8 @@ class _ResultScreenState extends State<ResultScreen> {
       default:
         return LinearGradient(
           colors: [
-            Colors.red[400]!,
-            Colors.red[600]!,
+            const Color(0xFFE76F7A),
+            const Color(0xFFF09AA3),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -148,63 +153,92 @@ class _ResultScreenState extends State<ResultScreen> {
     return null;
   }
 
+  Map<String, Color> _resultPalette(String? type) {
+    switch (type) {
+      case 'fact':
+        return {
+          'color': AppTheme.successColor,
+          'soft': const Color(0xFFE8FAF1),
+        };
+      case 'myth':
+        return {
+          'color': AppTheme.errorColor,
+          'soft': const Color(0xFFFDECEF),
+        };
+      case 'not_dental':
+      default:
+        return {
+          'color': Colors.grey,
+          'soft': const Color(0xFFF2F5F5),
+        };
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
-      body: SafeArea(
-        child: isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: result == null
-                      ? _buildErrorContent(context)
-                      : _buildResultContent(context),
-                ),
-              ),
+      body: Stack(
+        children: [
+          const _ResultBackdrop(),
+          SafeArea(
+            child: isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : SingleChildScrollView(
+                    padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
+                    child: result == null
+                        ? _buildErrorContent(context)
+                        : _buildResultContent(context),
+                  ),
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildErrorContent(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         CustomCard(
+          margin: EdgeInsets.zero,
           padding: const EdgeInsets.all(20),
-          border: Border.all(
-            color: AppTheme.errorColor,
-            width: 1,
+          gradient: const LinearGradient(
+            colors: [Color(0xFFFDECEF), Colors.white],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              _MiniStatusPill(
+                icon: Icons.report_problem_rounded,
+                label: loc.resultUnavailable,
+                color: AppTheme.errorColor,
+              ),
+              const SizedBox(height: 14),
               Text(
-                'Result Unavailable',
+                loc.error,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 12),
               Text(
-                'We could not fetch the classification right now. Please try again.',
+                loc.retry,
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
             ],
           ),
         ),
         const SizedBox(height: 32),
-        ElevatedButton.icon(
+        FilledButton.icon(
           onPressed: () {
             Navigator.pop(context);
           },
           icon: const Icon(Icons.arrow_back),
-          label: const Text('Check Another Statement'),
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            backgroundColor: AppTheme.primaryColor,
-          ),
+          label: Text(loc.checkAnotherStatement),
         ),
       ],
     );
@@ -212,11 +246,12 @@ class _ResultScreenState extends State<ResultScreen> {
 
   Widget _buildResultContent(BuildContext context) {
     final String? type = (result?['type'] as String?)?.toLowerCase();
+    final loc = AppLocalizations.of(context)!;
     final String explanationText = _firstNonEmpty([
           result?['explanation_ta'] as String?,
           result?['explanation'] as String?,
         ]) ??
-        'No explanation available.';
+      loc.noExplanationAvailable;
     final String? tipText = type == 'myth'
         ? _firstNonEmpty([
             result?['recommended_action_ta'] as String?,
@@ -224,144 +259,238 @@ class _ResultScreenState extends State<ResultScreen> {
           ])
         : null;
 
+    final palette = _resultPalette(type);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Center(
-          child: Container(
-            width: 120,
-            height: 120,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: _resultGradient(type),
-            ),
-            child: Icon(
-              _resultIcon(type),
-              size: 60,
-              color: Colors.white,
-            ),
-          ),
-        ),
-        const SizedBox(height: 24),
-        Center(
-          child: Column(
-            children: [
-              Text(
-                _resultTitle(type),
-                style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                  color: _resultTitleColor(type),
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                _resultSubtitle(type),
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: AppTheme.textSecondary,
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 32),
         CustomCard(
+          margin: EdgeInsets.zero,
           padding: const EdgeInsets.all(20),
-          border: Border.all(
-            color: AppTheme.dividerColor,
-            width: 1,
-          ),
+          gradient: _resultGradient(type),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Your Statement',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+              Row(
+                children: [
+                  Container(
+                    width: 72,
+                    height: 72,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.28),
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    child: Icon(
+                      _resultIcon(type),
+                      size: 36,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          _resultTitle(type),
+                          style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w900,
+                              ),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          _resultSubtitle(type),
+                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                color: Colors.white.withOpacity(0.9),
+                              ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 12),
-              Text(
-                widget.inputText,
-                style: Theme.of(context).textTheme.bodyLarge,
+              const SizedBox(height: 18),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(999),
+                ),
+                child: Text(
+                  'Confidence ${result!['confidence'] ?? 0}%',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
               ),
             ],
           ),
         ),
         const SizedBox(height: 16),
         CustomCard(
-          padding: const EdgeInsets.all(20),
-          border: Border.all(
-            color: AppTheme.accentColor,
-            width: 2,
+          margin: EdgeInsets.zero,
+          padding: const EdgeInsets.all(18),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                AppLocalizations.of(context)?.myProfile ?? 'Your Statement', // TODO: choose better key or add new one
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w800,
+                    ),
+              ),
+              const SizedBox(height: 12),
+              Text(widget.inputText, style: Theme.of(context).textTheme.bodyLarge),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        CustomCard(
+          margin: EdgeInsets.zero,
+          padding: const EdgeInsets.all(18),
+          gradient: const LinearGradient(
+            colors: [Color(0xFFEFF9F7), Colors.white],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
-                  const Icon(Icons.lightbulb, color: AppTheme.accentColor),
+                  Icon(Icons.lightbulb_rounded, color: palette['color']),
                   const SizedBox(width: 8),
                   Text(
-                    'Explanation',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                    AppLocalizations.of(context)?.educationalContent ?? 'Explanation', // TODO: add proper key
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.w800,
+                        ),
                   ),
                 ],
               ),
               const SizedBox(height: 12),
-              Text(
-                explanationText,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
+              Text(explanationText, style: Theme.of(context).textTheme.bodyLarge),
             ],
           ),
         ),
         if (type == 'myth' && tipText != null) ...[
           const SizedBox(height: 16),
           CustomCard(
-            padding: const EdgeInsets.all(20),
-            border: Border.all(
-              color: AppTheme.primaryColor,
-              width: 1,
+            margin: EdgeInsets.zero,
+            padding: const EdgeInsets.all(18),
+            gradient: const LinearGradient(
+              colors: [Color(0xFFF7FBFF), Colors.white],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
-                    const Icon(Icons.tips_and_updates, color: AppTheme.primaryColor),
+                    const Icon(Icons.tips_and_updates_rounded, color: AppTheme.primaryColor),
                     const SizedBox(width: 8),
                     Text(
-                      'Tip',
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                      AppLocalizations.of(context)?.brushingTips ?? 'Care tip', // TODO: add proper key
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.w800,
+                          ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 12),
-                Text(
-                  tipText,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
+                Text(tipText, style: Theme.of(context).textTheme.bodyLarge),
               ],
             ),
           ),
         ],
-        const SizedBox(height: 32),
-        ElevatedButton.icon(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(Icons.arrow_back),
-          label: const Text('Check Another Statement'),
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            backgroundColor: AppTheme.primaryColor,
-          ),
+        const SizedBox(height: 20),
+        FilledButton.icon(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.arrow_back_rounded),
+          label: Text(AppLocalizations.of(context)?.retry ?? 'Check another statement'),
         ),
       ],
+    );
+  }
+
+}
+
+class _ResultBackdrop extends StatelessWidget {
+  const _ResultBackdrop();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Color(0xFFF7FCFB), Color(0xFFF1F8F8)],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+      ),
+      child: Stack(
+        children: [
+          Positioned(
+            top: -40,
+            right: -40,
+            child: _BackdropOrb(color: AppTheme.primaryLight.withOpacity(0.18)),
+          ),
+          Positioned(
+            left: -60,
+            top: 140,
+            child: _BackdropOrb(color: AppTheme.secondaryLight.withOpacity(0.18), size: 160),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _BackdropOrb extends StatelessWidget {
+  final Color color;
+  final double size;
+
+  const _BackdropOrb({required this.color, this.size = 180});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(shape: BoxShape.circle, color: color),
+    );
+  }
+}
+
+class _MiniStatusPill extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final Color color;
+
+  const _MiniStatusPill({required this.icon, required this.label, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.12),
+        borderRadius: BorderRadius.circular(999),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 16, color: color),
+          const SizedBox(width: 6),
+          Text(
+            label,
+            style: TextStyle(color: color, fontWeight: FontWeight.w800, fontSize: 12),
+          ),
+        ],
+      ),
     );
   }
 }

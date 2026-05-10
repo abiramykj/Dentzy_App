@@ -453,4 +453,205 @@ class AppLocalizationsTa extends AppLocalizations {
   String confirmRemoveMember(String name) {
     return '$name ஐ நீக்க விரும்புகிறீர்களா?';
   }
+
+  @override
+  String get resultUnavailable => 'முடிவுகள் கிடைக்கவில்லை';
+
+  @override
+  String get checkAnotherStatement => 'மற்ற ஒரு கூற்றை சரிபார்க்கவும்';
+
+  @override
+  String get aiDentalScreening => 'AI பல் பரிசோதனை';
+
+  @override
+  String get scanMyths =>
+      'ஒரு சுத்தமான ஸ்கேன் மூலம் பல் கட்டுக்கதைகளை சரிபார்க்கவும்.';
+
+  @override
+  String get mythPremiumDescription =>
+      'சுருக்கமான பதில்கள், தெளிவான காரணங்கள், மற்றும் ஒரு பிரீமியம் மருத்துவப் பாணி முடிவு தோற்றம்.';
+
+  @override
+  String get yourStatement => 'உங்கள் கூற்று';
+
+  @override
+  String get statementExample =>
+      'உதாரணம்: தினமும் இரண்டு முறை பல் துலக்கும் போது காவிடீஸ் தவிர்க்கப்படுமா';
+
+  @override
+  String get statistics => 'புள்ளிவிவரங்கள்';
+
+  @override
+  String get preferences => 'முன்னுரைகள்';
+
+  @override
+  String get darkMode => 'இருள் வழிமுறை';
+
+  @override
+  String get privacyPolicy => 'தனியுரிமை கொள்கை';
+
+  @override
+  String get yearly => 'வருடாந்திரம்';
+
+  @override
+  String performancePeriod(String period) {
+    return '$period செயல்திறன்';
+  }
+
+  @override
+  String get noExplanationAvailable => 'விரிவான விளக்கம் கிடைக்கவில்லை.';
+
+  @override
+  String get moreVideos => 'மேலும் வீடியோக்கள்';
+
+  @override
+  String get invalidYouTubeUrl => 'செல்லுகிற YouTube URL அல்ல';
+
+  @override
+  String get noAppToOpenVideo => 'வீடியோ திறக்க பயன்பாடு இல்லை';
+
+  @override
+  String get couldNotOpenVideo => 'வீடியோ திறக்க முடியவில்லை';
+
+  @override
+  String get fullName => 'முழு பெயர்';
+
+  @override
+  String get emailLabel => 'மின்னஞ்சல்';
+
+  @override
+  String get phoneLabel => 'தொலைபேசி';
+
+  @override
+  String get languageLabel => 'மொழி';
+
+  @override
+  String get personalInformation => 'தனிப்பட்ட தகவல்கள்';
+
+  @override
+  String get helpAndSupport => 'உதவி மற்றும் ஆதரவு';
+
+  @override
+  String get liveResult => 'நேரடி முடிவு';
+
+  @override
+  String get resultsWillAppearHere => 'முடிவுகள் இங்கே தோன்றும்';
+
+  @override
+  String get tryDentalStatement =>
+      'ஒரு பல் கூற்றை முயற்சி செய்யுங்கள், அது உண்மை, கட்டுக்கதை அல்லது பல்-வலைதளமில்லாத தீர்மானம் ஆகுமோ என்பதை பார்க்கவும்.';
+
+  @override
+  String get whatAIchecksFirst => 'AI முதலில் என்ன பரிசோதிக்கிறது';
+
+  @override
+  String get dentalRelevance => 'பல் தொடர்புடைய பொருத்தம்';
+
+  @override
+  String get dentalRelevanceDesc =>
+      'பற்கள், மற்றும் இடை, வாய், துலக்குதல், பிளாஸிங் மற்றும் வாய்ப்பராமரிப்பு.';
+
+  @override
+  String get thenClassify => 'பின்னர் வகைப்படுத்து';
+
+  @override
+  String get thenClassifyDesc =>
+      'பல் தொடர்புடையதாக இருந்தால், மாதிரிகள் FACT அல்லது MYTH என்பதை தீர்மானிக்கிறது.';
+
+  @override
+  String get enterStatementToCheck => 'சரிபார்க்க ஒரு கூற்றை உள்ளிடவும்';
+
+  @override
+  String get quiz => 'வினாடி வினா';
+
+  @override
+  String get testYourKnowledgeAI =>
+      'AI-செயல்படுத்தப்பட்ட பல் வினாடி வினாக்களுடன் உங்கள் அறிவைப் பரிசோதிக்கவும்';
+
+  @override
+  String get aiLabel => 'AI';
+
+  @override
+  String get weeklyProgress => 'வாரத்தின் முன்னேற்றம்';
+
+  @override
+  String get monthlyProgress => 'மாதத்தின் முன்னேற்றம்';
+
+  @override
+  String get brushingTipsLabel => 'பல் துலக்கும் குறிப்புகள்';
+
+  @override
+  String get statisticsLabel => 'புள்ளிவிவரங்கள்';
+
+  @override
+  String get totalBrushings => 'மொத்த பல் துலக்குதல்';
+
+  @override
+  String get completionRate => 'முடிப்பு விகிதம்';
+
+  @override
+  String get daysTracked => 'கண்காணிக்கப்பட்ட நாட்கள்';
+
+  @override
+  String get averagePerDay => 'ஒரு நாளுக்கு சராசரி';
+
+  @override
+  String get brushTipsBulletPoints =>
+      '• குறைந்தபட்சம் 2 நிமிடங்கள் பல் துலக்கவும்\n• தினமும் இரண்டு முறை பல் துலக்கவும் (காலை மற்றும் இரவு)\n• மென்மையான, வட்டவடிவ இயக்கங்களைப் பயன்படுத்தவும்\n• பின்களை பற்களை மறந்து விடாதீர்கள்\n• பல் துலக்கிய பின்னர் பிளாஸ் செய்யவும்';
+
+  @override
+  String get healthySmilesTracker => 'ஆரோக்கியமான புன்னகை கண்காணிப்பான்';
+
+  @override
+  String get trackBrushingHabits =>
+      'உங்கள் பல் துலக்கும் பழக்கங்களை தினசரி கண்காணி';
+
+  @override
+  String get morningBrushingReminder => 'காலை பல் துலக்கும் நினைவூட்டல்';
+
+  @override
+  String get morningBrushingDescription =>
+      'பற்களை துலக்க வேண்டிய நேரம்! 2 நிமிடங்கள் துலக்க மறக்காதீர்கள்.';
+
+  @override
+  String get quizAchievement => 'வினாடி வினா சாதனை';
+
+  @override
+  String get quizAchievementDescription =>
+      'அருமை! இன்று நீங்கள் 5 வினாடி வினாக்களை முடித்துள்ளீர்கள். தொடர்ந்து செய்யுங்கள்!';
+
+  @override
+  String get brushingStreak => 'தொடர்ச்சியான பல் துலக்கம்';
+
+  @override
+  String get brushingStreakDescription =>
+      'நீங்கள் 7 நாட்கள் தொடர்ந்து பல் துலக்கியுள்ளீர்கள்! அபூர்வமான அர்ப்பணிப்பு!';
+
+  @override
+  String get eveningBrushingReminder => 'இரவு பல் துலக்கும் நினைவூட்டல்';
+
+  @override
+  String get eveningBrushingDescription =>
+      'தூங்குவதற்கு முன் பல் துலக்க மறக்காதீர்கள்.';
+
+  @override
+  String get markAllAsRead => 'அனைத்தையும் படிக்கப்பட்டதாகக் குறிக்கவும்';
+
+  @override
+  String get justNow => 'இப்போது';
+
+  @override
+  String minutesAgo(int minutes) {
+    return '$minutesநி முன்';
+  }
+
+  @override
+  String hoursAgo(int hours) {
+    return '$hoursமணி முன்';
+  }
+
+  @override
+  String daysAgo(int days) {
+    return '$daysநாட்கள் முன்';
+  }
 }

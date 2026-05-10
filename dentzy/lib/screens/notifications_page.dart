@@ -11,36 +11,52 @@ class NotificationsPage extends StatefulWidget {
 }
 
 class _NotificationsPageState extends State<NotificationsPage> {
-  final List<_Notification> _notifications = [
-    _Notification(
-      title: 'Morning Brushing Reminder',
-      message: 'Time to brush your teeth! Remember to brush for 2 minutes.',
-      icon: Icons.access_time,
-      time: DateTime.now().subtract(const Duration(hours: 2)),
-      isRead: false,
-    ),
-    _Notification(
-      title: 'Quiz Achievement',
-      message: 'Great job! You completed 5 quizzes today. Keep it up!',
-      icon: Icons.star,
-      time: DateTime.now().subtract(const Duration(hours: 5)),
-      isRead: false,
-    ),
-    _Notification(
-      title: 'Brushing Streak',
-      message: 'You\'re on a 7-day brushing streak! Amazing dedication!',
-      icon: Icons.local_fire_department,
-      time: DateTime.now().subtract(const Duration(days: 1)),
-      isRead: true,
-    ),
-    _Notification(
-      title: 'Evening Brushing Reminder',
-      message: 'Don\'t forget to brush before bedtime.',
-      icon: Icons.bedtime,
-      time: DateTime.now().subtract(const Duration(days: 1)),
-      isRead: true,
-    ),
-  ];
+  late List<_Notification> _notifications;
+  bool _initialized = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_initialized) {
+      _initializeNotifications();
+      _initialized = true;
+    }
+  }
+
+  void _initializeNotifications() {
+    final loc = AppLocalizations.of(context)!;
+    
+    _notifications = [
+      _Notification(
+        title: loc.morningBrushingReminder,
+        message: loc.morningBrushingDescription,
+        icon: Icons.access_time,
+        time: DateTime.now().subtract(const Duration(hours: 2)),
+        isRead: false,
+      ),
+      _Notification(
+        title: loc.quizAchievement,
+        message: loc.quizAchievementDescription,
+        icon: Icons.star,
+        time: DateTime.now().subtract(const Duration(hours: 5)),
+        isRead: false,
+      ),
+      _Notification(
+        title: loc.brushingStreak,
+        message: loc.brushingStreakDescription,
+        icon: Icons.local_fire_department,
+        time: DateTime.now().subtract(const Duration(days: 1)),
+        isRead: true,
+      ),
+      _Notification(
+        title: loc.eveningBrushingReminder,
+        message: loc.eveningBrushingDescription,
+        icon: Icons.bedtime,
+        time: DateTime.now().subtract(const Duration(days: 1)),
+        isRead: true,
+      ),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +77,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                   }
                 });
               },
-              child: const Text('Mark All as Read'),
+              child: Text(loc.markAllAsRead),
             ),
         ],
       ),
@@ -77,7 +93,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'No notifications',
+                    AppLocalizations.of(context)?.noData ?? 'No notifications',
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ],
@@ -162,7 +178,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  _formatTime(notification.time),
+                  _formatTime(notification.time, AppLocalizations.of(context)!),
                   style: TextStyle(
                     fontSize: 11,
                     color: Colors.grey[500],
@@ -176,18 +192,18 @@ class _NotificationsPageState extends State<NotificationsPage> {
     );
   }
 
-  String _formatTime(DateTime time) {
+  String _formatTime(DateTime time, AppLocalizations loc) {
     final now = DateTime.now();
     final difference = now.difference(time);
 
     if (difference.inMinutes < 1) {
-      return 'Just now';
+      return loc.justNow;
     } else if (difference.inMinutes < 60) {
-      return '${difference.inMinutes}m ago';
+      return loc.minutesAgo(difference.inMinutes);
     } else if (difference.inHours < 24) {
-      return '${difference.inHours}h ago';
+      return loc.hoursAgo(difference.inHours);
     } else {
-      return '${difference.inDays}d ago';
+      return loc.daysAgo(difference.inDays);
     }
   }
 }

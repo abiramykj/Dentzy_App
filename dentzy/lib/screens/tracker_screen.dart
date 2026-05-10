@@ -2,16 +2,19 @@ import 'package:flutter/material.dart';
 import '../widgets/custom_card.dart';
 import '../widgets/progress_chart.dart';
 import '../utils/theme.dart';
+import '../l10n/app_localizations.dart';
 
 class TrackerScreen extends StatelessWidget {
   const TrackerScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
-        title: const Text('Progress Tracker'),
+        title: Text(loc.yourStatistics),
         elevation: 0,
       ),
       body: SingleChildScrollView(
@@ -25,13 +28,13 @@ class TrackerScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ProgressChart(
-                    title: 'Overall Accuracy',
+                    title: _t(context, 'Overall Accuracy', 'ஒட்டுமொத்த துல்லியம்'),
                     percentage: 82.5,
                     color: AppTheme.primaryColor,
                     size: 120,
                   ),
                   ProgressChart(
-                    title: 'Weekly Target',
+                    title: _t(context, 'Weekly Target', 'வார இலக்கு'),
                     percentage: 65.0,
                     color: AppTheme.successColor,
                     size: 120,
@@ -49,14 +52,14 @@ class TrackerScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Statistics',
+                    _t(context, 'Statistics', 'புள்ளிவிவரங்கள்'),
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   const SizedBox(height: 12),
                   _buildStatCard(
                     context,
                     icon: Icons.quiz,
-                    title: 'Total Questions Answered',
+                    title: _t(context, 'Total Questions Answered', 'மொத்த கேள்விகள்'),
                     value: '125',
                     color: AppTheme.primaryColor,
                   ),
@@ -64,7 +67,7 @@ class TrackerScreen extends StatelessWidget {
                   _buildStatCard(
                     context,
                     icon: Icons.check_circle,
-                    title: 'Correct Answers',
+                    title: _t(context, 'Correct Answers', 'சரியான பதில்கள்'),
                     value: '103',
                     color: AppTheme.successColor,
                   ),
@@ -72,7 +75,7 @@ class TrackerScreen extends StatelessWidget {
                   _buildStatCard(
                     context,
                     icon: Icons.local_fire_department,
-                    title: 'Current Streak',
+                    title: _t(context, 'Current Streak', 'தற்போதைய தொடர்'),
                     value: '12 days',
                     color: AppTheme.accentColor,
                   ),
@@ -80,7 +83,7 @@ class TrackerScreen extends StatelessWidget {
                   _buildStatCard(
                     context,
                     icon: Icons.calendar_today,
-                    title: 'Last Activity',
+                    title: _t(context, 'Last Activity', 'கடைசி செயல்பாடு'),
                     value: 'Today',
                     color: AppTheme.secondaryColor,
                   ),
@@ -97,17 +100,17 @@ class TrackerScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Category Performance',
+                    _t(context, 'Category Performance', 'பிரிவு செயல்திறன்'),
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   const SizedBox(height: 12),
-                  _buildCategoryCard(context, 'Health', 0.9, AppTheme.primaryColor),
+                  _buildCategoryCard(context, loc.health, 0.9, AppTheme.primaryColor),
                   const SizedBox(height: 8),
-                  _buildCategoryCard(context, 'Science', 0.85, AppTheme.successColor),
+                  _buildCategoryCard(context, loc.science, 0.85, AppTheme.successColor),
                   const SizedBox(height: 8),
-                  _buildCategoryCard(context, 'Technology', 0.75, AppTheme.accentColor),
+                  _buildCategoryCard(context, loc.technology, 0.75, AppTheme.accentColor),
                   const SizedBox(height: 8),
-                  _buildCategoryCard(context, 'History', 0.8, AppTheme.secondaryColor),
+                  _buildCategoryCard(context, loc.history, 0.8, AppTheme.secondaryColor),
                 ],
               ),
             ),
@@ -121,7 +124,7 @@ class TrackerScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Recent Activity',
+                    _t(context, 'Recent Activity', 'சமீபத்திய செயல்பாடு'),
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   const SizedBox(height: 12),
@@ -153,6 +156,10 @@ class TrackerScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _t(BuildContext context, String english, String tamil) {
+    return Localizations.localeOf(context).languageCode == 'ta' ? tamil : english;
   }
 
   Widget _buildStatCard(
