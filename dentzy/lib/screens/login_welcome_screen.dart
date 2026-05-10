@@ -63,13 +63,11 @@ class _LoginWelcomeScreenState extends State<LoginWelcomeScreen>
   Future<void> _loadSavedCredentials() async {
     await AuthService.initialize();
     final savedEmail = AuthService.getSavedEmail();
-    final savedPassword = AuthService.getSavedPassword();
     
-    if (savedEmail != null && savedPassword != null) {
+    if (savedEmail != null) {
       if (mounted) {
         setState(() {
           _emailController.text = savedEmail;
-          _passwordController.text = savedPassword;
           _rememberMe = true;
         });
       }

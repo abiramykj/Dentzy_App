@@ -1,6 +1,28 @@
 import 'package:flutter/foundation.dart';
+import '../services/session_manager.dart';
 
 class HiveDB {
+  static const String _profileSuffix = 'profile';
+  static const String _mythHistorySuffix = 'history';
+
+  static String? _currentEmail([String? userEmail]) {
+    final email = userEmail ?? AuthSessionService.instance.currentLoggedInUserEmail;
+    if (email == null || email.isEmpty) {
+      return null;
+    }
+
+    return AuthSessionService.normalizeEmail(email);
+  }
+
+  static String? _keyFor(String suffix, [String? userEmail]) {
+    final email = _currentEmail(userEmail);
+    if (email == null) {
+      return null;
+    }
+
+    return AuthSessionService.userScopedKey(email, suffix);
+  }
+
   // Initialize Hive database
   static Future<void> initHive() async {
     try {
@@ -24,15 +46,23 @@ class HiveDB {
   }
 
   // Save user data
-  static Future<void> saveUser(Map<String, dynamic> userData) async {
+  static Future<void> saveUser(Map<String, dynamic> userData, {String? userEmail}) async {
     try {
+      final key = _keyFor(_profileSuffix, userEmail);
+      if (key == null) {
+        if (kDebugMode) {
+          print('Saving user data skipped: no active user');
+        }
+        return;
+      }
+
       if (kDebugMode) {
-        print('Saving user data...');
+        print('Saving user data for key=$key...');
       }
       
       // TODO: Save to Hive
       // var box = Hive.box('users');
-      // await box.put('current_user', userData);
+      // await box.put(key, userData);
     } catch (e) {
       if (kDebugMode) {
         print('Error saving user data: $e');
@@ -42,10 +72,15 @@ class HiveDB {
   }
 
   // Get user data
-  static Future<Map<String, dynamic>?> getUser() async {
+  static Future<Map<String, dynamic>?> getUser({String? userEmail}) async {
     try {
+      final key = _keyFor(_profileSuffix, userEmail);
+      if (key == null) {
+        return null;
+      }
+
       if (kDebugMode) {
-        print('Fetching user data...');
+        print('Fetching user data for key=$key...');
       }
       
       // TODO: Get from Hive
@@ -62,10 +97,18 @@ class HiveDB {
   }
 
   // Save myth result
-  static Future<void> saveMythResult(Map<String, dynamic> resultData) async {
+  static Future<void> saveMythResult(Map<String, dynamic> resultData, {String? userEmail}) async {
     try {
+      final key = _keyFor(_mythHistorySuffix, userEmail);
+      if (key == null) {
+        if (kDebugMode) {
+          print('Saving myth result skipped: no active user');
+        }
+        return;
+      }
+
       if (kDebugMode) {
-        print('Saving myth result...');
+        print('Saving myth result for key=$key...');
       }
       
       // TODO: Save to Hive
@@ -80,10 +123,15 @@ class HiveDB {
   }
 
   // Get all myth results
-  static Future<List<Map<String, dynamic>>> getAllMythResults() async {
+  static Future<List<Map<String, dynamic>>> getAllMythResults({String? userEmail}) async {
     try {
+      final key = _keyFor(_mythHistorySuffix, userEmail);
+      if (key == null) {
+        return [];
+      }
+
       if (kDebugMode) {
-        print('Fetching all myth results...');
+        print('Fetching all myth results for key=$key...');
       }
       
       // TODO: Get from Hive
@@ -100,10 +148,13 @@ class HiveDB {
   }
 
   // Clear all data
-  static Future<void> clearAllData() async {
+  static Future<void> clearAllData({String? userEmail}) async {
     try {
+      final profileKey = _keyFor(_profileSuffix, userEmail);
+      final mythHistoryKey = _keyFor(_mythHistorySuffix, userEmail);
+
       if (kDebugMode) {
-        print('Clearing all local data...');
+        print('Clearing local data for profileKey=$profileKey mythHistoryKey=$mythHistoryKey...');
       }
       
       // TODO: Clear Hive boxes

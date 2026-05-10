@@ -84,17 +84,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
 
     try {
       await AuthService.initialize();
-      final exists = AuthService.accountExistsForEmail(email);
-      if (!mounted) return;
-
-      if (!exists) {
-        setState(() {
-          _isLoading = false;
-          _inlineError = loc.authNoAccountForEmail;
-        });
-        return;
-      }
-
       await Future.delayed(const Duration(milliseconds: 950));
       final result = await AuthService.sendPasswordResetOtp(email: email);
       if (!mounted) return;

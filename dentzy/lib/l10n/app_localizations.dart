@@ -248,6 +248,12 @@ abstract class AppLocalizations {
   /// **'Sign In'**
   String get loginSignIn;
 
+  /// No description provided for @loginRememberMe.
+  ///
+  /// In en, this message translates to:
+  /// **'Remember me'**
+  String get loginRememberMe;
+
   /// No description provided for @loginNoAccount.
   ///
   /// In en, this message translates to:
@@ -259,6 +265,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sign Up'**
   String get loginSignUp;
+
+  /// No description provided for @authEmailAlreadyRegistered.
+  ///
+  /// In en, this message translates to:
+  /// **'This email is already registered. Please sign in.'**
+  String get authEmailAlreadyRegistered;
 
   /// No description provided for @authCreateAccount.
   ///

@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/constants.dart';
+import 'session_manager.dart';
 
 class AuthResult {
   final bool success;
@@ -21,19 +22,18 @@ class AuthResult {
 }
 
 class AuthService {
-  static const String _nameKey = 'auth_name';
-  static const String _emailKey = 'auth_email';
-  static const String _passwordKey = 'auth_password';
-  static const String _isLoggedInKey = 'auth_is_logged_in';
-  static const String _selectedLanguageKey = 'auth_selected_language';
-  static const String _languageProviderKey = 'language';
-  static const String _rememberMeKey = 'auth_remember_me';
-  static const String _autoLoginKey = 'auth_auto_login';
+  static const String _rememberedEmailKey = 'auth_remembered_email';
+  static const String _rememberedTokenKey = 'auth_remembered_token';
+  static const String _rememberMeFlagKey = 'auth_remember_me_enabled';
 
   static SharedPreferences? _prefs;
+  static String? _accessToken;
+  static String _cachedLanguageCode = '';
+  static String _cachedUserName = '';
 
   static Future<void> initialize() async {
     _prefs ??= await SharedPreferences.getInstance();
+    await AuthSessionService.instance.initialize();
   }
 
   static SharedPreferences get _safePrefs {
@@ -96,17 +96,104 @@ class AuthService {
     }
   }
 
+  static String _authEndpoint(String path) {
+    return '${_backendBaseUrl()}$path';
+  }
+
+  static String? _rememberedEmail() {
+    final email = _safePrefs.getString(_rememberedEmailKey)?.trim() ?? '';
+    return email.isEmpty ? null : email;
+  }
+
+  static String? _rememberedToken() {
+    final token = _safePrefs.getString(_rememberedTokenKey)?.trim() ?? '';
+    return token.isEmpty ? null : token;
+  }
+
+  static Future<void> _storeRememberedSession({
+    required String email,
+    required String token,
+  }) async {
+    final normalizedEmail = _normalizeEmail(email);
+    await _safePrefs.setString(_rememberedEmailKey, normalizedEmail);
+    await _safePrefs.setString(_rememberedTokenKey, token);
+    await _safePrefs.setBool(_rememberMeFlagKey, true);
+    _accessToken = token;
+    _logDebug('Stored remembered session for $normalizedEmail');
+  }
+
+  static Future<void> _clearRememberedSession() async {
+    await _safePrefs.remove(_rememberedEmailKey);
+    await _safePrefs.remove(_rememberedTokenKey);
+    await _safePrefs.setBool(_rememberMeFlagKey, false);
+    _accessToken = null;
+    _logDebug('Cleared remembered session storage');
+  }
+
+  static Map<String, dynamic>? _extractUser(Map<String, dynamic> payload) {
+    final user = payload['user'];
+    if (user is Map<String, dynamic>) {
+      return user;
+    }
+    if (user is Map) {
+      return user.map((key, value) => MapEntry(key.toString(), value));
+    }
+    return null;
+  }
+
+  static Future<bool> restoreRememberedSession() async {
+    await initialize();
+
+    final email = _rememberedEmail();
+    final token = _rememberedToken();
+    if (email == null || token == null) {
+      _logDebug('restoreRememberedSession skipped: no remembered credentials');
+      return false;
+    }
+
+    try {
+      final uri = Uri.parse(_authEndpoint('/api/users/me'));
+      _logDebug('restoreRememberedSession -> GET $uri email=$email');
+      final response = await http.get(
+        uri,
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      ).timeout(const Duration(seconds: 20));
+
+      _logDebug('restoreRememberedSession <- status=${response.statusCode} body=${response.body}');
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        await _clearRememberedSession();
+        return false;
+      }
+
+      final payload = _decodeBody(response.body);
+      _accessToken = token;
+      _cachedUserName = payload['username']?.toString().trim() ?? '';
+      _cachedLanguageCode = payload['selected_language']?.toString().trim() ?? '';
+
+      await AuthSessionService.instance.setSession(
+        email: payload['email']?.toString() ?? email,
+        userId: payload['id']?.toString() ?? email,
+        rememberMe: true,
+        userName: _cachedUserName,
+      );
+      return true;
+    } catch (error, stackTrace) {
+      _logDebug('restoreRememberedSession !! error=$error');
+      _logDebug('restoreRememberedSession !! stackTrace=$stackTrace');
+      await _clearRememberedSession();
+      return false;
+    }
+  }
+
   static bool hasAccount() {
-    final prefs = _safePrefs;
-    return (prefs.getString(_emailKey) ?? '').isNotEmpty &&
-        (prefs.getString(_passwordKey) ?? '').isNotEmpty;
+    return AuthSessionService.instance.hasActiveSession();
   }
 
   static bool needsLanguageSelection() {
-    final prefs = _safePrefs;
-    final selectedLanguage =
-        prefs.getString(_selectedLanguageKey) ?? prefs.getString(_languageProviderKey) ?? '';
-    return selectedLanguage.isEmpty;
+    return _cachedLanguageCode.trim().isEmpty;
   }
 
   static Future<AuthResult> signUp({
@@ -114,29 +201,48 @@ class AuthService {
     required String email,
     required String password,
   }) async {
-    final prefs = _safePrefs;
     final normalizedEmail = _normalizeEmail(email);
+    try {
+      final uri = Uri.parse(_authEndpoint('/api/auth/signup'));
+      final payload = {
+        'username': fullName.trim(),
+        'email': normalizedEmail,
+        'password': password,
+      };
+      _logDebug('signUp -> POST $uri body=${jsonEncode(payload)}');
+      final response = await http.post(
+        uri,
+        headers: const {
+          'Content-Type': 'application/json; charset=utf-8',
+          'Accept': 'application/json',
+        },
+        body: jsonEncode(payload),
+      ).timeout(const Duration(seconds: 20));
 
-    if (hasAccount()) {
-      final existingEmail = prefs.getString(_emailKey) ?? '';
-      if (existingEmail != normalizedEmail) {
-        return const AuthResult(
-          success: false,
-          message: 'An account already exists on this device. Please sign in.',
-        );
+      _logDebug('signUp <- status=${response.statusCode} body=${response.body}');
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        return _authResultFromErrorResponse(response);
       }
+
+      final payloadResponse = _decodeBody(response.body);
+      final user = _extractUser(payloadResponse);
+      _cachedUserName = (user?['username']?.toString() ?? fullName.trim()).trim();
+      _cachedLanguageCode = (user?['selected_language']?.toString() ?? '').trim();
+
+      return AuthResult(
+        success: true,
+        message: payloadResponse['message']?.toString() ?? 'Account created successfully.',
+        requiresLanguageSelection: _cachedLanguageCode.isEmpty,
+      );
+    } catch (error, stackTrace) {
+      _logDebug('signUp !! error=$error');
+      _logDebug('signUp !! stackTrace=$stackTrace');
+      return const AuthResult(
+        success: false,
+        message: 'Unable to connect to server. Please try again.',
+        errorCode: 'network_error',
+      );
     }
-
-    await prefs.setString(_nameKey, fullName.trim());
-    await prefs.setString(_emailKey, normalizedEmail);
-    await prefs.setString(_passwordKey, password);
-    await prefs.setBool(_isLoggedInKey, true);
-
-    return AuthResult(
-      success: true,
-      message: 'Account created successfully.',
-      requiresLanguageSelection: needsLanguageSelection(),
-    );
   }
 
   static Future<AuthResult> signIn({
@@ -144,125 +250,210 @@ class AuthService {
     required String password,
     bool rememberMe = false,
   }) async {
-    final prefs = _safePrefs;
+    final normalizedEmail = _normalizeEmail(email);
+    try {
+      final uri = Uri.parse(_authEndpoint('/api/auth/login'));
+      final payload = {
+        'email': normalizedEmail,
+        'password': password,
+        'remember_me': rememberMe,
+      };
+      _logDebug('signIn -> POST $uri body=${jsonEncode(payload)}');
+      final response = await http.post(
+        uri,
+        headers: const {
+          'Content-Type': 'application/json; charset=utf-8',
+          'Accept': 'application/json',
+        },
+        body: jsonEncode(payload),
+      ).timeout(const Duration(seconds: 20));
 
-    if (!hasAccount()) {
+      _logDebug('signIn <- status=${response.statusCode} body=${response.body}');
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        return _authResultFromErrorResponse(response);
+      }
+
+      final payloadResponse = _decodeBody(response.body);
+      final token = payloadResponse['access_token']?.toString() ?? '';
+      final user = _extractUser(payloadResponse);
+      final userId = user?['id']?.toString() ?? '';
+      final userName = (user?['username']?.toString() ?? '').trim();
+      final selectedLanguage = (user?['selected_language']?.toString() ?? '').trim();
+
+      _accessToken = token.isEmpty ? null : token;
+      _cachedUserName = userName;
+      _cachedLanguageCode = selectedLanguage;
+
+      if (rememberMe && token.isNotEmpty) {
+        await _storeRememberedSession(email: normalizedEmail, token: token);
+      } else {
+        await _clearRememberedSession();
+      }
+
+      await AuthSessionService.instance.setSession(
+        email: normalizedEmail,
+        userId: userId.isEmpty ? normalizedEmail : userId,
+        rememberMe: rememberMe,
+        userName: userName,
+      );
+
+      _logDebug('signIn: user=$normalizedEmail rememberMe=$rememberMe language=$selectedLanguage');
+
+      return AuthResult(
+        success: true,
+        message: payloadResponse['message']?.toString() ?? 'Signed in successfully.',
+        requiresLanguageSelection: selectedLanguage.isEmpty,
+      );
+    } catch (error, stackTrace) {
+      _logDebug('signIn !! error=$error');
+      _logDebug('signIn !! stackTrace=$stackTrace');
       return const AuthResult(
         success: false,
-        message: 'No account found. Please create an account first.',
+        message: 'Unable to connect to server. Please try again.',
+        errorCode: 'network_error',
       );
     }
-
-    final normalizedEmail = _normalizeEmail(email);
-    final storedEmail = prefs.getString(_emailKey) ?? '';
-    final storedPassword = prefs.getString(_passwordKey) ?? '';
-
-    if (normalizedEmail != storedEmail || password != storedPassword) {
-      return const AuthResult(
-        success: false,
-        message: 'Invalid email or password.',
-      );
-    }
-
-    await prefs.setBool(_isLoggedInKey, true);
-    
-    // Save Remember Me preference
-    await prefs.setBool(_rememberMeKey, rememberMe);
-    if (rememberMe) {
-      await prefs.setBool(_autoLoginKey, true);
-      _logDebug('signIn: Remember Me enabled - auto-login will be triggered on next app launch');
-    } else {
-      await prefs.setBool(_autoLoginKey, false);
-      _logDebug('signIn: Remember Me disabled');
-    }
-
-    return AuthResult(
-      success: true,
-      message: 'Signed in successfully.',
-      requiresLanguageSelection: needsLanguageSelection(),
-    );
-  }
-
-  static bool accountExistsForEmail(String email) {
-    final prefs = _safePrefs;
-    final normalizedEmail = _normalizeEmail(email);
-    final storedEmail = prefs.getString(_emailKey) ?? '';
-    return storedEmail.isNotEmpty && storedEmail == normalizedEmail;
   }
 
   static Future<AuthResult> resetPassword({
     required String email,
+    required String otp,
     required String newPassword,
   }) async {
-    final prefs = _safePrefs;
     final normalizedEmail = _normalizeEmail(email);
-    final storedEmail = prefs.getString(_emailKey) ?? '';
+    try {
+      final uri = Uri.parse(_authEndpoint('/api/auth/reset-password'));
+      final payload = {
+        'email': normalizedEmail,
+        'otp': otp.trim(),
+        'new_password': newPassword,
+      };
+      _logDebug('resetPassword -> POST $uri body=${jsonEncode(payload)}');
+      final response = await http.post(
+        uri,
+        headers: const {
+          'Content-Type': 'application/json; charset=utf-8',
+          'Accept': 'application/json',
+        },
+        body: jsonEncode(payload),
+      ).timeout(const Duration(seconds: 20));
 
-    if (storedEmail.isEmpty || storedEmail != normalizedEmail) {
+      _logDebug('resetPassword <- status=${response.statusCode} body=${response.body}');
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        return _authResultFromErrorResponse(response);
+      }
+
+      return AuthResult(
+        success: true,
+        message: _decodeBody(response.body)['message']?.toString() ?? 'Password reset successfully.',
+      );
+    } catch (error, stackTrace) {
+      _logDebug('resetPassword !! error=$error');
+      _logDebug('resetPassword !! stackTrace=$stackTrace');
       return const AuthResult(
         success: false,
-        message: 'No account found for this email.',
+        message: 'Unable to connect to server. Please try again.',
+        errorCode: 'network_error',
       );
     }
-
-    await prefs.setString(_passwordKey, newPassword);
-    await prefs.setBool(_isLoggedInKey, false);
-
-    return const AuthResult(
-      success: true,
-      message: 'Password reset successfully.',
-    );
   }
 
   static Future<void> saveSelectedLanguage(String languageCode) async {
-    final prefs = _safePrefs;
-    await prefs.setString(_selectedLanguageKey, languageCode);
+    final currentEmail = AuthSessionService.instance.currentLoggedInUserEmail;
+    if (currentEmail == null || currentEmail.isEmpty) {
+      _logDebug('saveSelectedLanguage skipped: no active session');
+      return;
+    }
+
+    final token = _accessToken ?? _rememberedToken();
+    if (token == null || token.isEmpty) {
+      _logDebug('saveSelectedLanguage skipped: no access token');
+      return;
+    }
+
+    try {
+      final uri = Uri.parse(_authEndpoint('/api/users/language'));
+      final payload = {'selected_language': languageCode};
+      _logDebug('saveSelectedLanguage -> PUT $uri body=${jsonEncode(payload)}');
+      final response = await http.put(
+        uri,
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(payload),
+      ).timeout(const Duration(seconds: 20));
+
+      _logDebug('saveSelectedLanguage <- status=${response.statusCode} body=${response.body}');
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        _cachedLanguageCode = languageCode.trim();
+      }
+    } catch (error, stackTrace) {
+      _logDebug('saveSelectedLanguage !! error=$error');
+      _logDebug('saveSelectedLanguage !! stackTrace=$stackTrace');
+    }
   }
 
   static Future<void> setLoggedOut() async {
-    final prefs = _safePrefs;
-    await prefs.setBool(_isLoggedInKey, false);
-    await prefs.setBool(_rememberMeKey, false);
-    await prefs.setBool(_autoLoginKey, false);
-    _logDebug('setLoggedOut: Cleared all login and Remember Me data');
+    final token = _accessToken ?? _rememberedToken();
+    if (token != null && token.isNotEmpty) {
+      try {
+        final uri = Uri.parse(_authEndpoint('/api/auth/logout'));
+        await http.post(
+          uri,
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+        ).timeout(const Duration(seconds: 10));
+      } catch (_) {
+        // Keep logout resilient even if backend is temporarily unreachable.
+      }
+    }
+
+    await AuthSessionService.instance.clearSession();
+    await _clearRememberedSession();
+    _logDebug('setLoggedOut: Cleared active session state');
   }
 
   /// Check if app should auto-login on startup
   static bool shouldAutoLogin() {
-    final prefs = _safePrefs;
-    final rememberMe = prefs.getBool(_rememberMeKey) ?? false;
-    final isLoggedIn = prefs.getBool(_isLoggedInKey) ?? false;
-    final autoLogin = prefs.getBool(_autoLoginKey) ?? false;
-    
-    final result = rememberMe && isLoggedIn && autoLogin && hasAccount();
-    _logDebug('shouldAutoLogin: $result (rememberMe=$rememberMe, isLoggedIn=$isLoggedIn, autoLogin=$autoLogin, hasAccount=${hasAccount()})');
+    final result = (_safePrefs.getBool(_rememberMeFlagKey) ?? false) &&
+        (_rememberedEmail() ?? '').isNotEmpty &&
+        (_rememberedToken() ?? '').isNotEmpty;
+    _logDebug('shouldAutoLogin: $result (email=${_rememberedEmail()}, rememberMe=${_safePrefs.getBool(_rememberMeFlagKey)}, tokenPresent=${_rememberedToken() != null})');
     return result;
   }
 
   /// Get saved email for Remember Me feature
   static String? getSavedEmail() {
-    final prefs = _safePrefs;
-    final rememberMe = prefs.getBool(_rememberMeKey) ?? false;
-    if (rememberMe) {
-      return prefs.getString(_emailKey);
+    if (isRememberMeEnabled()) {
+      return _rememberedEmail();
     }
     return null;
   }
 
   /// Get saved password for Remember Me feature
   static String? getSavedPassword() {
-    final prefs = _safePrefs;
-    final rememberMe = prefs.getBool(_rememberMeKey) ?? false;
-    if (rememberMe) {
-      return prefs.getString(_passwordKey);
-    }
     return null;
   }
 
   /// Check if Remember Me is currently enabled
   static bool isRememberMeEnabled() {
-    final prefs = _safePrefs;
-    return prefs.getBool(_rememberMeKey) ?? false;
+    return _safePrefs.getBool(_rememberMeFlagKey) ?? false;
+  }
+
+  static String? getSavedToken() {
+    if (!isRememberMeEnabled()) {
+      return null;
+    }
+    return _rememberedToken();
+  }
+
+  /// Get the current access token (valid during active session)
+  static String? getAccessToken() {
+    return _accessToken;
   }
 
   static Future<AuthResult> sendPasswordResetOtp({
@@ -270,16 +461,8 @@ class AuthService {
   }) async {
     final normalizedEmail = _normalizeEmail(email);
 
-    if (!accountExistsForEmail(normalizedEmail)) {
-      return const AuthResult(
-        success: false,
-        message: 'No account found for this email.',
-        errorCode: 'no_account',
-      );
-    }
-
     try {
-      final uri = Uri.parse('${_backendBaseUrl()}/send-otp');
+      final uri = Uri.parse(_authEndpoint('/api/auth/send-otp'));
       final payload = {'email': normalizedEmail};
       _logDebug('sendPasswordResetOtp -> POST $uri body=${jsonEncode(payload)}');
       final response = await http.post(
@@ -321,7 +504,7 @@ class AuthService {
     final normalizedEmail = _normalizeEmail(email);
 
     try {
-      final uri = Uri.parse('${_backendBaseUrl()}/verify-otp');
+      final uri = Uri.parse(_authEndpoint('/api/auth/verify-otp'));
       final payload = {
         'email': normalizedEmail,
         'otp': otp.trim(),
@@ -360,14 +543,18 @@ class AuthService {
   }
 
   static String getStoredEmail() {
-    return _safePrefs.getString(_emailKey) ?? '';
+    return AuthSessionService.instance.currentLoggedInUserEmail ?? '';
   }
 
   static String getStoredName() {
-    return _safePrefs.getString(_nameKey) ?? '';
+    return AuthSessionService.instance.currentUserName ?? '';
   }
 
   static bool isLoggedIn() {
-    return _safePrefs.getBool(_isLoggedInKey) ?? false;
+    return AuthSessionService.instance.isLoggedIn;
+  }
+
+  static String getStoredLanguage() {
+    return _cachedLanguageCode;
   }
 }

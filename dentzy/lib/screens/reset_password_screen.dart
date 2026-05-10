@@ -7,10 +7,12 @@ import '../widgets/dentzy_logo.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   final String email;
+  final String otp;
 
   const ResetPasswordScreen({
     super.key,
     required this.email,
+    required this.otp,
   });
 
   @override
@@ -131,6 +133,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
       await AuthService.initialize();
       final result = await AuthService.resetPassword(
         email: widget.email,
+        otp: widget.otp,
         newPassword: password,
       );
 

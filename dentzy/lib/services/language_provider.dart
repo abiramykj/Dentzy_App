@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'auth_service.dart';
+import 'session_manager.dart';
 
 class LanguageProvider extends ChangeNotifier {
-  static const String _languageKey = 'language';
-  static const String _legacyLanguageKey = 'app_language';
   static const Locale _defaultLocale = Locale('en');
 
   late Locale _currentLocale;
@@ -12,14 +12,16 @@ class LanguageProvider extends ChangeNotifier {
 
   String get currentLanguageCode => _currentLocale.languageCode;
 
-  LanguageProvider() : _currentLocale = _defaultLocale;
+  LanguageProvider() : _currentLocale = _defaultLocale {
+    AuthSessionService.instance.addListener(_handleSessionChanged);
+  }
 
   /// Initialize the provider - always start with English (default)
   /// Saved language is only loaded AFTER user explicitly selects it
   Future<void> initialize() async {
     try {
       debugPrint('🔄 [LanguageProvider] Initializing...');
-      final prefs = await SharedPreferences.getInstance();
+      await SharedPreferences.getInstance();
       debugPrint('✅ [LanguageProvider] SharedPreferences loaded');
       
       // Always start with English on app launch
@@ -31,6 +33,25 @@ class LanguageProvider extends ChangeNotifier {
     } catch (e) {
       debugPrint('❌ [LanguageProvider] Initialize error: $e');
       _currentLocale = _defaultLocale;
+    }
+  }
+
+  void _handleSessionChanged() {
+    final email = AuthSessionService.instance.currentLoggedInUserEmail;
+    final storedLanguage = AuthService.getStoredLanguage();
+
+    if (email == null || email.isEmpty) {
+      debugPrint('🌐 [LanguageProvider] Session cleared - resetting to default locale');
+      _currentLocale = _defaultLocale;
+      notifyListeners();
+      return;
+    }
+
+    final nextLocaleCode = storedLanguage.isEmpty ? _defaultLocale.languageCode : storedLanguage;
+    if (nextLocaleCode != _currentLocale.languageCode) {
+      debugPrint('🌐 [LanguageProvider] Restoring locale for user=$email -> $nextLocaleCode');
+      _currentLocale = Locale(nextLocaleCode);
+      notifyListeners();
     }
   }
 
@@ -57,23 +78,8 @@ class LanguageProvider extends ChangeNotifier {
       }
       debugPrint('✓ [LanguageProvider.setLanguage] Language code validated');
 
-      // Get SharedPreferences instance
-      debugPrint('🔄 [LanguageProvider.setLanguage] Getting SharedPreferences instance...');
-      final prefs = await SharedPreferences.getInstance();
-      debugPrint('✅ [LanguageProvider.setLanguage] SharedPreferences instance obtained');
-
-      // Save language
-      debugPrint('💾 [LanguageProvider.setLanguage] Calling setString("$_languageKey", "$languageCode")...');
-      final saved = await prefs.setString(_languageKey, languageCode);
-      debugPrint('📊 [LanguageProvider.setLanguage] setString returned: $saved');
-
-      if (!saved) {
-        throw Exception('setString() returned false - could not save to SharedPreferences');
-      }
-
-      // Verify save
-      final verified = prefs.getString(_languageKey);
-      debugPrint('🔍 [LanguageProvider.setLanguage] Verification - saved value: $verified');
+      debugPrint('💾 [LanguageProvider.setLanguage] Saving language on active user session...');
+      await AuthService.saveSelectedLanguage(languageCode);
 
       // Update local state
       _currentLocale = Locale(languageCode);
@@ -108,4 +114,10 @@ class LanguageProvider extends ChangeNotifier {
 
   /// Check if language is English
   bool isEnglish() => _currentLocale.languageCode == 'en';
+
+  @override
+  void dispose() {
+    AuthSessionService.instance.removeListener(_handleSessionChanged);
+    super.dispose();
+  }
 }

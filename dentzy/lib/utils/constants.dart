@@ -35,8 +35,8 @@ class AppConstants {
   static const Duration dbTimeout = Duration(seconds: 10);
   
   // Backend URL - FIXED for local development
-  // For Android Emulator: http://10.0.2.2:8081
-  // For Real Device: http://<YOUR_PC_IP>:8081 (e.g., 192.168.1.100:8081)
+  // For Android Emulator: http://10.0.2.2:8080
+  // For Real Device: http://<YOUR_PC_IP>:8080 (e.g., 192.168.1.100:8080)
   // Change this based on your setup
-  static const String localBackendUrl = 'http://10.0.2.2:8081'; // Android emulator
+  static const String localBackendUrl = 'http://10.0.2.2:8080'; // Android emulator
 }

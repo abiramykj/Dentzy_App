@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/achievement.dart';
+import 'session_manager.dart';
 
 class AchievementService {
-  static const String _achievementsKey = 'achievements';
+  static const String _achievementsSuffix = 'achievements';
 
   // Achievement definitions
   static final List<Achievement> _allAchievements = [
@@ -46,25 +48,45 @@ class AchievementService {
   ];
 
   // Public getter for all achievements
-  static List<Achievement> get allAchievements => _allAchievements;
+  static List<Achievement> get allAchievements => _lockedAchievementCopies();
+
+  static List<Achievement> _lockedAchievementCopies() {
+    return _allAchievements
+        .map((achievement) => achievement.copyWith(unlocked: false, unlockedAt: null))
+        .toList(growable: false);
+  }
+
+  static String? _normalizedEmail([String? userEmail]) {
+    final email = (userEmail ?? AuthSessionService.instance.currentLoggedInUserEmail ?? '').trim();
+    return email.isEmpty ? null : AuthSessionService.normalizeEmail(email);
+  }
 
   // Load achievements from SharedPreferences
-  static Future<List<Achievement>> loadAchievements() async {
+  static Future<List<Achievement>> loadAchievements({String? userEmail}) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final jsonString = prefs.getString(_achievementsKey);
+      final email = _normalizedEmail(userEmail);
+      if (email == null || email.isEmpty) {
+        debugPrint('[ACHIEVEMENTS] No active session, returning locked defaults');
+        return _lockedAchievementCopies();
+      }
+
+      final achievementsKey = AuthSessionService.userScopedKey(email, _achievementsSuffix);
+      debugPrint('[STORAGE] Loading key=$achievementsKey');
+      final jsonString = prefs.getString(achievementsKey);
 
       if (jsonString == null || jsonString.isEmpty) {
         // First time - initialize all as locked
-        await saveAchievements(_allAchievements);
-        return _allAchievements;
+        final defaults = _lockedAchievementCopies();
+        await saveAchievements(defaults, userEmail: email);
+        return defaults;
       }
 
       final dynamic decoded = jsonDecode(jsonString);
       final List<dynamic> jsonList = decoded is List ? decoded : [];
       
       if (jsonList.isEmpty) {
-        return _allAchievements;
+        return _lockedAchievementCopies();
       }
       
       return jsonList
@@ -78,17 +100,28 @@ class AchievementService {
           .toList();
     } catch (e) {
       print('Error loading achievements: $e');
-      return _allAchievements;
+      return _lockedAchievementCopies();
     }
   }
 
   // Save achievements to SharedPreferences
-  static Future<void> saveAchievements(List<Achievement> achievements) async {
+  static Future<void> saveAchievements(
+    List<Achievement> achievements, {
+    String? userEmail,
+  }) async {
     try {
       final prefs = await SharedPreferences.getInstance();
+      final email = _normalizedEmail(userEmail);
+      if (email == null || email.isEmpty) {
+        debugPrint('[ACHIEVEMENTS] save skipped: no active session');
+        return;
+      }
+
+      final achievementsKey = AuthSessionService.userScopedKey(email, _achievementsSuffix);
       final jsonString =
           jsonEncode(achievements.map((a) => a.toJson()).toList());
-      await prefs.setString(_achievementsKey, jsonString);
+      debugPrint('[STORAGE] Saving key=$achievementsKey');
+      await prefs.setString(achievementsKey, jsonString);
     } catch (e) {
       print('Error saving achievements: $e');
     }
@@ -98,8 +131,9 @@ class AchievementService {
   static Future<List<Achievement>> checkAchievements(
     String memberId,
     Map<String, Map<String, Map<String, bool>>> brushingData,
+    {String? userEmail}
   ) async {
-    List<Achievement> achievements = await loadAchievements();
+    List<Achievement> achievements = await loadAchievements(userEmail: userEmail);
 
     if (brushingData.isEmpty) return achievements;
 
@@ -182,7 +216,7 @@ class AchievementService {
     }).toList();
 
     // Save updated achievements
-    await saveAchievements(achievements);
+    await saveAchievements(achievements, userEmail: userEmail);
     return achievements;
   }
 }

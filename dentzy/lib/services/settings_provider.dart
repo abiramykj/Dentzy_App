@@ -1,22 +1,30 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'notification_api_service.dart';
+import 'session_manager.dart';
 
 class SettingsProvider extends ChangeNotifier {
   // State variables
   bool _remindersEnabled = false;
   TimeOfDay _morningReminderTime = const TimeOfDay(hour: 7, minute: 0);
   TimeOfDay _nightReminderTime = const TimeOfDay(hour: 21, minute: 0);
+  int _lastLoadedSessionEpoch = -1;
+  bool _initializing = false;
+  int _initializedSessionEpoch = -1;
+  final NotificationApiService _notificationApiService = NotificationApiService();
 
-  // SharedPreferences keys
-  static const String _remindersKey = 'reminders_enabled';
-  static const String _morningTimeKey = 'morning_reminder_time';
-  static const String _nightTimeKey = 'night_reminder_time';
+  static const String _settingsSuffix = 'settings';
 
   // Local notifications instance
   late FlutterLocalNotificationsPlugin _notificationsPlugin;
+
+  SettingsProvider() {
+    AuthSessionService.instance.addListener(_handleSessionChanged);
+  }
 
   // Getters
   bool get remindersEnabled => _remindersEnabled;
@@ -30,53 +38,119 @@ class SettingsProvider extends ChangeNotifier {
 
   // Initialize settings and notifications
   Future<void> initialize() async {
+    final currentEpoch = AuthSessionService.instance.sessionEpoch;
+    if (_initializing || _initializedSessionEpoch == currentEpoch) {
+      debugPrint('[SETTINGS] initialize skipped epoch=$currentEpoch initializing=$_initializing');
+      return;
+    }
+
+    _initializing = true;
     debugPrint('🔄 [SettingsProvider.initialize] Starting initialization...');
-    
-    try {
-      debugPrint('🔄 [SettingsProvider.initialize] Loading settings from SharedPreferences...');
-      await _loadSettings();
-      debugPrint('✅ [SettingsProvider.initialize] Settings loaded');
-    } catch (e) {
-      debugPrint('⚠️  [SettingsProvider.initialize] Error loading settings: $e');
-    }
 
     try {
-      debugPrint('🔄 [SettingsProvider.initialize] Initializing notifications...');
-      await _initializeNotifications()
-          .timeout(const Duration(seconds: 8));
-      debugPrint('✅ [SettingsProvider.initialize] Notifications initialized');
-    } on TimeoutException catch (e) {
-      debugPrint('⚠️  [SettingsProvider.initialize] Notifications init TIMEOUT - continuing anyway');
-      debugPrint('⚠️  [SettingsProvider.initialize] Timeout details: $e');
-      // Don't crash the app if notifications take too long
-    } catch (e) {
-      debugPrint('⚠️  [SettingsProvider.initialize] Notifications init error: $e');
-      // Don't crash the app if notifications fail
-    }
-
-    // Schedule reminders if enabled
-    if (_remindersEnabled) {
       try {
-        debugPrint('🔄 [SettingsProvider.initialize] Scheduling reminders...');
-        await scheduleReminders()
-            .timeout(const Duration(seconds: 5));
-        debugPrint('✅ [SettingsProvider.initialize] Reminders scheduled');
+        debugPrint('🔄 [SettingsProvider.initialize] Loading settings from SharedPreferences...');
+        await _loadSettings();
+        debugPrint('✅ [SettingsProvider.initialize] Settings loaded');
       } catch (e) {
-        debugPrint('⚠️  [SettingsProvider.initialize] Error scheduling reminders: $e');
+        debugPrint('⚠️  [SettingsProvider.initialize] Error loading settings: $e');
       }
+
+      try {
+        debugPrint('🔄 [SettingsProvider.initialize] Initializing notifications...');
+        await _initializeNotifications()
+            .timeout(const Duration(seconds: 8));
+        debugPrint('✅ [SettingsProvider.initialize] Notifications initialized');
+      } on TimeoutException catch (e) {
+        debugPrint('⚠️  [SettingsProvider.initialize] Notifications init TIMEOUT - continuing anyway');
+        debugPrint('⚠️  [SettingsProvider.initialize] Timeout details: $e');
+        // Don't crash the app if notifications take too long
+      } catch (e) {
+        debugPrint('⚠️  [SettingsProvider.initialize] Notifications init error: $e');
+        // Don't crash the app if notifications fail
+      }
+
+      try {
+        debugPrint('🔄 [SettingsProvider.initialize] Clearing previous reminders before rescheduling...');
+        await cancelReminders();
+      } catch (e) {
+        debugPrint('⚠️  [SettingsProvider.initialize] Error clearing reminders: $e');
+      }
+
+      // Schedule reminders if enabled
+      if (_remindersEnabled) {
+        try {
+          debugPrint('🔄 [SettingsProvider.initialize] Scheduling reminders...');
+          await scheduleReminders()
+              .timeout(const Duration(seconds: 5));
+          debugPrint('✅ [SettingsProvider.initialize] Reminders scheduled');
+        } catch (e) {
+          debugPrint('⚠️  [SettingsProvider.initialize] Error scheduling reminders: $e');
+        }
+      }
+
+      await _syncNotificationSettingsToBackend();
+
+      _initializedSessionEpoch = currentEpoch;
+      debugPrint('✅ [SettingsProvider.initialize] Initialization COMPLETE epoch=$_initializedSessionEpoch');
+    } finally {
+      _initializing = false;
     }
-    
-    debugPrint('✅ [SettingsProvider.initialize] Initialization COMPLETE');
+  }
+
+  void _handleSessionChanged() {
+    debugPrint('[SETTINGS] session changed user=${AuthSessionService.instance.currentLoggedInUserEmail} epoch=${AuthSessionService.instance.sessionEpoch}');
+    _resetState();
+    notifyListeners();
+    initialize();
+  }
+
+  String? _settingsKey() {
+    final email = AuthSessionService.instance.currentLoggedInUserEmail;
+    if (email == null || email.isEmpty) {
+      return null;
+    }
+
+    return AuthSessionService.userScopedKey(email, _settingsSuffix);
+  }
+
+  void _resetState() {
+    _remindersEnabled = false;
+    _morningReminderTime = const TimeOfDay(hour: 7, minute: 0);
+    _nightReminderTime = const TimeOfDay(hour: 21, minute: 0);
   }
 
   // Load settings from SharedPreferences
   Future<void> _loadSettings() async {
     try {
+      final loadEpoch = AuthSessionService.instance.sessionEpoch;
+      _resetState();
       final prefs = await SharedPreferences.getInstance();
-      _remindersEnabled = prefs.getBool(_remindersKey) ?? false;
+      if (loadEpoch != AuthSessionService.instance.sessionEpoch) {
+        debugPrint('[SETTINGS] Ignoring stale load for epoch=$loadEpoch current=${AuthSessionService.instance.sessionEpoch}');
+        return;
+      }
+
+      final settingsKey = _settingsKey();
+      if (settingsKey == null) {
+        notifyListeners();
+        return;
+      }
+
+      debugPrint('[STORAGE] Loading key=$settingsKey');
+      final encoded = prefs.getString(settingsKey) ?? '';
+      if (encoded.isEmpty) {
+        notifyListeners();
+        return;
+      }
+
+      final decoded = jsonDecode(encoded);
+      final settings = decoded is Map ? decoded.map((key, value) => MapEntry(key.toString(), value)) : <String, dynamic>{};
+
+      _remindersEnabled = settings['remindersEnabled'] as bool? ?? false;
 
       // Load and parse morning time with null safety
-      final morningStr = prefs.getString(_morningTimeKey) ?? '';
+      final morningStr = settings['morningReminderTime']?.toString() ?? '';
       if (morningStr.isNotEmpty) {
         try {
           final parts = morningStr.split(':');
@@ -92,7 +166,7 @@ class SettingsProvider extends ChangeNotifier {
       }
 
       // Load and parse night time with null safety
-      final nightStr = prefs.getString(_nightTimeKey) ?? '';
+      final nightStr = settings['nightReminderTime']?.toString() ?? '';
       if (nightStr.isNotEmpty) {
         try {
           final parts = nightStr.split(':');
@@ -107,6 +181,12 @@ class SettingsProvider extends ChangeNotifier {
         }
       }
 
+      if (loadEpoch != AuthSessionService.instance.sessionEpoch) {
+        debugPrint('[SETTINGS] Discarding decoded settings for stale epoch=$loadEpoch');
+        return;
+      }
+
+      _lastLoadedSessionEpoch = loadEpoch;
       notifyListeners();
     } catch (e) {
       print('Error loading settings: $e');
@@ -117,14 +197,21 @@ class SettingsProvider extends ChangeNotifier {
   Future<void> _saveSettings() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setBool(_remindersKey, _remindersEnabled);
+      final settingsKey = _settingsKey();
+      if (settingsKey == null) {
+        debugPrint('[SETTINGS] save skipped: no active session');
+        return;
+      }
+
+      debugPrint('[STORAGE] Saving key=$settingsKey');
+      _lastLoadedSessionEpoch = AuthSessionService.instance.sessionEpoch;
       await prefs.setString(
-        _morningTimeKey,
-        '${_morningReminderTime.hour}:${_morningReminderTime.minute}',
-      );
-      await prefs.setString(
-        _nightTimeKey,
-        '${_nightReminderTime.hour}:${_nightReminderTime.minute}',
+        settingsKey,
+        jsonEncode({
+          'remindersEnabled': _remindersEnabled,
+          'morningReminderTime': '${_morningReminderTime.hour}:${_morningReminderTime.minute}',
+          'nightReminderTime': '${_nightReminderTime.hour}:${_nightReminderTime.minute}',
+        }),
       );
     } catch (e) {
       print('Error saving settings: $e');
@@ -175,6 +262,7 @@ class SettingsProvider extends ChangeNotifier {
     }
 
     await _saveSettings();
+    await _syncNotificationSettingsToBackend();
     notifyListeners();
   }
 
@@ -182,6 +270,7 @@ class SettingsProvider extends ChangeNotifier {
   Future<void> setMorningReminderTime(TimeOfDay time) async {
     _morningReminderTime = time;
     await _saveSettings();
+    await _syncNotificationSettingsToBackend();
 
     if (_remindersEnabled) {
       await scheduleMorningReminder();
@@ -200,6 +289,22 @@ class SettingsProvider extends ChangeNotifier {
     }
 
     notifyListeners();
+  }
+
+  Future<void> _syncNotificationSettingsToBackend() async {
+    final email = AuthSessionService.instance.currentLoggedInUserEmail;
+    if (email == null || email.isEmpty) {
+      return;
+    }
+
+    final synced = await _notificationApiService.saveNotificationSettings(
+      reminderTime: _morningReminderTime,
+      enabled: _remindersEnabled,
+    );
+
+    if (!synced) {
+      debugPrint('[SETTINGS] notification sync skipped or failed');
+    }
   }
 
   // Schedule both reminders
@@ -280,5 +385,16 @@ class SettingsProvider extends ChangeNotifier {
     } catch (e) {
       print('Error canceling reminders: $e');
     }
+  }
+
+  Future<void> resetForSessionChange() async {
+    _resetState();
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    AuthSessionService.instance.removeListener(_handleSessionChanged);
+    super.dispose();
   }
 }

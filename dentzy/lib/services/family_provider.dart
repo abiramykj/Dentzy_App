@@ -2,25 +2,78 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import '../models/family_member.dart';
+import 'session_manager.dart';
 
 class FamilyProvider extends ChangeNotifier {
   List<FamilyMember> _familyMembers = [];
   FamilyMember? _selectedMember;
   SharedPreferences? _prefs;
+  int _lastLoadedSessionEpoch = -1;
+  bool _initializing = false;
+  int _initializedSessionEpoch = -1;
+
+  FamilyProvider() {
+    AuthSessionService.instance.addListener(_handleSessionChanged);
+  }
 
   List<FamilyMember> get familyMembers => _familyMembers;
   FamilyMember? get selectedMember => _selectedMember;
 
+  String? _currentStorageKey() {
+    final email = AuthSessionService.instance.currentLoggedInUserEmail;
+    if (email == null || email.isEmpty) {
+      return null;
+    }
+
+    return AuthSessionService.userScopedKey(email, 'family_members');
+  }
+
   // Initialize provider and load saved data
   Future<void> initialize() async {
+    final currentEpoch = AuthSessionService.instance.sessionEpoch;
+    if (_initializing || _initializedSessionEpoch == currentEpoch) {
+      debugPrint('[FAMILY] initialize skipped epoch=$currentEpoch initializing=$_initializing');
+      return;
+    }
+
+    _initializing = true;
     _prefs = await SharedPreferences.getInstance();
-    await _loadFamilyMembers();
+    debugPrint('[FAMILY] initialize user=${AuthSessionService.instance.currentLoggedInUserEmail}');
+    try {
+      await _loadFamilyMembers();
+      _initializedSessionEpoch = currentEpoch;
+    } finally {
+      _initializing = false;
+    }
+  }
+
+  void _handleSessionChanged() {
+    debugPrint('[FAMILY] session changed user=${AuthSessionService.instance.currentLoggedInUserEmail} epoch=${AuthSessionService.instance.sessionEpoch}');
+    _familyMembers = [];
+    _selectedMember = null;
+    notifyListeners();
+    initialize();
   }
 
   // Load family members from SharedPreferences
   Future<void> _loadFamilyMembers() async {
     try {
-      final membersJson = _prefs?.getStringList('family_members') ?? [];
+      final loadEpoch = AuthSessionService.instance.sessionEpoch;
+      _selectedMember = null;
+      final storageKey = _currentStorageKey();
+      if (storageKey == null) {
+        _familyMembers = [];
+        notifyListeners();
+        return;
+      }
+
+      if (loadEpoch != AuthSessionService.instance.sessionEpoch) {
+        debugPrint('[FAMILY] Ignoring stale load for epoch=$loadEpoch current=${AuthSessionService.instance.sessionEpoch}');
+        return;
+      }
+
+      debugPrint('[STORAGE] Loading key=$storageKey');
+      final membersJson = _prefs?.getStringList(storageKey) ?? [];
       _familyMembers = membersJson
           .map((json) {
             try {
@@ -32,6 +85,7 @@ class FamilyProvider extends ChangeNotifier {
           })
           .whereType<FamilyMember>()
           .toList();
+      _lastLoadedSessionEpoch = loadEpoch;
       notifyListeners();
     } catch (e) {
       print('Error loading family members: $e');
@@ -42,10 +96,18 @@ class FamilyProvider extends ChangeNotifier {
 
   // Save family members to SharedPreferences
   Future<void> _saveFamilyMembers() async {
+    final storageKey = _currentStorageKey();
+    if (storageKey == null) {
+      debugPrint('[FAMILY] save skipped: no active session');
+      return;
+    }
+
     final membersJson = _familyMembers
         .map((member) => jsonEncode(member.toJson()))
         .toList();
-    await _prefs?.setStringList('family_members', membersJson);
+    debugPrint('[STORAGE] Saving key=$storageKey');
+    _lastLoadedSessionEpoch = AuthSessionService.instance.sessionEpoch;
+    await _prefs?.setStringList(storageKey, membersJson);
   }
 
   // Add a new family member
@@ -99,5 +161,11 @@ class FamilyProvider extends ChangeNotifier {
     } catch (e) {
       return null;
     }
+  }
+
+  @override
+  void dispose() {
+    AuthSessionService.instance.removeListener(_handleSessionChanged);
+    super.dispose();
   }
 }

@@ -53,6 +53,14 @@ class _MythCheckerScreenState extends State<MythCheckerScreen> {
         _result = result;
         _isChecking = false;
       });
+
+      // Save result to backend history
+      await _apiService.saveMythHistory(
+        statement: input,
+        resultType: result.category,
+        confidence: result.confidence,
+        explanation: result.explanation,
+      );
     } catch (_) {
       debugPrint('[MythCheckerScreen] classify failed, using fallback');
       if (!mounted) return;

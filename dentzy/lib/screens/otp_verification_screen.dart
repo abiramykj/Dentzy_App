@@ -135,7 +135,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen>
 
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (_) => ResetPasswordScreen(email: widget.email),
+          builder: (_) => ResetPasswordScreen(email: widget.email, otp: otp),
         ),
       );
     } catch (_) {

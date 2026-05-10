@@ -4,6 +4,7 @@ import '../widgets/custom_card.dart';
 import '../utils/theme.dart';
 import '../services/family_provider.dart';
 import '../services/brushing_service.dart';
+import '../services/brushing_api_service.dart';
 import '../models/family_member.dart';
 import '../l10n/app_localizations.dart';
 
@@ -16,6 +17,7 @@ class BrushingTrackerScreen extends StatefulWidget {
 
 class _BrushingTrackerScreenState extends State<BrushingTrackerScreen> {
   late BrushingService _brushingService;
+  late BrushingApiService _apiService;
   String? _selectedMemberId;
   int _selectedViewIndex = 0; // 0=Daily, 1=Weekly, 2=Monthly
 
@@ -23,6 +25,7 @@ class _BrushingTrackerScreenState extends State<BrushingTrackerScreen> {
   void initState() {
     super.initState();
     _brushingService = BrushingService();
+    _apiService = BrushingApiService();
     _initializeService();
   }
 
@@ -371,11 +374,21 @@ class _BrushingTrackerScreenState extends State<BrushingTrackerScreen> {
             Expanded(
               child: FilledButton.icon(
                 onPressed: () async {
+                  final today = DateTime.now();
                   if (todayStatus['morning'] ?? false) {
                     await _brushingService.unmarkMorningBrushing(member.id);
                   } else {
                     await _brushingService.markMorningBrushing(member.id);
                   }
+                  
+                  // Save to backend
+                  await _apiService.saveBrushingRecord(
+                    date: today,
+                    morningBrushed: !(todayStatus['morning'] ?? false),
+                    nightBrushed: todayStatus['night'] ?? false,
+                    streak: 0,
+                  );
+                  
                   setState(() {});
                 },
                 icon: Icon(
@@ -400,11 +413,21 @@ class _BrushingTrackerScreenState extends State<BrushingTrackerScreen> {
             Expanded(
               child: FilledButton.icon(
                 onPressed: () async {
+                  final today = DateTime.now();
                   if (todayStatus['night'] ?? false) {
                     await _brushingService.unmarkNightBrushing(member.id);
                   } else {
                     await _brushingService.markNightBrushing(member.id);
                   }
+                  
+                  // Save to backend
+                  await _apiService.saveBrushingRecord(
+                    date: today,
+                    morningBrushed: todayStatus['morning'] ?? false,
+                    nightBrushed: !(todayStatus['night'] ?? false),
+                    streak: 0,
+                  );
+                  
                   setState(() {});
                 },
                 icon: Icon(

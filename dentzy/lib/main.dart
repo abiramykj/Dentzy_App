@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';
@@ -8,6 +8,7 @@ import 'services/language_provider.dart';
 import 'services/family_provider.dart';
 import 'services/settings_provider.dart';
 import 'services/auth_service.dart';
+import 'services/session_manager.dart';
 import 'services/app_tour_service.dart';
 import 'l10n/app_localizations.dart';
 
@@ -143,6 +144,7 @@ class _MyAppState extends State<MyApp> {
     
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider.value(value: AuthSessionService.instance),
         ChangeNotifierProvider(create: (_) => FamilyProvider()),
         ChangeNotifierProvider.value(value: _settingsProvider),
       ],

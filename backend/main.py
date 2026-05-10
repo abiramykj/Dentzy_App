@@ -13,14 +13,28 @@ from typing import Any
 
 import httpx
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, Field
+import traceback
 
+from fastapi import Depends, FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel, Field
+from sqlalchemy.orm import Session
+
+from auth.security import get_optional_user
 try:
     from backend.email_service import generate_otp, send_otp_email
 except Exception:
     from email_service import generate_otp, send_otp_email
+
+from database import get_db, init_db
+from routes.auth import router as auth_router
+from routes.brushing import router as brushing_router
+from routes.myths import router as myths_router
+from routes.notifications import router as notifications_router
+from routes.users import router as users_router
+from schemas.auth import EmailRequest, LoginRequest, SignupRequest, TokenResponse, VerifyOtpRequest
+from services.auth_service import authenticate_user, create_user, send_password_reset_otp, verify_password_reset_otp
 
 _THIS_DIR = Path(__file__).resolve().parent
 _ENV_CANDIDATES = [
@@ -49,23 +63,17 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.include_router(auth_router)
+app.include_router(users_router)
+app.include_router(myths_router)
+app.include_router(brushing_router)
+app.include_router(notifications_router)
 
 
 class InputText(BaseModel):
     text: str = Field(default="")
 
 
-class SendOtpRequest(BaseModel):
-    email: str = Field(default="")
-
-
-class VerifyOtpRequest(BaseModel):
-    email: str = Field(default="")
-    otp: str = Field(default="")
-
-
-_OTP_TTL_MINUTES = 5
-_otp_store: dict[str, dict[str, Any]] = {}
 _EMAIL_PATTERN = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 
 
@@ -75,17 +83,6 @@ def _normalize_email(email: str) -> str:
 
 def _is_valid_email(email: str) -> bool:
     return bool(_EMAIL_PATTERN.fullmatch(_normalize_email(email)))
-
-
-def _prune_expired_otps() -> None:
-    now = datetime.now(timezone.utc)
-    expired = [
-        email
-        for email, entry in _otp_store.items()
-        if entry["expires_at"] <= now
-    ]
-    for email in expired:
-        _otp_store.pop(email, None)
 
 
 def _detect_language(text: str) -> str:
@@ -361,6 +358,41 @@ async def _startup_log() -> None:
     logger.info("Classify request timeout=%s seconds", CLASSIFY_REQUEST_TIMEOUT)
     logger.info("Supported languages: English, Tamil, Mixed (Tanglish)")
     logger.info("=" * 60)
+    await asyncio.to_thread(init_db)
+
+
+@app.post("/signup", response_model=TokenResponse)
+def signup(payload: SignupRequest, db: Session = Depends(get_db)):
+    logger.info("[AUTH] POST /signup email=%s", payload.email)
+    try:
+        result = create_user(db, payload)
+        logger.info("[AUTH] Signup success email=%s", payload.email)
+        return result
+    except HTTPException as exc:
+        logger.warning("[AUTH] Signup failed - HTTPException email=%s status=%d", payload.email, exc.status_code)
+        detail = exc.detail if isinstance(exc.detail, dict) else {"success": False, "error": str(exc.detail)}
+        message = detail.get("message") or detail.get("error") or "Unable to create account right now. Please try again."
+        return JSONResponse(
+            status_code=exc.status_code,
+            content={
+                "success": False,
+                "error": message,
+                "message": message,
+                "error_code": detail.get("error_code"),
+            },
+        )
+    except Exception as e:
+        logger.exception("[AUTH] Signup failed - Exception email=%s error=%s", payload.email, str(e))
+        traceback.print_exc()
+        return JSONResponse(
+            status_code=500,
+            content={"success": False, "error": "Unable to create account right now. Please try again."},
+        )
+
+
+@app.post("/login", response_model=TokenResponse)
+def login(payload: LoginRequest, db: Session = Depends(get_db)):
+    return authenticate_user(db, payload)
 
 
 @app.get("/health")
@@ -374,113 +406,13 @@ async def health() -> dict[str, Any]:
 
 
 @app.post("/send-otp")
-async def send_otp(payload: SendOtpRequest) -> dict[str, Any]:
-    email = _normalize_email(payload.email)
-    logger.info('[OTP] /send-otp received email=%s', email)
-    if not _is_valid_email(email):
-        logger.warning('[OTP] invalid email format: %s', email)
-        raise HTTPException(
-            status_code=400,
-            detail={
-                "success": False,
-                "error_code": "invalid_email",
-                "message": "Please provide a valid email address.",
-            },
-        )
-
-    otp = generate_otp()
-    expires_at = datetime.now(timezone.utc) + timedelta(minutes=_OTP_TTL_MINUTES)
-    logger.info('[OTP] generated otp for email=%s expires_at=%s', email, expires_at.isoformat())
-
-    try:
-        await asyncio.to_thread(
-            send_otp_email,
-            recipient_email=email,
-            otp=otp,
-            ttl_minutes=_OTP_TTL_MINUTES,
-        )
-        logger.info('[OTP] email send success for email=%s', email)
-    except RuntimeError as exc:
-        logger.exception("Failed to send OTP email to %s: %s", email, exc)
-        raise HTTPException(
-            status_code=500,
-            detail={
-                "success": False,
-                "error_code": "email_send_failed",
-                "message": "Unable to send OTP email right now.",
-            },
-        ) from exc
-
-    _otp_store[email] = {
-        "otp": otp,
-        "expires_at": expires_at,
-    }
-    logger.info('[OTP] otp stored for email=%s', email)
-
-    return {
-        "success": True,
-        "message": "OTP sent successfully.",
-        "expires_in_seconds": _OTP_TTL_MINUTES * 60,
-    }
+def send_otp(payload: EmailRequest, db: Session = Depends(get_db)) -> dict[str, Any]:
+    return send_password_reset_otp(db, str(payload.email))
 
 
 @app.post("/verify-otp")
-async def verify_otp(payload: VerifyOtpRequest) -> dict[str, Any]:
-    email = _normalize_email(payload.email)
-    otp = (payload.otp or "").strip()
-    logger.info('[OTP] /verify-otp email=%s otp_length=%d', email, len(otp))
-
-    if not _is_valid_email(email):
-        raise HTTPException(
-            status_code=400,
-            detail={
-                "success": False,
-                "error_code": "invalid_email",
-                "message": "Please provide a valid email address.",
-            },
-        )
-
-    if not otp or len(otp) != 6 or not otp.isdigit():
-        raise HTTPException(
-            status_code=400,
-            detail={
-                "success": False,
-                "error_code": "invalid_otp",
-                "message": "Invalid verification code.",
-            },
-        )
-
-    _prune_expired_otps()
-    entry = _otp_store.get(email)
-
-    if not entry:
-        logger.warning('[OTP] otp missing or expired for email=%s', email)
-        raise HTTPException(
-            status_code=400,
-            detail={
-                "success": False,
-                "error_code": "otp_expired",
-                "message": "Verification code expired. Please resend.",
-            },
-        )
-
-    if entry["otp"] != otp:
-        logger.warning('[OTP] invalid otp for email=%s', email)
-        raise HTTPException(
-            status_code=400,
-            detail={
-                "success": False,
-                "error_code": "invalid_otp",
-                "message": "Invalid verification code.",
-            },
-        )
-
-    _otp_store.pop(email, None)
-    logger.info('[OTP] otp verification success for email=%s', email)
-    return {
-        "success": True,
-        "message": "OTP verified successfully.",
-    }
+def verify_otp(payload: VerifyOtpRequest, db: Session = Depends(get_db)) -> dict[str, Any]:
+    return verify_password_reset_otp(db, str(payload.email), payload.otp)
 
 
 @app.get('/test-email')

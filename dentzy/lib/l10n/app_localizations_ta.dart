@@ -86,10 +86,17 @@ class AppLocalizationsTa extends AppLocalizations {
   String get loginSignIn => 'உள்நுழைக';
 
   @override
+  String get loginRememberMe => 'என்னை நினைவில் வையுங்கள்';
+
+  @override
   String get loginNoAccount => 'கணக்கு இல்லையா?';
 
   @override
   String get loginSignUp => 'பதிவு செய்க';
+
+  @override
+  String get authEmailAlreadyRegistered =>
+      'இந்த மின்னஞ்சல் ஏற்கனவே பதிவுசெய்யப்பட்டுள்ளது. தயவுசெய்து உள்நுழையவும்.';
 
   @override
   String get authCreateAccount => 'கணக்கை உருவாக்கவும்';

@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+import traceback
+
 from fastapi import APIRouter, Depends, Header, HTTPException
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
 from database import get_db
@@ -28,7 +31,26 @@ def _token_from_authorization(authorization: str | None) -> str:
 
 @router.post("/signup", response_model=TokenResponse)
 def signup(payload: SignupRequest, db: Session = Depends(get_db)):
-    return create_user(db, payload)
+    try:
+        return create_user(db, payload)
+    except HTTPException as exc:
+        detail = exc.detail if isinstance(exc.detail, dict) else {"success": False, "error": str(exc.detail)}
+        message = detail.get("message") or detail.get("error") or "Unable to create account right now. Please try again."
+        return JSONResponse(
+            status_code=exc.status_code,
+            content={
+                "success": False,
+                "error": message,
+                "message": message,
+                "error_code": detail.get("error_code"),
+            },
+        )
+    except Exception:
+        traceback.print_exc()
+        return JSONResponse(
+            status_code=500,
+            content={"success": False, "error": "Unable to create account right now. Please try again."},
+        )
 
 
 @router.post("/login", response_model=TokenResponse)

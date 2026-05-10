@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
+import 'auth_service.dart';
 import '../models/myth_item.dart';
 import '../utils/constants.dart';
 
@@ -198,6 +199,109 @@ class MythApiService {
     }
 
     return body.trim().isEmpty ? 'Unknown error' : body.trim();
+  }
+
+  /// Save myth classification result to backend history.
+  /// Requires valid authentication token.
+  Future<bool> saveMythHistory({
+    required String statement,
+    required String resultType,
+    required int confidence,
+    required String explanation,
+  }) async {
+    try {
+      final token = await _getAuthToken();
+      if (token == null || token.isEmpty) {
+        debugPrint('[MythApiService] No auth token available for saving history');
+        return false;
+      }
+
+      final uri = Uri.parse('${_normalizedBaseUrl()}/api/myths/history');
+      final requestBody = jsonEncode({
+        'statement': statement.trim(),
+        'result_type': resultType.toUpperCase(),
+        'confidence': confidence.clamp(0, 100),
+        'explanation': explanation.trim(),
+      });
+
+      debugPrint('[MythApiService] POST $uri (save history)');
+      debugPrint('[MythApiService] request_body=$requestBody');
+
+      final response = await http
+          .post(
+            uri,
+            headers: {
+              'Content-Type': 'application/json; charset=utf-8',
+              'Accept': 'application/json',
+              'Authorization': 'Bearer $token',
+            },
+            body: requestBody,
+          )
+          .timeout(AppConstants.apiTimeout);
+
+      debugPrint('[MythApiService] save_history status=${response.statusCode}');
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        debugPrint('[MythApiService] save_history failed: ${response.body}');
+        return false;
+      }
+
+      debugPrint('[API] Myth history saved');
+      return true;
+    } catch (error) {
+      debugPrint('[MythApiService] saveMythHistory error=$error');
+      return false;
+    }
+  }
+
+  /// Get stored myth history from backend.
+  Future<List<Map<String, dynamic>>> getMythHistory() async {
+    try {
+      final token = await _getAuthToken();
+      if (token == null || token.isEmpty) {
+        debugPrint('[MythApiService] No auth token available for fetching history');
+        return [];
+      }
+
+      final uri = Uri.parse('${_normalizedBaseUrl()}/api/myths/history');
+      debugPrint('[MythApiService] GET $uri (fetch history)');
+
+      final response = await http
+          .get(
+            uri,
+            headers: {
+              'Accept': 'application/json',
+              'Authorization': 'Bearer $token',
+            },
+          )
+          .timeout(AppConstants.apiTimeout);
+
+      debugPrint('[MythApiService] fetch_history status=${response.statusCode}');
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        debugPrint('[MythApiService] fetch_history failed: ${response.body}');
+        return [];
+      }
+
+      final decoded = jsonDecode(response.body);
+      if (decoded is List) {
+        debugPrint('[API] Myth history fetched: ${decoded.length} items');
+        return List<Map<String, dynamic>>.from(decoded);
+      }
+      return [];
+    } catch (error) {
+      debugPrint('[MythApiService] getMythHistory error=$error');
+      return [];
+    }
+  }
+
+  /// Get authentication token from auth service.
+  Future<String?> _getAuthToken() async {
+    try {
+      // Import and use the auth service to get the current token
+      // This will be set after login
+      return AuthService.getAccessToken() ?? AuthService.getSavedToken();
+    } catch (_) {
+      return null;
+    }
   }
 
   MythCheckResult _fallbackResult(String explanation) {

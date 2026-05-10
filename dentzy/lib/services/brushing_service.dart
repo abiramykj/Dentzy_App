@@ -1,33 +1,57 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import '../models/brushing_record.dart';
+import 'session_manager.dart';
 
 class BrushingService {
-  static const String _storageKey = 'brushing_records';
   SharedPreferences? _prefs;
+  final String? _userEmail;
 
   // Map<memberId, Map<date, {morning: bool, night: bool}>>
   late Map<String, Map<String, Map<String, bool>>> _brushingData;
 
-  BrushingService() {
+  BrushingService({String? userEmail}) : _userEmail = userEmail {
     _brushingData = {};
+  }
+
+  String? _storageKey() {
+    final email = _userEmail ?? AuthSessionService.instance.currentLoggedInUserEmail;
+    if (email == null || email.isEmpty) {
+      return null;
+    }
+
+    return AuthSessionService.userScopedKey(email, 'tracker');
   }
 
   // Initialize service and load data
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
+    print('[SESSION] BrushingService initialize user=${AuthSessionService.instance.currentLoggedInUserEmail}');
     await _loadData();
   }
 
   // Load brushing data from SharedPreferences
   Future<void> _loadData() async {
     try {
+      final loadEpoch = AuthSessionService.instance.sessionEpoch;
+      final storageKey = _storageKey();
+      if (storageKey == null) {
+        _brushingData = {};
+        return;
+      }
+
+      print('[STORAGE] Loading key=$storageKey');
       // Get JSON string with default empty map if not found
-      final jsonString = _prefs?.getString(_storageKey) ?? '{}';
+      final jsonString = _prefs?.getString(storageKey) ?? '{}';
       
       // Safely decode JSON
       final Map<String, dynamic> decodedData = jsonDecode(jsonString) as Map<String, dynamic>? ?? {};
       _brushingData = {};
+
+      if (loadEpoch != AuthSessionService.instance.sessionEpoch) {
+        print('[STORAGE] Ignoring stale brushing load for epoch=$loadEpoch current=${AuthSessionService.instance.sessionEpoch}');
+        return;
+      }
       
       // Parse each member's data
       decodedData.forEach((memberId, dateMap) {
@@ -53,8 +77,15 @@ class BrushingService {
 
   // Save brushing data to SharedPreferences
   Future<void> _saveData() async {
+    final storageKey = _storageKey();
+    if (storageKey == null) {
+      print('[STORAGE] Save skipped: no active session');
+      return;
+    }
+
     final jsonString = jsonEncode(_brushingData);
-    await _prefs?.setString(_storageKey, jsonString);
+    print('[STORAGE] Saving key=$storageKey user=${AuthSessionService.instance.currentLoggedInUserEmail}');
+    await _prefs?.setString(storageKey, jsonString);
   }
 
   // Mark morning brushing for a member

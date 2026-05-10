@@ -46,7 +46,19 @@ class _StartupFlowScreenState extends State<StartupFlowScreen> {
     await AuthService.initialize();
     
     if (AuthService.shouldAutoLogin()) {
-      debugPrint('✅ [_performAutoLogin] Auto-login enabled, checking language...');
+      debugPrint('✅ [_performAutoLogin] Auto-login enabled, validating session...');
+      final restored = await AuthService.restoreRememberedSession();
+      if (!restored) {
+        debugPrint('❌ [_performAutoLogin] Remembered session is no longer valid');
+        _toStep(_StartupStep.login);
+        return;
+      }
+
+      debugPrint('✅ [_performAutoLogin] Auto-login validated, checking language...');
+      final storedLanguage = AuthService.getStoredLanguage();
+      if (storedLanguage.isNotEmpty) {
+        widget.languageProvider.setLocaleOnly(storedLanguage);
+      }
       
       if (AuthService.needsLanguageSelection()) {
         debugPrint('🔄 [_performAutoLogin] Language selection required');
@@ -75,12 +87,16 @@ class _StartupFlowScreenState extends State<StartupFlowScreen> {
       _toStep(_StartupStep.language);
       return;
     }
+
+    final storedLanguage = AuthService.getStoredLanguage();
+    if (storedLanguage.isNotEmpty) {
+      widget.languageProvider.setLocaleOnly(storedLanguage);
+    }
     _toStep(_StartupStep.home);
   }
 
   void _onAccountCreated(bool requiresLanguageSelection) {
-    _requireLanguageAfterAuth = requiresLanguageSelection;
-    _toStep(_StartupStep.language);
+    _toStep(_StartupStep.login);
   }
 
   @override

@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/theme.dart';
+import 'session_manager.dart';
 
 class AppTourService {
-  static const String _tourSeenKey = 'app_tour_seen';
   static late SharedPreferences _prefs;
+  static const String _tourSeenSuffix = 'tour_seen';
   
   static Future<void> initialize() async {
     try {
@@ -20,7 +21,14 @@ class AppTourService {
 
   static Future<bool> hasSeenTour() async {
     try {
-      return _prefs.getBool(_tourSeenKey) ?? false;
+      final email = AuthSessionService.instance.currentLoggedInUserEmail;
+      if (email == null || email.isEmpty) {
+        return false;
+      }
+
+      final key = AuthSessionService.userScopedKey(email, _tourSeenSuffix);
+      debugPrint('[STORAGE] Loading key=$key');
+      return _prefs.getBool(key) ?? false;
     } catch (e) {
       debugPrint('❌ [AppTourService] hasSeenTour error: $e');
       return true; // Default to true to skip tour if error
@@ -29,7 +37,14 @@ class AppTourService {
 
   static Future<void> markTourAsSeen() async {
     try {
-      await _prefs.setBool(_tourSeenKey, true);
+      final email = AuthSessionService.instance.currentLoggedInUserEmail;
+      if (email == null || email.isEmpty) {
+        return;
+      }
+
+      final key = AuthSessionService.userScopedKey(email, _tourSeenSuffix);
+      debugPrint('[STORAGE] Saving key=$key');
+      await _prefs.setBool(key, true);
     } catch (e) {
       debugPrint('❌ [AppTourService] markTourAsSeen error: $e');
     }
@@ -37,7 +52,14 @@ class AppTourService {
 
   static Future<void> resetTour() async {
     try {
-      await _prefs.setBool(_tourSeenKey, false);
+      final email = AuthSessionService.instance.currentLoggedInUserEmail;
+      if (email == null || email.isEmpty) {
+        return;
+      }
+
+      final key = AuthSessionService.userScopedKey(email, _tourSeenSuffix);
+      debugPrint('[STORAGE] Saving key=$key');
+      await _prefs.setBool(key, false);
     } catch (e) {
       debugPrint('❌ [AppTourService] resetTour error: $e');
     }

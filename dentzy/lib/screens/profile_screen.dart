@@ -15,6 +15,20 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   bool _isEditing = false;
 
+  String _displayName() {
+    final name = AuthService.getStoredName().trim();
+    return name.isEmpty ? 'Guest' : name;
+  }
+
+  String _displayEmail() {
+    final email = AuthService.getStoredEmail().trim();
+    return email.isEmpty ? 'Not signed in' : email;
+  }
+
+  String _displayLanguage() {
+    return AuthService.getStoredLanguage().trim() == 'ta' ? 'Tamil' : 'English';
+  }
+
   Future<void> _handleLogout() async {
     final loc = AppLocalizations.of(context)!;
     
@@ -105,7 +119,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'John Doe',
+                                _displayName(),
                                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w900,
@@ -113,7 +127,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                'john.doe@example.com',
+                                _displayEmail(),
                                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                       color: Colors.white.withOpacity(0.9),
                                     ),
@@ -171,13 +185,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     padding: const EdgeInsets.all(18),
                         child: Column(
                       children: [
-                        _ProfileField(label: loc.fullName, value: 'John Doe'),
+                        _ProfileField(label: loc.fullName, value: _displayName()),
                         const Divider(height: 24),
-                        _ProfileField(label: loc.emailLabel, value: 'john.doe@example.com'),
+                        _ProfileField(label: loc.emailLabel, value: _displayEmail()),
                         const Divider(height: 24),
                         _ProfileField(label: loc.phoneLabel, value: '+1 (555) 123-4567'),
                         const Divider(height: 24),
-                        _ProfileField(label: loc.languageLabel, value: 'English'),
+                        _ProfileField(label: loc.languageLabel, value: _displayLanguage()),
                       ],
                     ),
                   ),

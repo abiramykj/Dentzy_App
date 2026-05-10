@@ -84,10 +84,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginSignIn => 'Sign In';
 
   @override
+  String get loginRememberMe => 'Remember me';
+
+  @override
   String get loginNoAccount => 'Don\'t have an account?';
 
   @override
   String get loginSignUp => 'Sign Up';
+
+  @override
+  String get authEmailAlreadyRegistered =>
+      'This email is already registered. Please sign in.';
 
   @override
   String get authCreateAccount => 'Create Account';
