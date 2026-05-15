@@ -19,20 +19,43 @@ def create_history_entry(
     confidence: float,
     explanation: str,
 ) -> MythHistory:
-    logger.debug("[SERVICE] Creating myth history entry user_id=%s type=%s confidence=%d", 
-                 user.id, result_type, int(confidence))
-    entry = MythHistory(
-        user_id=user.id,
-        statement=statement,
-        result_type=result_type,
-        confidence=confidence,
-        explanation=explanation,
-    )
-    db.add(entry)
-    db.commit()
-    db.refresh(entry)
-    logger.info("[DATABASE] Insert success - myth history inserted entry_id=%s user_id=%s", entry.id, user.id)
-    return entry
+    import traceback
+    try:
+        print(f"[MYTH_HISTORY_SERVICE] ========== CREATE HISTORY ENTRY ==========")
+        print(f"[MYTH_HISTORY_SERVICE] user_id={user.id}, type={result_type}, confidence={confidence}")
+        logger.debug("[SERVICE] Creating myth history entry user_id=%s type=%s confidence=%d", 
+                     user.id, result_type, int(confidence))
+        
+        entry = MythHistory(
+            user_id=user.id,
+            statement=statement,
+            result_type=result_type,
+            confidence=confidence,
+            explanation=explanation,
+        )
+        print(f"[MYTH_HISTORY_SERVICE] Created MythHistory object: {entry}")
+        
+        db.add(entry)
+        print(f"[MYTH_HISTORY_SERVICE] Added to session")
+        
+        db.commit()
+        print(f"[MYTH_HISTORY_SERVICE] Commit successful")
+        
+        db.refresh(entry)
+        print(f"[MYTH_HISTORY_SERVICE] Refreshed entry - entry_id={entry.id}, timestamp={entry.timestamp}")
+        
+        logger.info("[DATABASE] Insert success - myth history inserted entry_id=%s user_id=%s", entry.id, user.id)
+        print(f"[MYTH_HISTORY_SERVICE] ========== SAVE COMPLETE ==========")
+        return entry
+    except Exception as e:
+        print(f"[MYTH_HISTORY_SERVICE] ========== ERROR DURING CREATE ==========")
+        print(f"[MYTH_HISTORY_SERVICE] Exception: {str(e)}")
+        print(f"[MYTH_HISTORY_SERVICE] Type: {type(e).__name__}")
+        traceback.print_exc()
+        logger.error("[SERVICE] Create history failed: %s", str(e), exc_info=True)
+        db.rollback()
+        print(f"[MYTH_HISTORY_SERVICE] Rollback executed")
+        raise
 
 
 def list_history(db: Session, user: User) -> list[MythHistory]:

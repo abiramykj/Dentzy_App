@@ -19,11 +19,63 @@ class _MythCheckerScreenState extends State<MythCheckerScreen> {
 
   MythCheckResult? _result;
   bool _isChecking = false;
+  bool _isHistoryLoading = false;
+  bool _historyRefreshQueued = false;
+  List<Map<String, dynamic>> _historyItems = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadHistory();
+  }
 
   @override
   void dispose() {
     _inputController.dispose();
     super.dispose();
+  }
+
+  Future<void> _loadHistory({bool forceRefresh = false}) async {
+    if (_isHistoryLoading) {
+      if (forceRefresh) {
+        _historyRefreshQueued = true;
+        debugPrint('[MythCheckerScreen] history refresh queued');
+      }
+      return;
+    }
+
+    setState(() {
+      _isHistoryLoading = true;
+    });
+
+    print('REFETCH CALLED');
+    debugPrint('[MythCheckerScreen] fetching history from backend');
+    try {
+      final history = await _apiService.getMythHistory();
+      debugPrint('[MythCheckerScreen] history response count=${history.length}');
+
+      if (!mounted) return;
+      setState(() {
+        _historyItems = history;
+      });
+
+      debugPrint('[MythCheckerScreen] rendering history count=${_historyItems.length}');
+    } catch (error) {
+      debugPrint('[MythCheckerScreen] history fetch error=$error');
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isHistoryLoading = false;
+        });
+      }
+
+      if (_historyRefreshQueued) {
+        _historyRefreshQueued = false;
+        if (mounted) {
+          await _loadHistory(forceRefresh: true);
+        }
+      }
+    }
   }
 
   Future<void> _checkInput() async {
@@ -43,10 +95,10 @@ class _MythCheckerScreenState extends State<MythCheckerScreen> {
     });
 
     try {
-      debugPrint('[MythCheckerScreen] request text="$input"');
+      debugPrint('[MythCheckerScreen] CLASSIFY API CALLED for text="$input"');
       final result = await _apiService.classifyStatement(input);
       debugPrint(
-        '[MythCheckerScreen] result label=${result.label} confidence=${result.confidence} category=${result.category} reason=${result.reason}',
+        '[MythCheckerScreen] result label=${result.label} confidence=${result.confidence} category=${result.category}',
       );
       if (!mounted) return;
       setState(() {
@@ -54,13 +106,11 @@ class _MythCheckerScreenState extends State<MythCheckerScreen> {
         _isChecking = false;
       });
 
-      // Save result to backend history
-      await _apiService.saveMythHistory(
-        statement: input,
-        resultType: result.category,
-        confidence: result.confidence,
-        explanation: result.explanation,
-      );
+      await _loadHistory(forceRefresh: true);
+
+      // Backend now saves history automatically with JWT token in /classify endpoint
+      // No need for redundant saveMythHistory() call
+      debugPrint('[MythCheckerScreen] History saved by backend during /classify');
     } catch (_) {
       debugPrint('[MythCheckerScreen] classify failed, using fallback');
       if (!mounted) return;
@@ -243,6 +293,8 @@ class _MythCheckerScreenState extends State<MythCheckerScreen> {
                         : _buildResultCard(context),
                   ),
                   const SizedBox(height: 18),
+                      _buildHistoryCard(context),
+                      const SizedBox(height: 18),
                   CustomCard(
                     margin: EdgeInsets.zero,
                     padding: const EdgeInsets.all(18),
@@ -386,6 +438,110 @@ class _MythCheckerScreenState extends State<MythCheckerScreen> {
               icon: Icons.category_rounded,
             ),
           ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHistoryCard(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
+    debugPrint('[MythCheckerScreen] final rendered history list length=${_historyItems.length}');
+
+    return CustomCard(
+      margin: EdgeInsets.zero,
+      padding: const EdgeInsets.all(18),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              _MiniStatusPill(
+                icon: Icons.history_rounded,
+                label: loc.history,
+                color: AppTheme.secondaryDark,
+              ),
+              const Spacer(),
+              if (_isHistoryLoading)
+                const SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          if (_historyItems.isEmpty)
+            Text(
+              loc.resultsWillAppearHere,
+              style: Theme.of(context).textTheme.bodyMedium,
+            )
+          else
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: _historyItems.length > 5 ? 5 : _historyItems.length,
+              itemBuilder: (context, index) {
+                final item = _historyItems[index];
+                final statement = (item['statement'] ?? '').toString();
+                final resultType = (item['result_type'] ?? '').toString();
+                final confidence = item['confidence'];
+                final timestamp = (item['timestamp'] ?? '').toString();
+                final explanation = (item['explanation'] ?? '').toString();
+
+                print('[MythCheckerScreen] historyList.length=${_historyItems.length}');
+                print('[MythCheckerScreen] historyList[$index].statement=$statement');
+
+                debugPrint(
+                  '[MythCheckerScreen] history item statement="$statement" result_type=$resultType confidence=$confidence timestamp=$timestamp',
+                );
+
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                      color: AppTheme.backgroundColor,
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(color: AppTheme.dividerColor.withOpacity(0.5)),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          statement.isEmpty ? 'Unknown statement' : statement,
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.w700,
+                              ),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          '$resultType • ${confidence?.toString() ?? '0'}%',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        if (explanation.isNotEmpty) ...[
+                          const SizedBox(height: 6),
+                          Text(
+                            explanation,
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                        ],
+                        if (timestamp.isNotEmpty) ...[
+                          const SizedBox(height: 6),
+                          Text(
+                            timestamp,
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                  color: AppTheme.textSecondary,
+                                ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
         ],
       ),
     );

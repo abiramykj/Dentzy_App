@@ -25,29 +25,42 @@ class MythApiService {
     final detectedLanguage = _detectLanguage(trimmedText);
 
     final uri = Uri.parse('${_normalizedBaseUrl()}/classify');
+    final url = uri.toString();
     final requestBody = jsonEncode({'text': trimmedText});
-    
-    debugPrint('=' * 60);
-    debugPrint('[MythApiService] POST $uri');
-    debugPrint('[MythApiService] detected_language=$detectedLanguage');
-    debugPrint('[MythApiService] input_text=$trimmedText');
-    debugPrint('[MythApiService] input_length=${trimmedText.length}');
-    debugPrint('[MythApiService] request_body=$requestBody');
+
+    print('[MythAPI] START classify');
+    print('[MythAPI] loading token...');
+
+    final token = await AuthService.getToken();
+    print('[MythAPI] token=$token');
+    print('[MythAPI] url=$url');
+
+    final headers = {
+      'Content-Type': 'application/json',
+    };
+
+    if (token != null && token.isNotEmpty) {
+      headers['Authorization'] = 'Bearer $token';
+      print('[MythAPI] Authorization header added');
+    } else {
+      print('[MythAPI] TOKEN IS NULL');
+      print('[MythAPI] Authorization header skipped');
+    }
+
+    print('[MythAPI] headers=$headers');
+    print('[MythAPI] body=$requestBody');
 
     try {
       final response = await http
           .post(
             uri,
-            headers: const {
-              'Content-Type': 'application/json; charset=utf-8',
-              'Accept': 'application/json',
-            },
+            headers: headers,
             body: requestBody,
           )
           .timeout(AppConstants.apiTimeout);
 
-      debugPrint('[MythApiService] status=${response.statusCode}');
-      debugPrint('[MythApiService] response_body=${response.body}');
+          print('[MythAPI] response status=${response.statusCode}');
+          print('[MythAPI] response body=${response.body}');
 
       final payload = _decodeJsonMap(response.body);
       debugPrint('[MythApiService] parsed_json=$payload');
@@ -114,16 +127,14 @@ class MythApiService {
   }
 
   static String _defaultBackendUrl() {
-    if (kIsWeb) {
-      return AppConstants.localBackendUrl.replaceFirst('10.0.2.2', 'localhost');
-    }
+    final url = kIsWeb
+        ? AppConstants.localBackendUrl.replaceFirst('10.0.2.2', 'localhost')
+        : (defaultTargetPlatform == TargetPlatform.android
+            ? AppConstants.localBackendUrl
+            : AppConstants.localBackendUrl.replaceFirst('10.0.2.2', '127.0.0.1'));
 
-    switch (defaultTargetPlatform) {
-      case TargetPlatform.android:
-        return AppConstants.localBackendUrl;
-      default:
-        return AppConstants.localBackendUrl.replaceFirst('10.0.2.2', '127.0.0.1');
-    }
+    debugPrint('[MythApiService] Using backend URL: $url');
+    return url;
   }
 
   Map<String, dynamic> _decodeJsonMap(String body) {
@@ -256,7 +267,7 @@ class MythApiService {
   /// Get stored myth history from backend.
   Future<List<Map<String, dynamic>>> getMythHistory() async {
     try {
-      final token = await _getAuthToken();
+      final token = await AuthService.getToken();
       if (token == null || token.isEmpty) {
         debugPrint('[MythApiService] No auth token available for fetching history');
         return [];
@@ -276,6 +287,7 @@ class MythApiService {
           .timeout(AppConstants.apiTimeout);
 
       debugPrint('[MythApiService] fetch_history status=${response.statusCode}');
+      debugPrint('[MythApiService] fetch_history body=${response.body}');
       if (response.statusCode < 200 || response.statusCode >= 300) {
         debugPrint('[MythApiService] fetch_history failed: ${response.body}');
         return [];
@@ -296,9 +308,7 @@ class MythApiService {
   /// Get authentication token from auth service.
   Future<String?> _getAuthToken() async {
     try {
-      // Import and use the auth service to get the current token
-      // This will be set after login
-      return AuthService.getAccessToken() ?? AuthService.getSavedToken();
+      return await AuthService.getToken();
     } catch (_) {
       return null;
     }

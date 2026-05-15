@@ -62,7 +62,6 @@ def init_db() -> None:
     from models.myth_history import MythHistory  # noqa: F401
     from models.notification import Notification  # noqa: F401
     from models.otp_verification import OTPVerification  # noqa: F401
-    from models.token_blacklist import TokenBlacklist  # noqa: F401
     from models.user import User  # noqa: F401
 
     try:

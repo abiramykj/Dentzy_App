@@ -18,7 +18,7 @@ class NotificationApiService {
     required bool enabled,
   }) async {
     try {
-      final token = AuthService.getAccessToken() ?? AuthService.getSavedToken();
+      final token = await AuthService.getToken();
       if (token == null || token.isEmpty) {
         return false;
       }
@@ -58,15 +58,13 @@ class NotificationApiService {
   }
 
   static String _defaultBackendUrl() {
-    if (kIsWeb) {
-      return AppConstants.localBackendUrl.replaceFirst('10.0.2.2', 'localhost');
-    }
+    final url = kIsWeb
+        ? AppConstants.localBackendUrl.replaceFirst('10.0.2.2', 'localhost')
+        : (defaultTargetPlatform == TargetPlatform.android
+            ? AppConstants.localBackendUrl
+            : AppConstants.localBackendUrl.replaceFirst('10.0.2.2', '127.0.0.1'));
 
-    switch (defaultTargetPlatform) {
-      case TargetPlatform.android:
-        return AppConstants.localBackendUrl;
-      default:
-        return AppConstants.localBackendUrl.replaceFirst('10.0.2.2', '127.0.0.1');
-    }
+    debugPrint('[NotificationApiService] Using backend URL: $url');
+    return url;
   }
 }

@@ -15,13 +15,13 @@ import httpx
 from dotenv import load_dotenv
 import traceback
 
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
-from auth.security import get_optional_user
+from auth.security import get_current_user
 try:
     from backend.email_service import generate_otp, send_otp_email
 except Exception:
@@ -35,6 +35,7 @@ from routes.notifications import router as notifications_router
 from routes.users import router as users_router
 from schemas.auth import EmailRequest, LoginRequest, SignupRequest, TokenResponse, VerifyOtpRequest
 from services.auth_service import authenticate_user, create_user, send_password_reset_otp, verify_password_reset_otp
+from services.myth_history_service import create_history_entry
 
 _THIS_DIR = Path(__file__).resolve().parent
 _ENV_CANDIDATES = [
@@ -572,7 +573,12 @@ async def _classify_with_groq(sentence: str, detected_language: str) -> dict[str
 
 
 @app.post("/classify")
-async def classify(payload: InputText):
+async def classify(
+    request: Request,
+    payload: InputText, 
+    db: Session = Depends(get_db), 
+    current_user=Depends(get_current_user)
+):
     request_start = time.time()
     sentence = (payload.text or "").strip()
     
@@ -624,5 +630,34 @@ async def classify(payload: InputText):
                 result.get("type"), result.get("confidence"), 
                 result.get("explanation", "")[:100], elapsed)
     logger.info("▶" * 40 + "\n")
+    
+    # SAVE TO MYTH HISTORY TABLE
+    auth_header = request.headers.get("authorization", "")
+    print(f"[CLASSIFY] Authorization header received: {auth_header[:24]}{'...' if len(auth_header) > 24 else ''}")
+    print(f"[CLASSIFY] Current user = {current_user.id}")
+    print(f"[CLASSIFY] Result received: type={result.get('type')}, confidence={result.get('confidence')}")
+    
+    if current_user is not None and result.get("type") in {"FACT", "MYTH", "NOT_DENTAL"}:
+        print(f"[CLASSIFY] Attempting to save history for user_id={current_user.id}")
+        try:
+            print(f"[SAVING] TO MYTH_HISTORY table")
+            print(f"[SAVING] user_id={current_user.id}, statement={sentence}, type={result.get('type')}, confidence={result.get('confidence')}")
+            
+            create_history_entry(
+                db,
+                current_user,
+                statement=sentence,
+                result_type=str(result.get("type", "NOT_DENTAL")),
+                confidence=float(result.get("confidence", 0)),
+                explanation=str(result.get("explanation", "")),
+            )
+            print(f"[CLASSIFY] MYTH_HISTORY SAVED SUCCESSFULLY for user_id={current_user.id}")
+        except Exception as e:
+            print(f"[CLASSIFY] SAVE ERROR: {str(e)}")
+            print(f"[CLASSIFY] Exception type: {type(e).__name__}")
+            traceback.print_exc()
+            db.rollback()
+    else:
+        print(f"[CLASSIFY] History NOT saved - result type '{result.get('type')}' not in FACT/MYTH/NOT_DENTAL")
     
     return result

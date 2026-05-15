@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../models/myth_item.dart';
 import '../widgets/custom_card.dart';
 import '../services/myth_api_service.dart';
 import '../utils/theme.dart';
@@ -7,10 +8,12 @@ import '../l10n/app_localizations.dart';
 
 class ResultScreen extends StatefulWidget {
   final String inputText;
+  final MythCheckResult? preloadedResult;
 
   const ResultScreen({
     super.key,
     required this.inputText,
+    this.preloadedResult,
   });
 
   @override
@@ -25,7 +28,24 @@ class _ResultScreenState extends State<ResultScreen> {
   @override
   void initState() {
     super.initState();
-    fetchResult();
+    // If result was preloaded, use it immediately without API call
+    if (widget.preloadedResult != null) {
+      _setResultFromPreloaded(widget.preloadedResult!);
+    } else {
+      // Only fetch from API if result wasn't preloaded
+      fetchResult();
+    }
+  }
+
+  void _setResultFromPreloaded(MythCheckResult mythResult) {
+    setState(() {
+      result = {
+        'type': mythResult.label.toLowerCase().replaceAll(' ', '_'),
+        'explanation': mythResult.explanation,
+        'tip': mythResult.reason,
+      };
+      isLoading = false;
+    });
   }
 
   Future<void> fetchResult() async {

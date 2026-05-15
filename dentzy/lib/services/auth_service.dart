@@ -45,16 +45,14 @@ class AuthService {
   }
 
   static String _backendBaseUrl() {
-    if (kIsWeb) {
-      return AppConstants.localBackendUrl.replaceFirst('10.0.2.2', 'localhost');
-    }
+    final url = kIsWeb
+        ? AppConstants.localBackendUrl.replaceFirst('10.0.2.2', 'localhost')
+        : (defaultTargetPlatform == TargetPlatform.android
+            ? AppConstants.localBackendUrl
+            : AppConstants.localBackendUrl.replaceFirst('10.0.2.2', '127.0.0.1'));
 
-    switch (defaultTargetPlatform) {
-      case TargetPlatform.android:
-        return AppConstants.localBackendUrl;
-      default:
-        return AppConstants.localBackendUrl.replaceFirst('10.0.2.2', '127.0.0.1');
-    }
+    _logDebug('[API] Using backend URL: $url');
+    return url;
   }
 
   static Map<String, dynamic> _decodeBody(String body) {
@@ -126,7 +124,6 @@ class AuthService {
     await _safePrefs.remove(_rememberedEmailKey);
     await _safePrefs.remove(_rememberedTokenKey);
     await _safePrefs.setBool(_rememberMeFlagKey, false);
-    _accessToken = null;
     _logDebug('Cleared remembered session storage');
   }
 
@@ -160,7 +157,7 @@ class AuthService {
           'Accept': 'application/json',
           'Authorization': 'Bearer $token',
         },
-      ).timeout(const Duration(seconds: 20));
+      ).timeout(AppConstants.apiTimeout);
 
       _logDebug('restoreRememberedSession <- status=${response.statusCode} body=${response.body}');
       if (response.statusCode < 200 || response.statusCode >= 300) {
@@ -217,7 +214,7 @@ class AuthService {
           'Accept': 'application/json',
         },
         body: jsonEncode(payload),
-      ).timeout(const Duration(seconds: 20));
+      ).timeout(AppConstants.apiTimeout);
 
       _logDebug('signUp <- status=${response.statusCode} body=${response.body}');
       if (response.statusCode < 200 || response.statusCode >= 300) {
@@ -259,6 +256,9 @@ class AuthService {
         'remember_me': rememberMe,
       };
       _logDebug('signIn -> POST $uri body=${jsonEncode(payload)}');
+      // Additional explicit debug prints requested
+      debugPrint('[AuthService] signIn -> POST $uri');
+      debugPrint('[AuthService] signIn -> BODY ${jsonEncode(payload)}');
       final response = await http.post(
         uri,
         headers: const {
@@ -266,8 +266,9 @@ class AuthService {
           'Accept': 'application/json',
         },
         body: jsonEncode(payload),
-      ).timeout(const Duration(seconds: 20));
+      ).timeout(AppConstants.apiTimeout);
 
+      debugPrint('[AuthService] signIn <- status=${response.statusCode} body=${response.body}');
       _logDebug('signIn <- status=${response.statusCode} body=${response.body}');
       if (response.statusCode < 200 || response.statusCode >= 300) {
         return _authResultFromErrorResponse(response);
@@ -413,6 +414,7 @@ class AuthService {
     }
 
     await AuthSessionService.instance.clearSession();
+    _accessToken = null;
     await _clearRememberedSession();
     _logDebug('setLoggedOut: Cleared active session state');
   }
@@ -449,6 +451,21 @@ class AuthService {
       return null;
     }
     return _rememberedToken();
+  }
+
+  static Future<String?> getToken() async {
+    await initialize();
+    final activeToken = _accessToken?.trim();
+    if (activeToken != null && activeToken.isNotEmpty) {
+      return activeToken;
+    }
+
+    final savedToken = getSavedToken();
+    if (savedToken != null && savedToken.isNotEmpty) {
+      return savedToken;
+    }
+
+    return null;
   }
 
   /// Get the current access token (valid during active session)

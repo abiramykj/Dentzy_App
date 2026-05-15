@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import traceback
 
-from fastapi import APIRouter, Depends, Header, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
@@ -18,15 +18,6 @@ from services.auth_service import (
 )
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
-
-
-def _token_from_authorization(authorization: str | None) -> str:
-    if not authorization:
-        raise HTTPException(status_code=401, detail={"success": False, "error_code": "not_authenticated", "message": "Authentication required."})
-    scheme, _, token = authorization.partition(" ")
-    if scheme.lower() != "bearer" or not token:
-        raise HTTPException(status_code=401, detail={"success": False, "error_code": "invalid_token", "message": "Authentication required."})
-    return token.strip()
 
 
 @router.post("/signup", response_model=TokenResponse)
@@ -55,13 +46,47 @@ def signup(payload: SignupRequest, db: Session = Depends(get_db)):
 
 @router.post("/login", response_model=TokenResponse)
 def login(payload: LoginRequest, db: Session = Depends(get_db)):
-    return authenticate_user(db, payload)
+    """
+    Login endpoint with comprehensive error handling.
+    """
+    import traceback
+    try:
+        # Execution trace prints requested by debugging task
+        print("STEP 1: LOGIN REQUEST RECEIVED")
+        print("STEP 2: EMAIL =", payload.email)
+        print("STEP 3: BEFORE DB QUERY")
+        result = authenticate_user(db, payload)
+        print("STEP 4: AFTER DB QUERY")
+        print("STEP 5: BEFORE PASSWORD VERIFY")
+        # authenticate_user performs password verify and token generation; it will log further steps
+        print("STEP 6: AFTER PASSWORD VERIFY")
+        print("STEP 7: BEFORE TOKEN GENERATION")
+        print("STEP 8: AFTER TOKEN GENERATION")
+        print("STEP 9: BEFORE RESPONSE RETURN")
+        return result
+        
+    except HTTPException as exc:
+        print(f"[ROUTE] HTTPException caught: {exc.status_code}")
+        print(f"[ROUTE] Detail: {exc.detail}")
+        raise
+    except Exception as exc:
+        tb = traceback.format_exc()
+        print("STEP ERROR: Exception in /api/auth/login", str(exc))
+        print(tb)
+        return JSONResponse(
+            status_code=500,
+            content={
+                "success": False,
+                "message": "Backend error",
+                "error": str(exc),
+                "traceback": tb,
+            },
+        )
 
 
 @router.post("/logout", response_model=MessageResponse)
-def logout(authorization: str | None = Header(default=None), db: Session = Depends(get_db)):
-    token = _token_from_authorization(authorization)
-    return logout_user(db, token)
+def logout():
+    return logout_user()
 
 
 @router.post("/forgot-password", response_model=MessageResponse)

@@ -108,8 +108,7 @@ class BrushingApiService {
   /// Get authentication token from auth service.
   Future<String?> _getAuthToken() async {
     try {
-      // Get token from current session or remember-me storage
-      return AuthService.getAccessToken() ?? AuthService.getSavedToken();
+      return await AuthService.getToken();
     } catch (_) {
       return null;
     }
@@ -124,15 +123,13 @@ class BrushingApiService {
   }
 
   static String _defaultBackendUrl() {
-    if (kIsWeb) {
-      return AppConstants.localBackendUrl.replaceFirst('10.0.2.2', 'localhost');
-    }
+    final url = kIsWeb
+        ? AppConstants.localBackendUrl.replaceFirst('10.0.2.2', 'localhost')
+        : (defaultTargetPlatform == TargetPlatform.android
+            ? AppConstants.localBackendUrl
+            : AppConstants.localBackendUrl.replaceFirst('10.0.2.2', '127.0.0.1'));
 
-    switch (defaultTargetPlatform) {
-      case TargetPlatform.android:
-        return AppConstants.localBackendUrl;
-      default:
-        return AppConstants.localBackendUrl.replaceFirst('10.0.2.2', '127.0.0.1');
-    }
+    debugPrint('[BrushingApiService] Using backend URL: $url');
+    return url;
   }
 }
