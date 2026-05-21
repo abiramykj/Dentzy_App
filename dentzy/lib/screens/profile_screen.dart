@@ -25,9 +25,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return email.isEmpty ? 'Not signed in' : email;
   }
 
-  String _displayLanguage() {
-    return AuthService.getStoredLanguage().trim() == 'ta' ? 'Tamil' : 'English';
-  }
 
   Future<void> _handleLogout() async {
     final loc = AppLocalizations.of(context)!;
@@ -109,7 +106,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.white.withOpacity(0.18),
-                            border: Border.all(color: Colors.white.withOpacity(0.4)),
+                            border: Border.all(color: Colors.white.withValues(alpha: 0.4)),
                           ),
                           child: const Icon(Icons.person_rounded, size: 42, color: Colors.white),
                         ),
@@ -190,8 +187,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         _ProfileField(label: loc.emailLabel, value: _displayEmail()),
                         const Divider(height: 24),
                         _ProfileField(label: loc.phoneLabel, value: '+1 (555) 123-4567'),
-                        const Divider(height: 24),
-                        _ProfileField(label: loc.languageLabel, value: _displayLanguage()),
                       ],
                     ),
                   ),
@@ -199,12 +194,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Text(
                     loc.preferences,
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w800),
-                  ),
-                  const SizedBox(height: 12),
-                  _SettingsTile(
-                    title: loc.darkMode,
-                    subtitle: 'Enable dark theme',
-                    trailing: Switch(value: false, onChanged: (_) {}),
                   ),
                   const SizedBox(height: 12),
                   _SettingsTile(

@@ -778,7 +778,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Great job! You completed 5 quizzes today. Keep it up!';
 
   @override
-  String get brushingStreak => 'Brushing Streak';
+  String get brushingStreak => '7-Day Brushing Streak';
 
   @override
   String get brushingStreakDescription =>
@@ -972,4 +972,269 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tourGetStarted => 'Get Started';
+
+  @override
+  String get learnModuleTitle => 'Learn';
+
+  @override
+  String get learnModuleSubtitle => 'Healthy dental habits';
+
+  @override
+  String get featuredReads => 'Reads';
+
+  @override
+  String get dailyDentalTips => 'Tips';
+
+  @override
+  String get dailyTip => 'Daily Tip';
+
+  @override
+  String get interactiveActivities => 'Activities';
+
+  @override
+  String get mythLearningCards => 'Myths';
+
+  @override
+  String get dentalChallenges => 'Challenges';
+
+  @override
+  String get pdfResources => 'PDFs';
+
+  @override
+  String get recommendedForYou => 'Recommended For You';
+
+  @override
+  String get bookmarks => 'Bookmarks';
+
+  @override
+  String get recentlyViewed => 'Recently Viewed';
+
+  @override
+  String get searchLearnContent => 'Search Learn';
+
+  @override
+  String get categoryAll => 'All';
+
+  @override
+  String get categoryOralHygiene => 'Oral Hygiene';
+
+  @override
+  String get categoryNutrition => 'Nutrition';
+
+  @override
+  String get categoryBrushingTechniques => 'Brushing';
+
+  @override
+  String get categoryPrevention => 'Prevention';
+
+  @override
+  String get categoryMyths => 'Myths';
+
+  @override
+  String get categoryKids => 'Kids';
+
+  @override
+  String get categoryPregnancy => 'Pregnancy';
+
+  @override
+  String get readMore => 'Read More';
+
+  @override
+  String get markAsRead => 'Mark as Read';
+
+  @override
+  String get markAsUnread => 'Mark as Unread';
+
+  @override
+  String get addToBookmarks => 'Add to Bookmarks';
+
+  @override
+  String get removeFromBookmarks => 'Remove from Bookmarks';
+
+  @override
+  String get healthyVsUnhealthyFood => 'Healthy vs Unhealthy Food';
+
+  @override
+  String get healthyVsUnhealthyFoodDesc =>
+      'Sort foods into healthy and unhealthy categories for your teeth';
+
+  @override
+  String get brushingChecklist => 'Brushing Checklist';
+
+  @override
+  String get brushingChecklistDesc =>
+      'Complete all steps of a proper brushing routine';
+
+  @override
+  String get oralHygieneChallenge => 'Oral Hygiene Challenge';
+
+  @override
+  String get oralHygieneChallengeDesc =>
+      'Master the basics of dental care in 7 days';
+
+  @override
+  String get plaguePreventionActivity => 'Plaque Prevention Activity';
+
+  @override
+  String get plaguePreventionDesc =>
+      'Learn how to prevent plaque buildup with interactive exercises';
+
+  @override
+  String get brushingStreakDesc => 'Brush twice daily for 7 consecutive days';
+
+  @override
+  String get noSugaryDrinksChallenge => 'No Sugary Drinks Challenge';
+
+  @override
+  String get noSugaryDrinksDesc =>
+      'Go 7 days without sugary drinks and see the difference';
+
+  @override
+  String get flossingChallenge => 'Flossing Challenge';
+
+  @override
+  String get flossingChallengeDesc => 'Build a flossing habit over 14 days';
+
+  @override
+  String get hydrationChallenge => 'Hydration Challenge';
+
+  @override
+  String get hydrationChallengeDesc =>
+      'Drink 8 glasses of water daily for 7 days';
+
+  @override
+  String get oralHygieneGuide => 'Oral Hygiene Guide';
+
+  @override
+  String get brushingGuide => 'Brushing Technique Guide';
+
+  @override
+  String get cavityPreventionGuide => 'Cavity Prevention Guide';
+
+  @override
+  String get gumCareGuide => 'Gum Care & Health';
+
+  @override
+  String get kidsDentalCare => 'Kids Dental Care';
+
+  @override
+  String get pregnancyOralCare => 'Pregnancy Oral Care';
+
+  @override
+  String get pages => 'pages';
+
+  @override
+  String get readingProgress => 'Reading Progress';
+
+  @override
+  String get downloaded => 'Downloaded';
+
+  @override
+  String get readyToDownload => 'Ready to download';
+
+  @override
+  String get download => 'Download';
+
+  @override
+  String get viewed => 'Viewed';
+
+  @override
+  String get completed => 'Completed';
+
+  @override
+  String get inProgress => 'In Progress';
+
+  @override
+  String get startChallenge => 'Start Challenge';
+
+  @override
+  String get startActivity => 'Start Activity';
+
+  @override
+  String get markAsLearned => 'Mark as Learned';
+
+  @override
+  String get learned => 'Learned!';
+
+  @override
+  String get why => 'Why?';
+
+  @override
+  String get scientificFacts => '📚 Scientific Facts';
+
+  @override
+  String get myProgress => 'Progress';
+
+  @override
+  String get articlesRead => 'Articles Read';
+
+  @override
+  String get activitiesCompleted => 'Activities Completed';
+
+  @override
+  String get challengesCompleted => 'Challenges Completed';
+
+  @override
+  String get pdfsRead => 'PDFs Read';
+
+  @override
+  String get currentStreak => 'Current Streak';
+
+  @override
+  String get longestStreak => 'Longest Streak';
+
+  @override
+  String get totalPoints => 'Total Points';
+
+  @override
+  String get filterByCategory => 'Filter by Category';
+
+  @override
+  String get sortBy => 'Sort by';
+
+  @override
+  String get sortByNewest => 'Newest';
+
+  @override
+  String get sortByPopular => 'Most Popular';
+
+  @override
+  String get sortByReadTime => 'Read Time';
+
+  @override
+  String get noBookmarks => 'No bookmarks yet';
+
+  @override
+  String get startBookmarkingDesc => 'Articles you bookmark will appear here';
+
+  @override
+  String get noBrushingData => 'No data available';
+
+  @override
+  String get days => 'days';
+
+  @override
+  String dayChallenge(int day) {
+    return '$day-Day Challenge';
+  }
+
+  @override
+  String completionPercentage(int percentage) {
+    return '$percentage% Complete';
+  }
+
+  @override
+  String get challengeCompleted => 'Challenge Completed! 🎉';
+
+  @override
+  String get continueReading => 'Continue Reading';
+
+  @override
+  String get finishReading => 'Finish Reading';
+
+  @override
+  String get addedToBookmarks => 'Added to bookmarks';
+
+  @override
+  String get removedFromBookmarks => 'Removed from bookmarks';
 }

@@ -59,7 +59,6 @@ class _StartupFlowScreenState extends State<StartupFlowScreen> {
       if (storedLanguage.isNotEmpty) {
         widget.languageProvider.setLocaleOnly(storedLanguage);
       }
-      
       if (AuthService.needsLanguageSelection()) {
         debugPrint('🔄 [_performAutoLogin] Language selection required');
         _requireLanguageAfterAuth = true;

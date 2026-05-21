@@ -361,7 +361,7 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String minRead(int minutes) {
-    return '$minutes நிமிட வாசிப்பு';
+    return '$minutes நிமிட வாசனை';
   }
 
   @override
@@ -790,7 +790,7 @@ class AppLocalizationsTa extends AppLocalizations {
       'அருமை! இன்று நீங்கள் 5 வினாடி வினாக்களை முடித்துள்ளீர்கள். தொடர்ந்து செய்யுங்கள்!';
 
   @override
-  String get brushingStreak => 'தொடர்ச்சியான பல் துலக்கம்';
+  String get brushingStreak => '7 நாள் பல் துலக்குதல் தொடர்';
 
   @override
   String get brushingStreakDescription =>
@@ -984,4 +984,273 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String get tourGetStarted => 'தொடங்க';
+
+  @override
+  String get learnModuleTitle => 'கற்க';
+
+  @override
+  String get learnModuleSubtitle => 'நல்ல பல் பழக்கம்';
+
+  @override
+  String get featuredReads => 'படிப்புகள்';
+
+  @override
+  String get dailyDentalTips => 'குறிப்புகள்';
+
+  @override
+  String get dailyTip => 'நாளின் ஆலோசனை';
+
+  @override
+  String get interactiveActivities => 'செயல்பாடுகள்';
+
+  @override
+  String get mythLearningCards => 'கட்டுக்கதைகள்';
+
+  @override
+  String get dentalChallenges => 'சவால்கள்';
+
+  @override
+  String get pdfResources => 'PDFகள்';
+
+  @override
+  String get recommendedForYou => 'உங்களுக்கான பரிந்துரைகள்';
+
+  @override
+  String get bookmarks => 'புத்தகக்குறிப்புகள்';
+
+  @override
+  String get recentlyViewed => 'சமீபத்தில் பார்க்கப்பட்ட';
+
+  @override
+  String get searchLearnContent => 'தேடவும்';
+
+  @override
+  String get categoryAll => 'அனைத்து';
+
+  @override
+  String get categoryOralHygiene => 'வாய் சுகாதாரம்';
+
+  @override
+  String get categoryNutrition => 'ஊட்டச்சத்து';
+
+  @override
+  String get categoryBrushingTechniques => 'பல் துலக்குதல்';
+
+  @override
+  String get categoryPrevention => 'தடுப்பு';
+
+  @override
+  String get categoryMyths => 'கட்டுக்கதைகள்';
+
+  @override
+  String get categoryKids => 'குழந்தைகள்';
+
+  @override
+  String get categoryPregnancy => 'கர்ப்ப காலம்';
+
+  @override
+  String get readMore => 'மேலும் வாசிக்க';
+
+  @override
+  String get markAsRead => 'வாசனை செய்தது என குறிக்க';
+
+  @override
+  String get markAsUnread => 'வாசனை செய்யாதது என குறிக்க';
+
+  @override
+  String get addToBookmarks => 'புத்தகக்குறிப்பில் சேர்க்க';
+
+  @override
+  String get removeFromBookmarks => 'புத்தகக்குறிப்பிலிருந்து நீக்க';
+
+  @override
+  String get healthyVsUnhealthyFood => 'ஆரோக்கியமான vs ஆரோக்கியமற்ற உணவு';
+
+  @override
+  String get healthyVsUnhealthyFoodDesc =>
+      'உணவுகளை உங்கள் பல்களுக்கு ஆரோக்கியமான மற்றும் ஆரோக்கியமற்ற வகைகளாக வகைப்படுத்துக';
+
+  @override
+  String get brushingChecklist => 'பல் துலக்குதல் சரிபார்ப்பு பட்டியல்';
+
+  @override
+  String get brushingChecklistDesc =>
+      'சரியான பல் துலக்குதல் நடைமுறையின் அனைத்து படிகளையும் முடிக்க';
+
+  @override
+  String get oralHygieneChallenge => 'வாய் சுகாதாரம் சவால்';
+
+  @override
+  String get oralHygieneChallengeDesc =>
+      '7 நாட்களில் பல் பராமரிப்பின் அடிப்படைகளை மாஸ்டர் செய்க';
+
+  @override
+  String get plaguePreventionActivity => 'பிளேக் தடுப்பு செயல்பாடு';
+
+  @override
+  String get plaguePreventionDesc =>
+      'ஆன்டாக்டிவ் பயிற்சிகளுடன் பிளேக் உருவாகுவதை தடுக்கவும்';
+
+  @override
+  String get brushingStreakDesc =>
+      '7 தொடர் நாட்களில் தினமும் இரண்டு முறை பல் துலக்கவும்';
+
+  @override
+  String get noSugaryDrinksChallenge => 'சர்க்கரை இல்லாத பানை சவால்';
+
+  @override
+  String get noSugaryDrinksDesc =>
+      '7 நாட்களுக்கு சர்க்கரை பான்களை பயன்படுத்த வேண்டாம் மற்றும் வேறுபாட்டைக் கண்டறியவும்';
+
+  @override
+  String get flossingChallenge => 'பல் நூல் சவால்';
+
+  @override
+  String get flossingChallengeDesc =>
+      '14 நாட்களில் பல் நூல் பழக்கத்தை உருவாக்கவும்';
+
+  @override
+  String get hydrationChallenge => 'நீரேற்ற சவால்';
+
+  @override
+  String get hydrationChallengeDesc =>
+      '7 நாட்களுக்கு தினமும் 8 கிளாஸ் நீர் குடிக்க';
+
+  @override
+  String get oralHygieneGuide => 'வாய் சுகாதாரம் வழிகாட்டி';
+
+  @override
+  String get brushingGuide => 'பல் துலக்குதல் நுட்ப வழிகாட்டி';
+
+  @override
+  String get cavityPreventionGuide => 'சொத்தை தடுப்பு வழிகாட்டி';
+
+  @override
+  String get gumCareGuide => 'ஈறு பராமரிப்பு & சுகாதாரம்';
+
+  @override
+  String get kidsDentalCare => 'குழந்தைகளின் பல் பராமரிப்பு';
+
+  @override
+  String get pregnancyOralCare => 'கர்ப்ப காலத்தில் வாய் பராமரிப்பு';
+
+  @override
+  String get pages => 'பக்கங்கள்';
+
+  @override
+  String get readingProgress => 'வாசனை முன்னேற்றம்';
+
+  @override
+  String get downloaded => 'பதிவிறக்கம் செய்யப்பட்ட';
+
+  @override
+  String get readyToDownload => 'பதிவிறக்கத்திற்கு தயாரம்';
+
+  @override
+  String get download => 'பதிவிறக்கம் செய்க';
+
+  @override
+  String get viewed => 'பார்க்கப்பட்ட';
+
+  @override
+  String get completed => 'முடிந்த';
+
+  @override
+  String get inProgress => 'முன்னேறிக் கொண்டுள்ள';
+
+  @override
+  String get startChallenge => 'சவாலைத் தொடங்குக';
+
+  @override
+  String get startActivity => 'செயல்பாட்டைத் தொடங்குக';
+
+  @override
+  String get markAsLearned => 'கற்றது என குறிக்க';
+
+  @override
+  String get learned => 'கற்றுக்கொண்டேன்!';
+
+  @override
+  String get why => 'ஏன்?';
+
+  @override
+  String get scientificFacts => '📚 விஞ்ஞான உண்மைகள்';
+
+  @override
+  String get myProgress => 'முன்னேற்றம்';
+
+  @override
+  String get articlesRead => 'வாசனை செய்த கட்டுரைகள்';
+
+  @override
+  String get activitiesCompleted => 'முடிந்த செயல்பாடுகள்';
+
+  @override
+  String get challengesCompleted => 'முடிந்த சவால்கள்';
+
+  @override
+  String get pdfsRead => 'வாசனை செய்த PDFகள்';
+
+  @override
+  String get currentStreak => 'தற்போதைய தொடர்';
+
+  @override
+  String get longestStreak => 'நீளமான தொடர்';
+
+  @override
+  String get totalPoints => 'மொத்த புள்ளிகள்';
+
+  @override
+  String get filterByCategory => 'வகையால் வடிக்கலாம்';
+
+  @override
+  String get sortBy => 'வரிசைப்படுத்த';
+
+  @override
+  String get sortByNewest => 'புதியவை';
+
+  @override
+  String get sortByPopular => 'மிகவும் பிரபலம்';
+
+  @override
+  String get sortByReadTime => 'வாசனை நேரம்';
+
+  @override
+  String get noBookmarks => 'இன்னும் புத்தகக்குறிப்பு இல்லை';
+
+  @override
+  String get startBookmarkingDesc =>
+      'நீங்கள் புத்தகக்குறிப்பிட்ட கட்டுரைகள் இங்கே தோன்றும்';
+
+  @override
+  String get noBrushingData => 'தரவு கிடைக்கவில்லை';
+
+  @override
+  String get days => 'நாட்கள்';
+
+  @override
+  String dayChallenge(int day) {
+    return '$day நாள் சவால்';
+  }
+
+  @override
+  String completionPercentage(int percentage) {
+    return '$percentage% முடிந்த';
+  }
+
+  @override
+  String get challengeCompleted => 'சவால் முடிந்து விட்டது! 🎉';
+
+  @override
+  String get continueReading => 'வாசனை தொடரக';
+
+  @override
+  String get finishReading => 'வாசனை முடிக்க';
+
+  @override
+  String get addedToBookmarks => 'புத்தகக்குறிப்புகளில் சேர்க்கப்பட்டது';
+
+  @override
+  String get removedFromBookmarks =>
+      'புத்தகக்குறிப்புகளிலிருந்து நீக்கப்பட்டது';
 }

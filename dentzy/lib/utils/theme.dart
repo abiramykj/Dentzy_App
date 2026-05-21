@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
+  static const List<String> _fontFallbacks = <String>[
+    'Noto Sans Tamil',
+    'Noto Sans',
+    'Roboto',
+  ];
+
   // Primary Colors
   static const Color primaryColor = Color(0xFF2CB9A8);
   static const Color primaryLight = Color(0xFF7DE2D1);
@@ -81,37 +87,44 @@ class AppTheme {
         fontWeight: FontWeight.bold,
         color: textPrimary,
         height: 1.1,
+        fontFamilyFallback: _fontFallbacks,
       ),
       displayMedium: TextStyle(
         fontSize: 28,
         fontWeight: FontWeight.bold,
         color: textPrimary,
         height: 1.15,
+        fontFamilyFallback: _fontFallbacks,
       ),
       headlineSmall: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.w600,
         color: textPrimary,
+        fontFamilyFallback: _fontFallbacks,
       ),
       titleLarge: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.w600,
         color: textPrimary,
+        fontFamilyFallback: _fontFallbacks,
       ),
       bodyLarge: TextStyle(
         fontSize: 16,
         color: textPrimary,
         height: 1.45,
+        fontFamilyFallback: _fontFallbacks,
       ),
       bodyMedium: TextStyle(
         fontSize: 14,
         color: textSecondary,
         height: 1.45,
+        fontFamilyFallback: _fontFallbacks,
       ),
       bodySmall: TextStyle(
         fontSize: 12,
         color: textSecondary,
         height: 1.35,
+        fontFamilyFallback: _fontFallbacks,
       ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(

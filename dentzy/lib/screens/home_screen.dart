@@ -6,7 +6,7 @@ import '../services/app_tour_service.dart';
 import '../l10n/app_localizations.dart';
 import 'brushing_timer_screen.dart';
 import 'dental_quiz_page.dart';
-import 'learn_screen.dart';
+import 'learn_screen_v2.dart';
 import 'myth_checker_screen.dart';
 import 'video_screen.dart';
 import 'brushing_tracker_screen.dart';
@@ -235,8 +235,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         accent: AppTheme.secondaryDark,
                         onTap: () => Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => const LearnScreen(),
+                            MaterialPageRoute(
+                              builder: (context) => const LearnScreenV2(),
                           ),
                         ),
                       ),

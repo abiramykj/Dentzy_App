@@ -37,6 +37,16 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
+  Future<void> _replayAppTour() async {
+    await AppTourService.resetTour();
+    if (!mounted) return;
+    _showAppTour();
+  }
+
+  Future<void> _showAppTour() async {
+    await AppTourService.showAppTour(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
@@ -65,7 +75,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     height: 100,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.white.withOpacity(0.2),
+                      color: Colors.white.withValues(alpha: 0.2),
                       border: Border.all(color: Colors.white, width: 3),
                     ),
                     child: const Icon(
@@ -304,8 +314,8 @@ class _ProfilePageState extends State<ProfilePage> {
                               width: 80,
                               padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
-                                color: achievement.unlocked
-                                    ? AppTheme.primaryColor.withOpacity(0.2)
+                                  color: achievement.unlocked
+                                      ? AppTheme.primaryColor.withValues(alpha: 0.2)
                                     : Colors.grey[200],
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(
@@ -684,7 +694,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                                 decoration: BoxDecoration(
                                   color: AppTheme.primaryColor
-                                      .withOpacity(0.1),
+                                      .withValues(alpha: 0.1),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Text(
@@ -743,7 +753,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                                 decoration: BoxDecoration(
                                   color: AppTheme.primaryColor
-                                      .withOpacity(0.1),
+                                      .withValues(alpha: 0.1),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Text(
@@ -780,10 +790,7 @@ class _ProfilePageState extends State<ProfilePage> {
               padding: const EdgeInsets.all(16),
               child: CustomCard(
                 onTap: () async {
-                  await AppTourService.resetTour();
-                  if (mounted) {
-                    await AppTourService.showAppTour(context);
-                  }
+                  await _replayAppTour();
                 },
                 padding: const EdgeInsets.all(16),
                 child: Row(
@@ -793,7 +800,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       height: 50,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: AppTheme.primaryColor.withOpacity(0.15),
+                          color: AppTheme.primaryColor.withValues(alpha: 0.15),
                       ),
                       child: const Icon(
                         Icons.play_circle_outline_rounded,
@@ -960,8 +967,8 @@ class _ProfilePageState extends State<ProfilePage> {
         gradient: isSelected
             ? LinearGradient(
                 colors: [
-                  AppTheme.primaryColor.withOpacity(0.2),
-                  AppTheme.primaryLight.withOpacity(0.1),
+                  AppTheme.primaryColor.withValues(alpha: 0.2),
+                  AppTheme.primaryLight.withValues(alpha: 0.1),
                 ],
               )
             : null,
@@ -972,7 +979,7 @@ class _ProfilePageState extends State<ProfilePage> {
               height: 50,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppTheme.primaryColor.withOpacity(0.2),
+                color: AppTheme.primaryColor.withValues(alpha: 0.2),
               ),
               child: const Icon(
                 Icons.person,

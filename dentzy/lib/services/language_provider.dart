@@ -23,11 +23,11 @@ class LanguageProvider extends ChangeNotifier {
       debugPrint('🔄 [LanguageProvider] Initializing...');
       await SharedPreferences.getInstance();
       debugPrint('✅ [LanguageProvider] SharedPreferences loaded');
-      
+
       // Always start with English on app launch
       _currentLocale = _defaultLocale;
       debugPrint('ℹ️  [LanguageProvider] Starting with default language: ${_defaultLocale.languageCode}');
-      
+
       // NOTE: Saved language preference can be loaded later after user makes initial selection
       // For now, always show English at startup
     } catch (e) {
@@ -70,7 +70,7 @@ class LanguageProvider extends ChangeNotifier {
   /// Change the current language and save it
   Future<bool> setLanguage(String languageCode) async {
     debugPrint('🔤 [LanguageProvider.setLanguage] START - Setting language to: $languageCode');
-    
+
     try {
       // Validate input
       if (languageCode != 'en' && languageCode != 'ta') {

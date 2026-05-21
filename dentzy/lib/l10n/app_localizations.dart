@@ -758,7 +758,7 @@ abstract class AppLocalizations {
   /// **'Prevention'**
   String get prevention;
 
-  /// Reading time indicator
+  /// Reading time
   ///
   /// In en, this message translates to:
   /// **'{minutes} min read'**
@@ -1565,7 +1565,7 @@ abstract class AppLocalizations {
   /// No description provided for @brushingStreak.
   ///
   /// In en, this message translates to:
-  /// **'Brushing Streak'**
+  /// **'7-Day Brushing Streak'**
   String get brushingStreak;
 
   /// No description provided for @brushingStreakDescription.
@@ -1897,6 +1897,516 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Get Started'**
   String get tourGetStarted;
+
+  /// No description provided for @learnModuleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn'**
+  String get learnModuleTitle;
+
+  /// No description provided for @learnModuleSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Healthy dental habits'**
+  String get learnModuleSubtitle;
+
+  /// No description provided for @featuredReads.
+  ///
+  /// In en, this message translates to:
+  /// **'Reads'**
+  String get featuredReads;
+
+  /// No description provided for @dailyDentalTips.
+  ///
+  /// In en, this message translates to:
+  /// **'Tips'**
+  String get dailyDentalTips;
+
+  /// No description provided for @dailyTip.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Tip'**
+  String get dailyTip;
+
+  /// No description provided for @interactiveActivities.
+  ///
+  /// In en, this message translates to:
+  /// **'Activities'**
+  String get interactiveActivities;
+
+  /// No description provided for @mythLearningCards.
+  ///
+  /// In en, this message translates to:
+  /// **'Myths'**
+  String get mythLearningCards;
+
+  /// No description provided for @dentalChallenges.
+  ///
+  /// In en, this message translates to:
+  /// **'Challenges'**
+  String get dentalChallenges;
+
+  /// No description provided for @pdfResources.
+  ///
+  /// In en, this message translates to:
+  /// **'PDFs'**
+  String get pdfResources;
+
+  /// No description provided for @recommendedForYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommended For You'**
+  String get recommendedForYou;
+
+  /// No description provided for @bookmarks.
+  ///
+  /// In en, this message translates to:
+  /// **'Bookmarks'**
+  String get bookmarks;
+
+  /// No description provided for @recentlyViewed.
+  ///
+  /// In en, this message translates to:
+  /// **'Recently Viewed'**
+  String get recentlyViewed;
+
+  /// No description provided for @searchLearnContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Search Learn'**
+  String get searchLearnContent;
+
+  /// No description provided for @categoryAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get categoryAll;
+
+  /// No description provided for @categoryOralHygiene.
+  ///
+  /// In en, this message translates to:
+  /// **'Oral Hygiene'**
+  String get categoryOralHygiene;
+
+  /// No description provided for @categoryNutrition.
+  ///
+  /// In en, this message translates to:
+  /// **'Nutrition'**
+  String get categoryNutrition;
+
+  /// No description provided for @categoryBrushingTechniques.
+  ///
+  /// In en, this message translates to:
+  /// **'Brushing'**
+  String get categoryBrushingTechniques;
+
+  /// No description provided for @categoryPrevention.
+  ///
+  /// In en, this message translates to:
+  /// **'Prevention'**
+  String get categoryPrevention;
+
+  /// No description provided for @categoryMyths.
+  ///
+  /// In en, this message translates to:
+  /// **'Myths'**
+  String get categoryMyths;
+
+  /// No description provided for @categoryKids.
+  ///
+  /// In en, this message translates to:
+  /// **'Kids'**
+  String get categoryKids;
+
+  /// No description provided for @categoryPregnancy.
+  ///
+  /// In en, this message translates to:
+  /// **'Pregnancy'**
+  String get categoryPregnancy;
+
+  /// No description provided for @readMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Read More'**
+  String get readMore;
+
+  /// No description provided for @markAsRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as Read'**
+  String get markAsRead;
+
+  /// No description provided for @markAsUnread.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as Unread'**
+  String get markAsUnread;
+
+  /// No description provided for @addToBookmarks.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to Bookmarks'**
+  String get addToBookmarks;
+
+  /// No description provided for @removeFromBookmarks.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from Bookmarks'**
+  String get removeFromBookmarks;
+
+  /// No description provided for @healthyVsUnhealthyFood.
+  ///
+  /// In en, this message translates to:
+  /// **'Healthy vs Unhealthy Food'**
+  String get healthyVsUnhealthyFood;
+
+  /// No description provided for @healthyVsUnhealthyFoodDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort foods into healthy and unhealthy categories for your teeth'**
+  String get healthyVsUnhealthyFoodDesc;
+
+  /// No description provided for @brushingChecklist.
+  ///
+  /// In en, this message translates to:
+  /// **'Brushing Checklist'**
+  String get brushingChecklist;
+
+  /// No description provided for @brushingChecklistDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete all steps of a proper brushing routine'**
+  String get brushingChecklistDesc;
+
+  /// No description provided for @oralHygieneChallenge.
+  ///
+  /// In en, this message translates to:
+  /// **'Oral Hygiene Challenge'**
+  String get oralHygieneChallenge;
+
+  /// No description provided for @oralHygieneChallengeDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Master the basics of dental care in 7 days'**
+  String get oralHygieneChallengeDesc;
+
+  /// No description provided for @plaguePreventionActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Plaque Prevention Activity'**
+  String get plaguePreventionActivity;
+
+  /// No description provided for @plaguePreventionDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn how to prevent plaque buildup with interactive exercises'**
+  String get plaguePreventionDesc;
+
+  /// No description provided for @brushingStreakDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Brush twice daily for 7 consecutive days'**
+  String get brushingStreakDesc;
+
+  /// No description provided for @noSugaryDrinksChallenge.
+  ///
+  /// In en, this message translates to:
+  /// **'No Sugary Drinks Challenge'**
+  String get noSugaryDrinksChallenge;
+
+  /// No description provided for @noSugaryDrinksDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Go 7 days without sugary drinks and see the difference'**
+  String get noSugaryDrinksDesc;
+
+  /// No description provided for @flossingChallenge.
+  ///
+  /// In en, this message translates to:
+  /// **'Flossing Challenge'**
+  String get flossingChallenge;
+
+  /// No description provided for @flossingChallengeDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Build a flossing habit over 14 days'**
+  String get flossingChallengeDesc;
+
+  /// No description provided for @hydrationChallenge.
+  ///
+  /// In en, this message translates to:
+  /// **'Hydration Challenge'**
+  String get hydrationChallenge;
+
+  /// No description provided for @hydrationChallengeDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Drink 8 glasses of water daily for 7 days'**
+  String get hydrationChallengeDesc;
+
+  /// No description provided for @oralHygieneGuide.
+  ///
+  /// In en, this message translates to:
+  /// **'Oral Hygiene Guide'**
+  String get oralHygieneGuide;
+
+  /// No description provided for @brushingGuide.
+  ///
+  /// In en, this message translates to:
+  /// **'Brushing Technique Guide'**
+  String get brushingGuide;
+
+  /// No description provided for @cavityPreventionGuide.
+  ///
+  /// In en, this message translates to:
+  /// **'Cavity Prevention Guide'**
+  String get cavityPreventionGuide;
+
+  /// No description provided for @gumCareGuide.
+  ///
+  /// In en, this message translates to:
+  /// **'Gum Care & Health'**
+  String get gumCareGuide;
+
+  /// No description provided for @kidsDentalCare.
+  ///
+  /// In en, this message translates to:
+  /// **'Kids Dental Care'**
+  String get kidsDentalCare;
+
+  /// No description provided for @pregnancyOralCare.
+  ///
+  /// In en, this message translates to:
+  /// **'Pregnancy Oral Care'**
+  String get pregnancyOralCare;
+
+  /// No description provided for @pages.
+  ///
+  /// In en, this message translates to:
+  /// **'pages'**
+  String get pages;
+
+  /// No description provided for @readingProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading Progress'**
+  String get readingProgress;
+
+  /// No description provided for @downloaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloaded'**
+  String get downloaded;
+
+  /// No description provided for @readyToDownload.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to download'**
+  String get readyToDownload;
+
+  /// No description provided for @download.
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get download;
+
+  /// No description provided for @viewed.
+  ///
+  /// In en, this message translates to:
+  /// **'Viewed'**
+  String get viewed;
+
+  /// No description provided for @completed.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get completed;
+
+  /// No description provided for @inProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'In Progress'**
+  String get inProgress;
+
+  /// No description provided for @startChallenge.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Challenge'**
+  String get startChallenge;
+
+  /// No description provided for @startActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Activity'**
+  String get startActivity;
+
+  /// No description provided for @markAsLearned.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as Learned'**
+  String get markAsLearned;
+
+  /// No description provided for @learned.
+  ///
+  /// In en, this message translates to:
+  /// **'Learned!'**
+  String get learned;
+
+  /// No description provided for @why.
+  ///
+  /// In en, this message translates to:
+  /// **'Why?'**
+  String get why;
+
+  /// No description provided for @scientificFacts.
+  ///
+  /// In en, this message translates to:
+  /// **'📚 Scientific Facts'**
+  String get scientificFacts;
+
+  /// No description provided for @myProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Progress'**
+  String get myProgress;
+
+  /// No description provided for @articlesRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Articles Read'**
+  String get articlesRead;
+
+  /// No description provided for @activitiesCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Activities Completed'**
+  String get activitiesCompleted;
+
+  /// No description provided for @challengesCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Challenges Completed'**
+  String get challengesCompleted;
+
+  /// No description provided for @pdfsRead.
+  ///
+  /// In en, this message translates to:
+  /// **'PDFs Read'**
+  String get pdfsRead;
+
+  /// No description provided for @currentStreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Streak'**
+  String get currentStreak;
+
+  /// No description provided for @longestStreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Longest Streak'**
+  String get longestStreak;
+
+  /// No description provided for @totalPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Points'**
+  String get totalPoints;
+
+  /// No description provided for @filterByCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter by Category'**
+  String get filterByCategory;
+
+  /// No description provided for @sortBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort by'**
+  String get sortBy;
+
+  /// No description provided for @sortByNewest.
+  ///
+  /// In en, this message translates to:
+  /// **'Newest'**
+  String get sortByNewest;
+
+  /// No description provided for @sortByPopular.
+  ///
+  /// In en, this message translates to:
+  /// **'Most Popular'**
+  String get sortByPopular;
+
+  /// No description provided for @sortByReadTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Read Time'**
+  String get sortByReadTime;
+
+  /// No description provided for @noBookmarks.
+  ///
+  /// In en, this message translates to:
+  /// **'No bookmarks yet'**
+  String get noBookmarks;
+
+  /// No description provided for @startBookmarkingDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Articles you bookmark will appear here'**
+  String get startBookmarkingDesc;
+
+  /// No description provided for @noBrushingData.
+  ///
+  /// In en, this message translates to:
+  /// **'No data available'**
+  String get noBrushingData;
+
+  /// No description provided for @days.
+  ///
+  /// In en, this message translates to:
+  /// **'days'**
+  String get days;
+
+  /// Challenge duration
+  ///
+  /// In en, this message translates to:
+  /// **'{day}-Day Challenge'**
+  String dayChallenge(int day);
+
+  /// Completion status
+  ///
+  /// In en, this message translates to:
+  /// **'{percentage}% Complete'**
+  String completionPercentage(int percentage);
+
+  /// No description provided for @challengeCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Challenge Completed! 🎉'**
+  String get challengeCompleted;
+
+  /// No description provided for @continueReading.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue Reading'**
+  String get continueReading;
+
+  /// No description provided for @finishReading.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish Reading'**
+  String get finishReading;
+
+  /// No description provided for @addedToBookmarks.
+  ///
+  /// In en, this message translates to:
+  /// **'Added to bookmarks'**
+  String get addedToBookmarks;
+
+  /// No description provided for @removedFromBookmarks.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed from bookmarks'**
+  String get removedFromBookmarks;
 }
 
 class _AppLocalizationsDelegate
