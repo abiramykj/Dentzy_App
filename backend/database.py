@@ -68,9 +68,98 @@ def init_db() -> None:
 
     try:
         Base.metadata.create_all(bind=engine)
+        _run_password_hash_migration(engine)
     except OperationalError as exc:
         if not _url.drivername.startswith("sqlite"):
             _switch_to_sqlite_fallback(exc)
             Base.metadata.create_all(bind=engine)
+            _run_password_hash_migration(engine)
         else:
             raise
+
+
+def _run_password_hash_migration(engine) -> None:
+    """Run a safe startup migration for users.password_hash compatibility."""
+    from sqlalchemy import text
+
+    logger.info("[DB MIGRATION] Starting users.password_hash compatibility migration")
+    with engine.begin() as conn:
+        dialect = engine.dialect.name.lower()
+
+        # Ensure users table exists before attempting migration.
+        table_exists = False
+        if dialect == "sqlite":
+            result = conn.execute(text("SELECT name FROM sqlite_master WHERE type='table' AND name='users'"))
+            table_exists = bool(result.all())
+        else:
+            try:
+                result = conn.execute(
+                    text(
+                        "SELECT column_name FROM information_schema.columns WHERE table_name='users'"
+                    )
+                )
+                table_exists = bool(result.all())
+            except Exception:
+                try:
+                    result = conn.execute(text("SELECT 1 FROM users LIMIT 1"))
+                    table_exists = True
+                except Exception:
+                    table_exists = False
+
+        if not table_exists:
+            logger.info("[DB MIGRATION] users table not present yet; skipping password_hash migration")
+            return
+
+        has_password_hash = False
+        has_hashed_password = False
+
+        if dialect == "sqlite":
+            res = conn.execute(text("PRAGMA table_info('users')")).mappings().all()
+            cols = [r["name"] for r in res]
+            has_password_hash = "password_hash" in cols
+            has_hashed_password = "hashed_password" in cols
+        else:
+            try:
+                res = conn.execute(
+                    text(
+                        "SELECT column_name FROM information_schema.columns WHERE table_name='users'"
+                    )
+                ).all()
+                cols = [r[0] for r in res]
+                has_password_hash = "password_hash" in cols
+                has_hashed_password = "hashed_password" in cols
+            except Exception:
+                try:
+                    r = conn.execute(text("SELECT * FROM users LIMIT 1"))
+                    cols = [c[0] for c in r.cursor.description]
+                    has_password_hash = "password_hash" in cols
+                    has_hashed_password = "hashed_password" in cols
+                except Exception:
+                    logger.warning("[DB MIGRATION] Unable to inspect users table schema; aborting migration")
+                    return
+
+        if has_password_hash:
+            logger.info("[DB MIGRATION] password_hash column already exists; no migration required")
+            return
+
+        logger.info("[DB MIGRATION] password_hash missing; adding new column")
+        if dialect == "sqlite":
+            conn.execute(text("ALTER TABLE users ADD COLUMN password_hash VARCHAR(255) DEFAULT ''"))
+        else:
+            try:
+                conn.execute(text("ALTER TABLE users ADD COLUMN password_hash VARCHAR(255)"))
+            except Exception:
+                conn.execute(text("ALTER TABLE users ADD COLUMN password_hash VARCHAR(255) DEFAULT ''"))
+
+        logger.info("[DB MIGRATION] Added password_hash column to users table")
+
+        if has_hashed_password:
+            logger.info("[DB MIGRATION] Copying legacy hashed_password values into password_hash")
+            conn.execute(
+                text(
+                    "UPDATE users SET password_hash = hashed_password WHERE password_hash IS NULL OR password_hash = ''"
+                )
+            )
+            logger.info("[DB MIGRATION] Data copy from hashed_password completed")
+
+        logger.info("[DB MIGRATION] users.password_hash migration completed")
