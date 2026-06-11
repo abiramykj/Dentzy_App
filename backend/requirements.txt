@@ -1,7 +1,6 @@
 fastapi
 uvicorn
 httpx
-sentence-transformers
 scikit-learn
 numpy
 pandas
@@ -15,7 +14,6 @@ python-multipart
 fastapi
 uvicorn
 httpx
-sentence-transformers
 scikit-learn
 numpy
 pandas

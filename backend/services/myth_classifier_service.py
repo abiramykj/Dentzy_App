@@ -10,9 +10,7 @@ from typing import Any
 import httpx
 from sqlalchemy.orm import Session
 
-from data import all_facts, all_myths
 from services.admin_service import get_ai_provider_settings
-from services.local_myth_classifier import classify as local_classify
 from utils.config import GROQ_FALLBACK_MODEL
 
 logging.basicConfig(level=logging.INFO)
@@ -285,10 +283,8 @@ async def _classify_with_groq(sentence: str, db: Session | None = None) -> dict[
     timeout_seconds = provider_settings.timeout_seconds
 
     if not api_key:
-        logger.warning("[CLASSIFY] GROQ_API_KEY not configured, using local classifier")
-        result = _normalize_local_result(local_classify(sentence))
-        logger.info(f"[CLASSIFY] LOCAL RESULT: {result}")
-        return result
+        logger.warning("[CLASSIFY] GROQ_API_KEY not configured")
+        return _fallback_response("Unable to classify statement right now.")
 
     detected_language = _detect_language(sentence)
     logger.info(f"[CLASSIFY] DETECTED_LANGUAGE: {detected_language}")
@@ -341,10 +337,10 @@ async def _classify_with_groq(sentence: str, db: Session | None = None) -> dict[
                 logger.info(f"[CLASSIFY] GROQ HTTP RESPONSE: {response.status_code}")
         except httpx.TimeoutException as e:
             logger.error(f"[CLASSIFY] GROQ TIMEOUT after {timeout_seconds}s: {e}")
-            return _normalize_local_result(local_classify(sentence))
+            return _fallback_response("GROQ request timed out.")
         except httpx.HTTPError as e:
             logger.error(f"[CLASSIFY] GROQ HTTP ERROR: {e}")
-            return _normalize_local_result(local_classify(sentence))
+            return _fallback_response("GROQ request failed.")
 
         if response.status_code == 400 and model != GROQ_FALLBACK_MODEL:
             logger.warning(f"[CLASSIFY] Model {model} returned 400, trying fallback model")
@@ -352,14 +348,14 @@ async def _classify_with_groq(sentence: str, db: Session | None = None) -> dict[
             
         if response.status_code < 200 or response.status_code >= 300:
             logger.error(f"[CLASSIFY] GROQ returned error {response.status_code}: {response.text[:200]}")
-            return _normalize_local_result(local_classify(sentence))
+            return _fallback_response(f"GROQ API error: HTTP {response.status_code}")
 
         try:
             data = response.json()
             logger.debug(f"[CLASSIFY] GROQ JSON response received")
         except json.JSONDecodeError as e:
             logger.error(f"[CLASSIFY] GROQ response not valid JSON: {e}")
-            return _normalize_local_result(local_classify(sentence))
+            return _fallback_response("GROQ response was not valid JSON.")
 
         try:
             content = data["choices"][0]["message"]["content"]
@@ -367,14 +363,14 @@ async def _classify_with_groq(sentence: str, db: Session | None = None) -> dict[
         except (KeyError, IndexError, TypeError) as e:
             logger.error(f"[CLASSIFY] Failed to extract content from GROQ response: {e}")
             logger.debug(f"[CLASSIFY] Response structure: {data}")
-            return _normalize_local_result(local_classify(sentence))
+            return _fallback_response("Failed to extract content from GROQ response.")
 
         parsed = extract_json(content)
         logger.info(f"[CLASSIFY] PARSED JSON: {parsed}")
         
         if not parsed:
             logger.error(f"[CLASSIFY] Failed to extract JSON from GROQ content")
-            return _normalize_local_result(local_classify(sentence))
+            return _fallback_response("Failed to parse GROQ classification JSON.")
 
         normalized = {
             "type": _normalize_type(parsed.get("type")),
@@ -398,10 +394,8 @@ async def _classify_with_groq(sentence: str, db: Session | None = None) -> dict[
         return normalized
 
     elapsed = time.time() - start_time
-    logger.warning(f"[CLASSIFY] All GROQ models failed, using local classifier (elapsed: {elapsed:.2f}s)")
-    result = _normalize_local_result(local_classify(sentence))
-    logger.info(f"[CLASSIFY] FALLBACK LOCAL RESULT: {result}")
-    return result
+    logger.warning(f"[CLASSIFY] All GROQ models failed (elapsed: {elapsed:.2f}s)")
+    return _fallback_response("Unable to classify statement right now.")
 
 
 async def classify_statement(sentence: str) -> dict[str, Any]:
@@ -409,11 +403,3 @@ async def classify_statement(sentence: str) -> dict[str, Any]:
     if not sentence:
         return _fallback_response("Please enter a statement to classify.")
     return await _classify_with_groq(sentence)
-
-
-def _normalize_local_result(result: dict[str, Any]) -> dict[str, Any]:
-    return {
-        "type": _normalize_type(result.get("type")),
-        "confidence": _normalize_confidence(result.get("confidence")),
-        "explanation": _safe_text(result.get("explanation"), "Unable to generate detailed explanation at this time."),
-    }
