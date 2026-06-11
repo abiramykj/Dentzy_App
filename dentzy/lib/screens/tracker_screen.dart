@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+
+import '../services/tracker_service.dart';
+import '../utils/theme.dart';
 import '../widgets/custom_card.dart';
 import '../widgets/progress_chart.dart';
-import '../utils/theme.dart';
 import '../l10n/app_localizations.dart';
 
 class TrackerScreen extends StatelessWidget {
@@ -17,149 +19,162 @@ class TrackerScreen extends StatelessWidget {
         title: Text(loc.yourStatistics),
         elevation: 0,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Overall Stats
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ProgressChart(
-                    title: _t(context, 'Overall Accuracy', 'ஒட்டுமொத்த துல்லியம்'),
-                    percentage: 82.5,
-                    color: AppTheme.primaryColor,
-                    size: 120,
-                  ),
-                  ProgressChart(
-                    title: _t(context, 'Weekly Target', 'வார இலக்கு'),
-                    percentage: 65.0,
-                    color: AppTheme.successColor,
-                    size: 120,
-                  ),
-                ],
-              ),
-            ),
+      body: FutureBuilder<Map<String, dynamic>?>(
+        future: TrackerService.instance.fetchStats(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-            const SizedBox(height: 16),
+          final stats = snapshot.data ?? const <String, dynamic>{};
+          final completedArticles = _intValue(stats, 'completed_articles');
+          final totalArticles = _intValue(stats, 'total_articles');
+          final articlePercentage = _intValue(stats, 'article_percentage');
+          final watchedVideos = _intValue(stats, 'watched_videos');
+          final totalVideos = _intValue(stats, 'total_videos');
+          final videoPercentage = _intValue(stats, 'video_percentage');
+          final mythsChecked = _intValue(stats, 'myths_checked');
+          final brushingSessions = _intValue(stats, 'brushing_sessions');
+          final currentStreak = _intValue(stats, 'current_streak');
+          final articleDisplayCount = _safeCompletedCount(completedArticles, totalArticles);
+          final videoDisplayCount = _safeCompletedCount(watchedVideos, totalVideos);
 
-            // Statistics Cards
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    _t(context, 'Statistics', 'புள்ளிவிவரங்கள்'),
-                    style: Theme.of(context).textTheme.headlineSmall,
+          return SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ProgressChart(
+                        title: _t(context, 'Articles Completed', 'கட்டுரைகள் முடிந்தது'),
+                        percentage: articlePercentage.toDouble(),
+                        color: AppTheme.primaryColor,
+                        size: 120,
+                      ),
+                      ProgressChart(
+                        title: _t(context, 'Videos Watched', 'வீடியோக்கள் பார்த்தது'),
+                        percentage: videoPercentage.toDouble(),
+                        color: AppTheme.successColor,
+                        size: 120,
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 12),
-                  _buildStatCard(
-                    context,
-                    icon: Icons.quiz,
-                    title: _t(context, 'Total Questions Answered', 'மொத்த கேள்விகள்'),
-                    value: '125',
-                    color: AppTheme.primaryColor,
+                ),
+                const SizedBox(height: 12),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _t(context, 'Learning Progress', 'கற்றல் முன்னேற்றம்'),
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                      const SizedBox(height: 12),
+                      _buildStatCard(
+                        context,
+                        icon: Icons.menu_book_rounded,
+                        title: _t(context, 'Learning Articles Completed', 'கற்றல் கட்டுரைகள் முடிந்தது'),
+                        value: '$articleDisplayCount / $totalArticles',
+                        color: AppTheme.primaryColor,
+                      ),
+                      const SizedBox(height: 12),
+                      _buildStatCard(
+                        context,
+                        icon: Icons.play_circle_fill_rounded,
+                        title: _t(context, 'Videos Watched', 'வீடியோக்கள் பார்த்தது'),
+                        value: '$videoDisplayCount / $totalVideos',
+                        color: AppTheme.successColor,
+                      ),
+                      const SizedBox(height: 12),
+                      _buildStatCard(
+                        context,
+                        icon: Icons.quiz_rounded,
+                        title: _t(context, 'Myths Checked', 'மித் சோதனைகள்'),
+                        value: mythsChecked.toString(),
+                        color: AppTheme.accentColor,
+                      ),
+                      const SizedBox(height: 12),
+                      _buildStatCard(
+                        context,
+                        icon: Icons.brush_rounded,
+                        title: _t(context, 'Brushing Sessions', 'பல் துலக்கும் அமர்வுகள்'),
+                        value: brushingSessions.toString(),
+                        color: AppTheme.secondaryColor,
+                      ),
+                      const SizedBox(height: 12),
+                      _buildStatCard(
+                        context,
+                        icon: Icons.local_fire_department_rounded,
+                        title: _t(context, 'Current Streak', 'தற்போதைய தொடர்'),
+                        value: _t(context, '$currentStreak days', '$currentStreak நாட்கள்'),
+                        color: AppTheme.primaryDark,
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 12),
-                  _buildStatCard(
-                    context,
-                    icon: Icons.check_circle,
-                    title: _t(context, 'Correct Answers', 'சரியான பதில்கள்'),
-                    value: '103',
-                    color: AppTheme.successColor,
-                  ),
-                  const SizedBox(height: 12),
-                  _buildStatCard(
-                    context,
-                    icon: Icons.local_fire_department,
-                    title: _t(context, 'Current Streak', 'தற்போதைய தொடர்'),
-                    value: '12 days',
-                    color: AppTheme.accentColor,
-                  ),
-                  const SizedBox(height: 12),
-                  _buildStatCard(
-                    context,
-                    icon: Icons.calendar_today,
-                    title: _t(context, 'Last Activity', 'கடைசி செயல்பாடு'),
-                    value: 'Today',
-                    color: AppTheme.secondaryColor,
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 24),
-
-            // Category Performance
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    _t(context, 'Category Performance', 'பிரிவு செயல்திறன்'),
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                  const SizedBox(height: 12),
-                  _buildCategoryCard(context, loc.health, 0.9, AppTheme.primaryColor),
-                  const SizedBox(height: 8),
-                  _buildCategoryCard(context, loc.science, 0.85, AppTheme.successColor),
-                  const SizedBox(height: 8),
-                  _buildCategoryCard(context, loc.technology, 0.75, AppTheme.accentColor),
-                  const SizedBox(height: 8),
-                  _buildCategoryCard(context, loc.history, 0.8, AppTheme.secondaryColor),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 24),
-
-            // Activity Heatmap (simplified)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    _t(context, 'Recent Activity', 'சமீபத்திய செயல்பாடு'),
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                  const SizedBox(height: 12),
-                  Wrap(
-                    spacing: 4,
-                    runSpacing: 4,
-                    children: List.generate(
-                      21,
-                      (index) => Container(
-                        width: 30,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          color: index % 3 == 0
-                            ? AppTheme.primaryColor.withOpacity(0.8)
-                            : index % 3 == 1
-                              ? AppTheme.primaryColor.withOpacity(0.4)
-                              : Colors.grey[300],
-                          borderRadius: BorderRadius.circular(4),
+                ),
+                const SizedBox(height: 24),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _t(context, 'Activity Summary', 'செயல்பாட்டு சுருக்கம்'),
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                      const SizedBox(height: 12),
+                      CustomCard(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _summaryRow(context, _t(context, 'Article completion', 'கட்டுரை நிறைவு'), '$articleDisplayCount / $totalArticles'),
+                            const SizedBox(height: 10),
+                            _summaryRow(context, _t(context, 'Video watch rate', 'வீடியோ பார்வை வீதம்'), '$videoDisplayCount / $totalVideos'),
+                            const SizedBox(height: 10),
+                            _summaryRow(context, _t(context, 'Myths checked', 'மித்கள் சோதனை'), mythsChecked.toString()),
+                            const SizedBox(height: 10),
+                            _summaryRow(context, _t(context, 'Brushing sessions', 'பல் துலக்கும் அமர்வுகள்'), brushingSessions.toString()),
+                            const SizedBox(height: 10),
+                            _summaryRow(context, _t(context, 'Current streak', 'தற்போதைய தொடர்'), currentStreak.toString()),
+                          ],
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                const SizedBox(height: 32),
+              ],
             ),
-
-            const SizedBox(height: 32),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
 
   String _t(BuildContext context, String english, String tamil) {
     return Localizations.localeOf(context).languageCode == 'ta' ? tamil : english;
+  }
+
+  int _intValue(Map<String, dynamic> stats, String key) {
+    final value = stats[key];
+    if (value is int) {
+      return value;
+    }
+    if (value is num) {
+      return value.toInt();
+    }
+    return int.tryParse(value?.toString() ?? '') ?? 0;
+  }
+
+  int _safeCompletedCount(int completed, int total) {
+    if (total <= 0) {
+      return 0;
+    }
+    return completed.clamp(0, total);
   }
 
   Widget _buildStatCard(
@@ -193,9 +208,9 @@ class TrackerScreen extends StatelessWidget {
                 Text(
                   value,
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: color,
-                    fontWeight: FontWeight.bold,
-                  ),
+                        color: color,
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
               ],
             ),
@@ -205,47 +220,20 @@ class TrackerScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCategoryCard(
-    BuildContext context,
-    String category,
-    double percentage,
-    Color color,
-  ) {
-    return CustomCard(
-      padding: const EdgeInsets.all(12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                category,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              Text(
-                '${(percentage * 100).toStringAsFixed(0)}%',
-                style: TextStyle(
-                  color: color,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
+  Widget _summaryRow(BuildContext context, String label, String value) {
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            label,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
           ),
-          const SizedBox(height: 8),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(4),
-            child: LinearProgressIndicator(
-              value: percentage,
-              minHeight: 6,
-              backgroundColor: Colors.grey[300],
-              valueColor: AlwaysStoppedAnimation<Color>(color),
-            ),
-          ),
-        ],
-      ),
+        ),
+        Text(
+          value,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppTheme.textSecondary),
+        ),
+      ],
     );
   }
 }

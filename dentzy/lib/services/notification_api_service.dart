@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
+import 'authenticated_http_client.dart';
 import '../utils/constants.dart';
 import 'auth_service.dart';
 
@@ -18,8 +18,10 @@ class NotificationApiService {
     required bool enabled,
   }) async {
     try {
-      final token = await AuthService.getToken();
-      if (token == null || token.isEmpty) {
+      final headers = await AuthService.getAuthorizedHeaders(
+        includeContentType: true,
+      );
+      if (headers == null) {
         return false;
       }
 
@@ -31,17 +33,17 @@ class NotificationApiService {
         'enabled': enabled,
       });
 
-      final response = await http
-          .post(
-            uri,
-            headers: {
-              'Content-Type': 'application/json; charset=utf-8',
-              'Accept': 'application/json',
-              'Authorization': 'Bearer $token',
-            },
-            body: payload,
-          )
-          .timeout(AppConstants.apiTimeout);
+      final response = await AuthenticatedHttpClient.instance.post(
+        uri,
+        headersProvider: () => AuthService.getAuthorizedHeaders(includeContentType: true),
+        body: payload,
+        onSessionExpired: AuthService.handleSessionExpired,
+        timeout: AppConstants.apiTimeout,
+      );
+
+      if (response == null) {
+        return false;
+      }
 
       return response.statusCode >= 200 && response.statusCode < 300;
     } catch (_) {

@@ -1,84 +1,88 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 
+import '../utils/constants.dart';
+import 'auth_service.dart';
+import 'authenticated_http_client.dart';
+
 class TrackerService {
-  // Track user progress
-  Future<void> trackProgress({
-    required String userId,
-    required String mythId,
-    required bool isCorrect,
+  static final TrackerService instance = TrackerService._internal();
+
+  TrackerService._internal();
+
+  Future<Map<String, dynamic>?> fetchStats() async {
+    final uri = Uri.parse('${_backendBaseUrl()}/api/tracker/stats');
+    try {
+      debugPrint('[TrackerService] GET $uri');
+      final response = await AuthenticatedHttpClient.instance.get(
+        uri,
+        headersProvider: () => AuthService.getAuthorizedHeaders(),
+        onSessionExpired: AuthService.handleSessionExpired,
+        timeout: AppConstants.apiTimeout,
+      );
+
+      if (response == null || response.statusCode < 200 || response.statusCode >= 300) {
+        debugPrint('[TrackerService] stats request failed');
+        return null;
+      }
+
+      final decoded = jsonDecode(response.body);
+      if (decoded is Map<String, dynamic>) {
+        return decoded;
+      }
+      if (decoded is Map) {
+        return decoded.map((key, value) => MapEntry(key.toString(), value));
+      }
+    } catch (error) {
+      debugPrint('[TrackerService] fetchStats failed: $error');
+    }
+    return null;
+  }
+
+  Future<void> markArticleCompleted(String articleId) async {
+    await _postProgress('/api/tracker/articles/$articleId/complete', label: 'article', id: articleId);
+  }
+
+  Future<void> markVideoWatched(String videoId) async {
+    await _postProgress('/api/tracker/videos/$videoId/watch', label: 'video', id: videoId);
+  }
+
+  Future<void> _postProgress(
+    String path, {
+    required String label,
+    required String id,
   }) async {
+    final uri = Uri.parse('${_backendBaseUrl()}$path');
     try {
-      if (kDebugMode) {
-        print('Tracking progress for user: $userId, myth: $mythId, correct: $isCorrect');
+      debugPrint('[TrackerService] POST $uri');
+      final response = await AuthenticatedHttpClient.instance.post(
+        uri,
+        headersProvider: () => AuthService.getAuthorizedHeaders(includeContentType: true),
+        body: jsonEncode({'id': id}),
+        onSessionExpired: AuthService.handleSessionExpired,
+        timeout: AppConstants.apiTimeout,
+      );
+
+      if (response == null) {
+        return;
       }
-      
-      // TODO: Save to database
-    } catch (e) {
-      if (kDebugMode) {
-        print('Error tracking progress: $e');
+
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        debugPrint('[TrackerService] $label progress request failed: ${response.statusCode}');
       }
-      rethrow;
+    } catch (error) {
+      debugPrint('[TrackerService] $label progress tracking failed: $error');
     }
   }
 
-  // Get user performance metrics
-  Future<Map<String, dynamic>> getPerformanceMetrics(String userId) async {
-    try {
-      if (kDebugMode) {
-        print('Fetching performance metrics for user: $userId');
-      }
-      
-      // TODO: Fetch from database
-      return {
-        'totalAttempts': 50,
-        'correctAnswers': 40,
-        'accuracyPercentage': 80.0,
-        'lastActivityDate': DateTime.now(),
-      };
-    } catch (e) {
-      if (kDebugMode) {
-        print('Error fetching metrics: $e');
-      }
-      rethrow;
-    }
-  }
+  String _backendBaseUrl() {
+    final url = kIsWeb
+        ? AppConstants.localBackendUrl.replaceFirst('10.0.2.2', 'localhost')
+        : (defaultTargetPlatform == TargetPlatform.android
+            ? AppConstants.localBackendUrl
+            : AppConstants.localBackendUrl.replaceFirst('10.0.2.2', '127.0.0.1'));
 
-  // Generate streak data
-  Future<List<Map<String, dynamic>>> getStreakData(String userId) async {
-    try {
-      if (kDebugMode) {
-        print('Generating streak data for user: $userId');
-      }
-      
-      // TODO: Calculate from database
-      return [];
-    } catch (e) {
-      if (kDebugMode) {
-        print('Error generating streak data: $e');
-      }
-      rethrow;
-    }
-  }
-
-  // Get category-wise performance
-  Future<Map<String, double>> getCategoryPerformance(String userId) async {
-    try {
-      if (kDebugMode) {
-        print('Fetching category performance for user: $userId');
-      }
-      
-      // TODO: Calculate from database
-      return {
-        'Health': 85.0,
-        'Science': 90.0,
-        'Technology': 75.0,
-        'History': 80.0,
-      };
-    } catch (e) {
-      if (kDebugMode) {
-        print('Error fetching category performance: $e');
-      }
-      rethrow;
-    }
+    return url;
   }
 }

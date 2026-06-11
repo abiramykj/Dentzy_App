@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -7,6 +9,7 @@ import '../models/educational_article.dart';
 import '../models/interactive_activity.dart';
 import '../models/pdf_resource.dart';
 import '../services/learn_service.dart';
+import '../services/tracker_service.dart';
 import '../utils/theme.dart';
 
 String _localized(BuildContext context, String en, String ta) {
@@ -30,6 +33,7 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
   void initState() {
     super.initState();
     _isBookmarked = widget.article.isBookmarked;
+    unawaited(TrackerService.instance.markArticleCompleted(widget.article.id));
   }
 
   void _toggleBookmark() {

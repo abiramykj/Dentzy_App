@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 from datetime import datetime, timedelta, timezone
+import time
 import traceback
 
 from fastapi import HTTPException, status
@@ -97,24 +98,22 @@ def authenticate_user(db: Session, payload: LoginRequest) -> dict[str, object]:
     Authenticate user with comprehensive logging and error handling.
     """
     try:
+        overall_start = time.perf_counter()
         # Step 1: Normalize email
         email = _normalize_email(str(payload.email))
         logger.info("[AUTH] ========== LOGIN REQUEST RECEIVED ==========")
         logger.info("[AUTH] Email: %s", email)
-        print(f"[AUTH] ========== LOGIN REQUEST RECEIVED ==========")
-        print(f"[AUTH] Email: {email}")
-        print(f"[AUTH] Request timestamp: {datetime.utcnow()}")
+        logger.info("[AUTH] Request timestamp: %s", datetime.utcnow())
         
         # Step 2: Query database for user
         logger.info("[AUTH] [STEP 1] Starting MySQL query to find user by email")
-        print(f"[AUTH] [STEP 1] Starting MySQL query to find user by email: {email}")
+        query_start = time.perf_counter()
         try:
             user = get_user_by_email(db, email)
             logger.info("[AUTH] [STEP 1] MySQL query completed - user found: %s", user is not None)
-            print(f"[AUTH] [STEP 1] MySQL query completed - user found: {user is not None}")
+            logger.info("[AUTH] [STEP 1] MySQL query duration_ms=%.2f", (time.perf_counter() - query_start) * 1000)
         except Exception as query_err:
             logger.error("[AUTH] [STEP 1] MySQL query FAILED: %s", str(query_err), exc_info=True)
-            print(f"[AUTH] [STEP 1] MySQL query FAILED: {str(query_err)}")
             traceback.print_exc()
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -124,30 +123,26 @@ def authenticate_user(db: Session, payload: LoginRequest) -> dict[str, object]:
         # Step 3: Check if user exists
         if user is None:
             logger.warning("[AUTH] [STEP 2] Login failed - user not found email=%s", email)
-            print(f"[AUTH] [STEP 2] Login failed - user not found for email: {email}")
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail={"success": False, "error_code": "invalid_login", "message": "Invalid email or password."},
             )
         
         logger.info("[AUTH] [STEP 2] User found - user_id=%s, email=%s", user.id, user.email)
-        print(f"[AUTH] [STEP 2] User found - user_id={user.id}, email={user.email}")
         
         # Step 4: Verify password with detailed logging
         logger.info("[AUTH] [STEP 3] Starting password verification")
-        print(f"[AUTH] [STEP 3] Starting bcrypt password verification for user_id={user.id}")
+        password_start = time.perf_counter()
         try:
             # Debug bypass: direct comparison when DEBUG_AUTH_BYPASS=1
             if os.getenv("DEBUG_AUTH_BYPASS") == "1":
-                print("[AUTH] [DEBUG] DEBUG_AUTH_BYPASS enabled - using direct comparison for password check")
                 password_valid = (payload.password == user.password_hash)
             else:
                 password_valid = verify_password(payload.password, user.password_hash)
             logger.info("[AUTH] [STEP 3] Password verification completed - valid=%s", password_valid)
-            print(f"[AUTH] [STEP 3] Password verification completed - valid={password_valid}")
+            logger.info("[AUTH] [STEP 3] Password verification duration_ms=%.2f", (time.perf_counter() - password_start) * 1000)
         except Exception as pwd_err:
             logger.error("[AUTH] [STEP 3] Password verification FAILED: %s", str(pwd_err), exc_info=True)
-            print(f"[AUTH] [STEP 3] Password verification FAILED: {str(pwd_err)}")
             traceback.print_exc()
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -156,32 +151,28 @@ def authenticate_user(db: Session, payload: LoginRequest) -> dict[str, object]:
         
         if not password_valid:
             logger.warning("[AUTH] [STEP 4] Login failed - invalid password email=%s", email)
-            print(f"[AUTH] [STEP 4] Login failed - invalid password for email: {email}")
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail={"success": False, "error_code": "invalid_login", "message": "Invalid email or password."},
             )
         
         logger.info("[AUTH] [STEP 4] Password verified successfully")
-        print(f"[AUTH] [STEP 4] Password verified successfully")
         
         # Step 5: Update user remember_me flag
         logger.info("[AUTH] [STEP 5] Updating remember_me flag - remember_me=%s", payload.remember_me)
-        print(f"[AUTH] [STEP 5] Updating remember_me flag - remember_me={payload.remember_me}")
         user.remember_me = payload.remember_me
         
         # Step 6: Commit database changes
         logger.info("[AUTH] [STEP 6] Committing database changes")
-        print(f"[AUTH] [STEP 6] Committing database changes")
+        commit_start = time.perf_counter()
         try:
             db.add(user)
             db.commit()
             db.refresh(user)
             logger.info("[AUTH] [STEP 6] Database commit successful - user_id=%s", user.id)
-            print(f"[AUTH] [STEP 6] Database commit successful - user_id={user.id}")
+            logger.info("[AUTH] [STEP 6] Database commit duration_ms=%.2f", (time.perf_counter() - commit_start) * 1000)
         except Exception as commit_err:
             logger.error("[AUTH] [STEP 6] Database commit FAILED: %s", str(commit_err), exc_info=True)
-            print(f"[AUTH] [STEP 6] Database commit FAILED: {str(commit_err)}")
             db.rollback()
             traceback.print_exc()
             raise HTTPException(
@@ -191,18 +182,16 @@ def authenticate_user(db: Session, payload: LoginRequest) -> dict[str, object]:
         
         # Step 7: Generate JWT token (can be disabled with DEBUG_NO_JWT=1)
         logger.info("[AUTH] [STEP 7] Generating JWT access token")
-        print(f"[AUTH] [STEP 7] Generating JWT access token for user_id={user.id}")
+        token_start = time.perf_counter()
         try:
             if os.getenv("DEBUG_NO_JWT") == "1":
-                print("[AUTH] [DEBUG] DEBUG_NO_JWT enabled - skipping JWT generation")
                 token = "debug-token"
             else:
                 token = create_access_token(subject=user.email, user_id=user.id)
             logger.info("[AUTH] [STEP 7] JWT token generated successfully")
-            print(f"[AUTH] [STEP 7] JWT token generated successfully")
+            logger.info("[AUTH] [STEP 7] JWT generation duration_ms=%.2f", (time.perf_counter() - token_start) * 1000)
         except Exception as token_err:
             logger.error("[AUTH] [STEP 7] JWT token generation FAILED: %s", str(token_err), exc_info=True)
-            print(f"[AUTH] [STEP 7] JWT token generation FAILED: {str(token_err)}")
             traceback.print_exc()
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -212,8 +201,6 @@ def authenticate_user(db: Session, payload: LoginRequest) -> dict[str, object]:
         # Step 8: Return success response
         logger.info("[AUTH] ========== LOGIN SUCCESSFUL ==========")
         logger.info("[AUTH] user_id=%s, email=%s", user.id, user.email)
-        print(f"[AUTH] ========== LOGIN SUCCESSFUL ==========")
-        print(f"[AUTH] user_id={user.id}, email={user.email}")
         
         response = {
             "success": True,
@@ -224,7 +211,7 @@ def authenticate_user(db: Session, payload: LoginRequest) -> dict[str, object]:
             "user": user,
         }
         logger.info("[AUTH] Returning success response to client")
-        print(f"[AUTH] Returning success response to client")
+        logger.info("[AUTH] [STEP 8] Total login duration_ms=%.2f", (time.perf_counter() - overall_start) * 1000)
         return response
         
     except HTTPException:
@@ -233,8 +220,6 @@ def authenticate_user(db: Session, payload: LoginRequest) -> dict[str, object]:
     except Exception as exc:
         logger.error("[AUTH] ========== LOGIN FAILED WITH UNEXPECTED ERROR ==========", exc_info=True)
         logger.error("[AUTH] Error: %s", str(exc))
-        print(f"[AUTH] ========== LOGIN FAILED WITH UNEXPECTED ERROR ==========")
-        print(f"[AUTH] Error: {str(exc)}")
         traceback.print_exc()
         
         raise HTTPException(

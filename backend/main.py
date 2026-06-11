@@ -27,15 +27,20 @@ try:
 except Exception:
     from email_service import generate_otp, send_otp_email
 
-from database import get_db, init_db
+from database import SessionLocal, get_db, init_db
+from routes.admin import router as admin_router
 from routes.auth import router as auth_router
 from routes.brushing import router as brushing_router
 from routes.myths import router as myths_router
 from routes.notifications import router as notifications_router
+from routes.learning import router as learning_router
+from routes.tracker import router as tracker_router
 from routes.users import router as users_router
 from schemas.auth import EmailRequest, LoginRequest, SignupRequest, TokenResponse, VerifyOtpRequest
+from services.admin_service import get_ai_provider_settings
 from services.auth_service import authenticate_user, create_user, send_password_reset_otp, verify_password_reset_otp
 from services.myth_history_service import create_history_entry
+from utils.config import GROQ_FALLBACK_MODEL, BACKEND_CORS_ORIGINS
 
 _THIS_DIR = Path(__file__).resolve().parent
 _ENV_CANDIDATES = [
@@ -48,12 +53,6 @@ for env_path in _ENV_CANDIDATES:
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("dentzy.groq")
-
-GROQ_API_KEY = os.getenv("GROQ_API_KEY", "").strip()
-GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile").strip() or "llama-3.3-70b-versatile"
-GROQ_FALLBACK_MODEL = "llama-3.1-8b-instant"
-GROQ_BASE_URL = os.getenv("GROQ_BASE_URL", "https://api.groq.com/openai/v1").strip().rstrip("/")
-GROQ_TIMEOUT_SECONDS = float(os.getenv("GROQ_TIMEOUT_SECONDS", "15"))
 CLASSIFY_REQUEST_TIMEOUT = 18.0
 
 app = FastAPI()
@@ -65,10 +64,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.include_router(auth_router)
+app.include_router(admin_router)
+app.include_router(learning_router)
 app.include_router(users_router)
 app.include_router(myths_router)
 app.include_router(brushing_router)
 app.include_router(notifications_router)
+app.include_router(tracker_router)
+
+
+def _get_ai_provider_settings(db: Session | None = None):
+    return get_ai_provider_settings(db)
 
 
 class InputText(BaseModel):
@@ -352,14 +358,16 @@ async def _startup_log() -> None:
     logger.info("=" * 60)
     logger.info("Backend starting - Multilingual Myth Checker")
     logger.info("=" * 60)
-    logger.info("Groq model=%s", GROQ_MODEL)
-    logger.info("GROQ base URL=%s", GROQ_BASE_URL)
-    logger.info("GROQ API key loaded=%s", bool(GROQ_API_KEY))
-    logger.info("GROQ timeout=%s seconds", GROQ_TIMEOUT_SECONDS)
+    await asyncio.to_thread(init_db)
+    with SessionLocal() as db:
+        settings = _get_ai_provider_settings(db)
+    logger.info("Groq model=%s", settings.model)
+    logger.info("GROQ base URL=%s", settings.base_url)
+    logger.info("GROQ API key loaded=%s", bool(settings.api_key))
+    logger.info("GROQ timeout=%s seconds", settings.timeout_seconds)
     logger.info("Classify request timeout=%s seconds", CLASSIFY_REQUEST_TIMEOUT)
     logger.info("Supported languages: English, Tamil, Mixed (Tanglish)")
     logger.info("=" * 60)
-    await asyncio.to_thread(init_db)
 
 
 @app.post("/signup", response_model=TokenResponse)
@@ -397,11 +405,12 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)):
 
 
 @app.get("/health")
-async def health() -> dict[str, Any]:
+async def health(db: Session = Depends(get_db)) -> dict[str, Any]:
+    settings = _get_ai_provider_settings(db)
     return {
         "status": "ok",
-        "groq_model": GROQ_MODEL,
-        "groq_configured": bool(GROQ_API_KEY),
+        "groq_model": settings.model,
+        "groq_configured": bool(settings.api_key),
         "email_configured": bool(os.getenv("EMAIL_USER", "").strip() and os.getenv("EMAIL_PASSWORD", "").strip()),
     }
 
@@ -457,10 +466,11 @@ async def test_email(email: str) -> dict[str, Any]:
     }
 
 
-async def _classify_with_groq(sentence: str, detected_language: str) -> dict[str, Any]:
+async def _classify_with_groq(sentence: str, detected_language: str, db: Session | None = None) -> dict[str, Any]:
     start_time = time.time()
+    settings = _get_ai_provider_settings(db)
     
-    if not GROQ_API_KEY:
+    if not settings.api_key:
         logger.error("GROQ_API_KEY is not configured")
         return _fallback_response("Unable to classify statement right now.")
 
@@ -472,13 +482,13 @@ async def _classify_with_groq(sentence: str, detected_language: str) -> dict[str
     logger.info("Input length=%d chars", len(sentence))
 
     headers = {
-        "Authorization": f"Bearer {GROQ_API_KEY}",
+        "Authorization": f"Bearer {settings.api_key}",
         "Content-Type": "application/json; charset=utf-8",
         "Accept": "application/json",
     }
 
-    url = f"{GROQ_BASE_URL}/chat/completions"
-    models_to_try = [GROQ_MODEL, GROQ_FALLBACK_MODEL]
+    url = f"{settings.base_url}/chat/completions"
+    models_to_try = [settings.model, GROQ_FALLBACK_MODEL]
     
     for attempt, model in enumerate(models_to_try, 1):
         logger.info("Model attempt %d/%d: %s", attempt, len(models_to_try), model)
@@ -498,11 +508,11 @@ async def _classify_with_groq(sentence: str, detected_language: str) -> dict[str
         logger.info("GROQ model=%s", model)
 
         try:
-            async with httpx.AsyncClient(timeout=GROQ_TIMEOUT_SECONDS) as client:
+            async with httpx.AsyncClient(timeout=settings.timeout_seconds) as client:
                 response = await client.post(url, headers=headers, json=payload)
             logger.info("GROQ HTTP request completed with status=%s", response.status_code)
         except httpx.TimeoutException as exc:
-            logger.error("GROQ request timed out after %s seconds", GROQ_TIMEOUT_SECONDS)
+            logger.error("GROQ request timed out after %s seconds", settings.timeout_seconds)
             return _fallback_response("GROQ request timed out.")
         except httpx.HTTPError as exc:
             logger.error("GROQ HTTP error occurred: %s", exc)
@@ -612,7 +622,7 @@ async def classify(
 
     try:
         result = await asyncio.wait_for(
-            _classify_with_groq(sentence, detected_language),
+            _classify_with_groq(sentence, detected_language, db=db),
             timeout=CLASSIFY_REQUEST_TIMEOUT
         )
     except asyncio.TimeoutError:

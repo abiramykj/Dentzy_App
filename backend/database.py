@@ -58,7 +58,9 @@ def session_scope():
 
 
 def init_db() -> None:
+    from models.admin import AdminUser, AppSetting, LearningArticle, LearningVideo, QuizQuestion  # noqa: F401
     from models.brushing_tracker import BrushingTracker  # noqa: F401
+    from models.learning_progress import ArticleProgress, VideoProgress  # noqa: F401
     from models.myth_history import MythHistory  # noqa: F401
     from models.notification import Notification  # noqa: F401
     from models.otp_verification import OTPVerification  # noqa: F401

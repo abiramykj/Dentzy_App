@@ -3,6 +3,7 @@ import 'dart:async';
 import '../widgets/custom_card.dart';
 import '../utils/theme.dart';
 import '../l10n/app_localizations.dart';
+import '../services/notification_service.dart';
 
 class BrushingTimerScreen extends StatefulWidget {
   const BrushingTimerScreen({super.key});
@@ -16,6 +17,7 @@ class _BrushingTimerScreenState extends State<BrushingTimerScreen> {
   int _remainingSeconds = 120; // 2 minutes in seconds
   bool _isRunning = false;
   final int _totalSeconds = 120;
+  static const int _completionNotificationId = 2001;
 
   @override
   void initState() {
@@ -32,15 +34,24 @@ class _BrushingTimerScreenState extends State<BrushingTimerScreen> {
 
   void _startTimer() {
     if (!_isRunning && _remainingSeconds > 0) {
-      _isRunning = true;
+      setState(() {
+        _isRunning = true;
+      });
+      unawaited(_scheduleCompletionNotification());
       _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+        if (!mounted) {
+          timer.cancel();
+          return;
+        }
+
         setState(() {
-          if (_remainingSeconds > 0) {
+          if (_remainingSeconds > 1) {
             _remainingSeconds--;
           } else {
+            _remainingSeconds = 0;
             _isRunning = false;
             _timer?.cancel();
-            _showCompletionDialog();
+            unawaited(_handleTimerComplete());
           }
         });
       });
@@ -50,6 +61,7 @@ class _BrushingTimerScreenState extends State<BrushingTimerScreen> {
   void _pauseTimer() {
     if (_isRunning) {
       _timer?.cancel();
+      unawaited(_cancelCompletionNotification());
       setState(() {
         _isRunning = false;
       });
@@ -58,10 +70,47 @@ class _BrushingTimerScreenState extends State<BrushingTimerScreen> {
 
   void _resetTimer() {
     _timer?.cancel();
+    unawaited(_cancelCompletionNotification());
     setState(() {
       _remainingSeconds = 120;
       _isRunning = false;
     });
+  }
+
+  Future<void> _scheduleCompletionNotification() async {
+    try {
+      final loc = AppLocalizations.of(context)!;
+      await NotificationService.instance.ensurePermissionsAndLogDiagnostics();
+      final scheduledDate = DateTime.now().add(Duration(seconds: _remainingSeconds));
+      debugPrint('[BrushingTimer] scheduling completion notification for $scheduledDate');
+      await NotificationService.instance.scheduleNotificationAt(
+        id: _completionNotificationId,
+        title: loc.greatJob,
+        body: loc.completedBrushingSession,
+        scheduledDate: scheduledDate,
+        payload: 'brushing_timer_complete',
+        preferExact: true,
+      );
+    } catch (error) {
+      debugPrint('[BrushingTimer] schedule completion notification failed: $error');
+    }
+  }
+
+  Future<void> _cancelCompletionNotification() async {
+    try {
+      await NotificationService.instance.cancelNotification(_completionNotificationId);
+    } catch (error) {
+      debugPrint('[BrushingTimer] cancel completion notification failed: $error');
+    }
+  }
+
+  Future<void> _handleTimerComplete() async {
+    await _cancelCompletionNotification();
+    if (!mounted) {
+      return;
+    }
+
+    _showCompletionDialog();
   }
 
   void _showCompletionDialog() {

@@ -3,8 +3,11 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import 'authenticated_http_client.dart';
 import '../utils/constants.dart';
+import 'session_redirect_service.dart';
 import 'session_manager.dart';
 
 class AuthResult {
@@ -26,6 +29,8 @@ class AuthService {
   static const String _rememberedTokenKey = 'auth_remembered_token';
   static const String _rememberMeFlagKey = 'auth_remember_me_enabled';
 
+  static const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
+
   static SharedPreferences? _prefs;
   static String? _accessToken;
   static String _cachedLanguageCode = '';
@@ -33,7 +38,35 @@ class AuthService {
 
   static Future<void> initialize() async {
     _prefs ??= await SharedPreferences.getInstance();
+    await _hydrateTokenCache();
     await AuthSessionService.instance.initialize();
+  }
+
+  static Future<void> _hydrateTokenCache() async {
+    final prefs = _safePrefs;
+    final rememberMeEnabled = prefs.getBool(_rememberMeFlagKey) ?? false;
+    if (!rememberMeEnabled) {
+      return;
+    }
+
+    final activeToken = _accessToken?.trim() ?? '';
+    if (activeToken.isNotEmpty) {
+      return;
+    }
+
+    final rememberedToken = _rememberedToken();
+    if (rememberedToken != null && rememberedToken.isNotEmpty) {
+      _accessToken = rememberedToken;
+      await _secureStorage.write(key: _rememberedTokenKey, value: rememberedToken);
+      return;
+    }
+
+    final secureToken = await _secureStorage.read(key: _rememberedTokenKey);
+    final normalizedSecureToken = secureToken?.trim() ?? '';
+    if (normalizedSecureToken.isNotEmpty) {
+      _accessToken = normalizedSecureToken;
+      await _safePrefs.setString(_rememberedTokenKey, normalizedSecureToken);
+    }
   }
 
   static SharedPreferences get _safePrefs {
@@ -116,6 +149,7 @@ class AuthService {
     await _safePrefs.setString(_rememberedEmailKey, normalizedEmail);
     await _safePrefs.setString(_rememberedTokenKey, token);
     await _safePrefs.setBool(_rememberMeFlagKey, true);
+    await _secureStorage.write(key: _rememberedTokenKey, value: token);
     _accessToken = token;
     _logDebug('Stored remembered session for $normalizedEmail');
   }
@@ -124,6 +158,7 @@ class AuthService {
     await _safePrefs.remove(_rememberedEmailKey);
     await _safePrefs.remove(_rememberedTokenKey);
     await _safePrefs.setBool(_rememberMeFlagKey, false);
+    await _secureStorage.delete(key: _rememberedTokenKey);
     _logDebug('Cleared remembered session storage');
   }
 
@@ -142,7 +177,7 @@ class AuthService {
     await initialize();
 
     final email = _rememberedEmail();
-    final token = _rememberedToken();
+    final token = await getToken();
     if (email == null || token == null) {
       _logDebug('restoreRememberedSession skipped: no remembered credentials');
       return false;
@@ -151,19 +186,19 @@ class AuthService {
     try {
       final uri = Uri.parse(_authEndpoint('/api/users/me'));
       _logDebug('restoreRememberedSession -> GET $uri email=$email');
-      final response = await http.get(
+      final response = await AuthenticatedHttpClient.instance.get(
         uri,
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-      ).timeout(AppConstants.apiTimeout);
+        headersProvider: () => getAuthorizedHeaders(),
+        onSessionExpired: handleSessionExpired,
+        timeout: AppConstants.apiTimeout,
+      );
 
-      _logDebug('restoreRememberedSession <- status=${response.statusCode} body=${response.body}');
-      if (response.statusCode < 200 || response.statusCode >= 300) {
+      if (response == null) {
         await _clearRememberedSession();
         return false;
       }
+
+      _logDebug('restoreRememberedSession <- status=${response.statusCode} body=${response.body}');
 
       final payload = _decodeBody(response.body);
       _accessToken = token;
@@ -366,7 +401,7 @@ class AuthService {
       return;
     }
 
-    final token = _accessToken ?? _rememberedToken();
+    final token = await getToken();
     if (token == null || token.isEmpty) {
       _logDebug('saveSelectedLanguage skipped: no access token');
       return;
@@ -376,15 +411,17 @@ class AuthService {
       final uri = Uri.parse(_authEndpoint('/api/users/language'));
       final payload = {'selected_language': languageCode};
       _logDebug('saveSelectedLanguage -> PUT $uri body=${jsonEncode(payload)}');
-      final response = await http.put(
+      final response = await AuthenticatedHttpClient.instance.put(
         uri,
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-          'Accept': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
+        headersProvider: () => getAuthorizedHeaders(includeContentType: true),
         body: jsonEncode(payload),
-      ).timeout(const Duration(seconds: 20));
+        onSessionExpired: handleSessionExpired,
+        timeout: const Duration(seconds: 20),
+      );
+
+      if (response == null) {
+        return;
+      }
 
       _logDebug('saveSelectedLanguage <- status=${response.statusCode} body=${response.body}');
       if (response.statusCode >= 200 && response.statusCode < 300) {
@@ -397,7 +434,7 @@ class AuthService {
   }
 
   static Future<void> setLoggedOut() async {
-    final token = _accessToken ?? _rememberedToken();
+    final token = await getToken();
     if (token != null && token.isNotEmpty) {
       try {
         final uri = Uri.parse(_authEndpoint('/api/auth/logout'));
@@ -424,7 +461,7 @@ class AuthService {
     final result = (_safePrefs.getBool(_rememberMeFlagKey) ?? false) &&
         (_rememberedEmail() ?? '').isNotEmpty &&
         (_rememberedToken() ?? '').isNotEmpty;
-    _logDebug('shouldAutoLogin: $result (email=${_rememberedEmail()}, rememberMe=${_safePrefs.getBool(_rememberMeFlagKey)}, tokenPresent=${_rememberedToken() != null})');
+    _logDebug('shouldAutoLogin: $result (email=${_rememberedEmail()}, rememberMe=${_safePrefs.getBool(_rememberMeFlagKey)}, tokenPresent=${_rememberedToken() != null && _rememberedToken()!.isNotEmpty})');
     return result;
   }
 
@@ -462,15 +499,55 @@ class AuthService {
 
     final savedToken = getSavedToken();
     if (savedToken != null && savedToken.isNotEmpty) {
+      _accessToken = savedToken;
       return savedToken;
+    }
+
+    if (_safePrefs.getBool(_rememberMeFlagKey) ?? false) {
+      final secureToken = (await _secureStorage.read(key: _rememberedTokenKey))?.trim() ?? '';
+      if (secureToken.isNotEmpty) {
+        _accessToken = secureToken;
+        await _safePrefs.setString(_rememberedTokenKey, secureToken);
+        return secureToken;
+      }
     }
 
     return null;
   }
 
+  static Future<Map<String, String>?> getAuthorizedHeaders({
+    bool includeContentType = false,
+    bool includeAccept = true,
+  }) async {
+    final token = await getToken();
+    if (token == null || token.isEmpty) {
+      return null;
+    }
+
+    final headers = <String, String>{
+      'Authorization': 'Bearer $token',
+    };
+
+    if (includeContentType) {
+      headers['Content-Type'] = 'application/json; charset=utf-8';
+    }
+
+    if (includeAccept) {
+      headers['Accept'] = 'application/json';
+    }
+
+    return headers;
+  }
+
   /// Get the current access token (valid during active session)
   static String? getAccessToken() {
     return _accessToken;
+  }
+
+  static Future<void> handleSessionExpired() async {
+    _logDebug('Session expired. Please login again.');
+    await setLoggedOut();
+    await SessionRedirectService.instance.showSessionExpiredAndRedirect();
   }
 
   static Future<AuthResult> sendPasswordResetOtp({

@@ -13,10 +13,14 @@ from sqlalchemy.orm import Session
 
 from auth.security import get_current_user
 from database import get_db, init_db
+from routes.admin import router as admin_router
 from routes.auth import router as auth_router
 from routes.brushing import router as brushing_router
 from routes.myths import router as myths_router
+from services.admin_service import get_ai_provider_settings
 from routes.notifications import router as notifications_router
+from routes.learning import router as learning_router
+from routes.tracker import router as tracker_router
 from routes.users import router as users_router
 from schemas.auth import EmailRequest, VerifyOtpRequest as ResetOtpRequest
 from schemas.myth import MythClassificationRequest
@@ -45,10 +49,13 @@ app.add_middleware(
 )
 
 app.include_router(auth_router)
+app.include_router(admin_router)
+app.include_router(learning_router)
 app.include_router(users_router)
 app.include_router(myths_router)
 app.include_router(brushing_router)
 app.include_router(notifications_router)
+app.include_router(tracker_router)
 
 
 @app.on_event("startup")
@@ -58,11 +65,11 @@ async def _startup() -> None:
 
 
 @app.get("/health")
-async def health() -> dict[str, Any]:
+async def health(db: Session = Depends(get_db)) -> dict[str, Any]:
     return {
         "status": "ok",
         "database_configured": bool(os.getenv("DATABASE_URL", "").strip()),
-        "groq_configured": bool(os.getenv("GROQ_API_KEY", "").strip()),
+        "groq_configured": bool(get_ai_provider_settings(db).api_key),
         "email_configured": bool(os.getenv("EMAIL_USER", "").strip() and os.getenv("EMAIL_PASSWORD", "").strip()),
     }
 
@@ -93,7 +100,7 @@ async def classify(
     print(f"[CLASSIFY] Authorization header received: {auth_header[:24]}{'...' if len(auth_header) > 24 else ''}")
     print(f"[CLASSIFY] Current user = {current_user.id}")
 
-    result = await asyncio.wait_for(_classify_with_groq(sentence), timeout=18.0)
+    result = await asyncio.wait_for(_classify_with_groq(sentence, db=db), timeout=18.0)
     
     # Debug logs for history saving
     print(f"[CLASSIFY] Result received: type={result.get('type')}, confidence={result.get('confidence')}")

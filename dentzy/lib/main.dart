@@ -10,6 +10,7 @@ import 'services/settings_provider.dart';
 import 'services/auth_service.dart';
 import 'services/session_manager.dart';
 import 'services/app_tour_service.dart';
+import 'services/session_redirect_service.dart';
 import 'l10n/app_localizations.dart';
 
 void main() async {
@@ -149,6 +150,8 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider.value(value: _settingsProvider),
       ],
       child: MaterialApp(
+        navigatorKey: SessionRedirectService.instance.navigatorKey,
+        scaffoldMessengerKey: SessionRedirectService.instance.scaffoldMessengerKey,
         title: 'Dentzy',
         theme: AppTheme.lightTheme,
         locale: _languageProvider.currentLocale,

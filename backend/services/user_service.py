@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import logging
+
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -7,8 +9,14 @@ from models.user import User
 from schemas.user import UserProfileUpdate
 
 
+logger = logging.getLogger("dentzy.user_service")
+
+
 def get_user_by_email(db: Session, email: str) -> User | None:
-    return db.scalar(select(User).where(User.email == email))
+    logger.info("[USER_LOOKUP] searching email=%s", email)
+    user = db.scalar(select(User).where(User.email == email))
+    logger.info("[USER_LOOKUP] completed email=%s found=%s", email, user is not None)
+    return user
 
 
 def get_user_by_id(db: Session, user_id: int) -> User | None:

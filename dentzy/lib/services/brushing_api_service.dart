@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
 
+import 'authenticated_http_client.dart';
 import '../utils/constants.dart';
 import 'auth_service.dart';
 
@@ -21,8 +21,8 @@ class BrushingApiService {
     required int streak,
   }) async {
     try {
-      final token = await _getAuthToken();
-      if (token == null || token.isEmpty) {
+      final headers = await _getAuthHeaders(includeContentType: true);
+      if (headers == null) {
         debugPrint('[BrushingApiService] No auth token available for saving record');
         return false;
       }
@@ -39,17 +39,18 @@ class BrushingApiService {
       debugPrint('[BrushingApiService] POST $uri');
       debugPrint('[BrushingApiService] date=$dateStr, morning=$morningBrushed, night=$nightBrushed, streak=$streak');
 
-      final response = await http
-          .post(
-            uri,
-            headers: {
-              'Content-Type': 'application/json; charset=utf-8',
-              'Accept': 'application/json',
-              'Authorization': 'Bearer $token',
-            },
-            body: requestBody,
-          )
-          .timeout(AppConstants.apiTimeout);
+      final response = await AuthenticatedHttpClient.instance.post(
+        uri,
+        headersProvider: () => AuthService.getAuthorizedHeaders(includeContentType: true),
+        body: requestBody,
+        onSessionExpired: AuthService.handleSessionExpired,
+        timeout: AppConstants.apiTimeout,
+      );
+
+      if (response == null) {
+        debugPrint('[BrushingApiService] save skipped: session expired');
+        return false;
+      }
 
       debugPrint('[BrushingApiService] save status=${response.statusCode}');
       if (response.statusCode < 200 || response.statusCode >= 300) {
@@ -68,8 +69,8 @@ class BrushingApiService {
   /// Get brushing records from backend.
   Future<List<Map<String, dynamic>>> getBrushingRecords() async {
     try {
-      final token = await _getAuthToken();
-      if (token == null || token.isEmpty) {
+      final headers = await _getAuthHeaders();
+      if (headers == null) {
         debugPrint('[BrushingApiService] No auth token available for fetching records');
         return [];
       }
@@ -77,15 +78,17 @@ class BrushingApiService {
       final uri = Uri.parse('${_normalizedBaseUrl()}/api/brushing/records');
       debugPrint('[BrushingApiService] GET $uri');
 
-      final response = await http
-          .get(
-            uri,
-            headers: {
-              'Accept': 'application/json',
-              'Authorization': 'Bearer $token',
-            },
-          )
-          .timeout(AppConstants.apiTimeout);
+      final response = await AuthenticatedHttpClient.instance.get(
+        uri,
+        headersProvider: () => AuthService.getAuthorizedHeaders(),
+        onSessionExpired: AuthService.handleSessionExpired,
+        timeout: AppConstants.apiTimeout,
+      );
+
+      if (response == null) {
+        debugPrint('[BrushingApiService] fetch skipped: session expired');
+        return [];
+      }
 
       debugPrint('[BrushingApiService] fetch status=${response.statusCode}');
       if (response.statusCode < 200 || response.statusCode >= 300) {
@@ -105,10 +108,12 @@ class BrushingApiService {
     }
   }
 
-  /// Get authentication token from auth service.
-  Future<String?> _getAuthToken() async {
+  /// Get authenticated headers from auth service.
+  Future<Map<String, String>?> _getAuthHeaders({bool includeContentType = false}) async {
     try {
-      return await AuthService.getToken();
+      return await AuthService.getAuthorizedHeaders(
+        includeContentType: includeContentType,
+      );
     } catch (_) {
       return null;
     }

@@ -1,5 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../models/learning_resource.dart';
+import '../services/learning_content_api_service.dart';
+import '../services/tracker_service.dart';
 import '../utils/theme.dart';
 
 class LearnScreenV2 extends StatefulWidget {
@@ -10,173 +16,223 @@ class LearnScreenV2 extends StatefulWidget {
 }
 
 class _LearnScreenV2State extends State<LearnScreenV2> {
-  final List<Resource> _english = const [
-    Resource(
+  static const List<LearningResource> _fallbackEnglishResources = [
+    LearningResource(
       id: 'e1',
-      title: 'ADA Brushing Guide',
+      title: 'Brushing Your Teeth',
       category: 'Brushing',
-      description: 'Proper brushing methods and daily oral care.',
+      description: 'ADA brushing steps for cleaning all tooth surfaces and protecting gums.',
       url: 'https://www.mouthhealthy.org/en/az-topics/b/brushing-your-teeth',
     ),
-    Resource(
+    LearningResource(
       id: 'e2',
-      title: 'Flossing Instructions',
+      title: 'Flossing',
       category: 'Flossing',
-      description: 'Step-by-step flossing guidance.',
+      description: 'Daily flossing tips and tools for cleaning between teeth.',
       url: 'https://www.mouthhealthy.org/en/az-topics/f/flossing',
     ),
-    Resource(
+    LearningResource(
       id: 'e3',
-      title: 'Tooth Decay Prevention',
-      category: 'Prevention',
-      description: 'How cavities form and how to prevent them.',
+      title: 'Tooth Decay Process',
+      category: 'Cavities',
+      description: 'How cavities form and how fluoride can help reverse early decay.',
       url: 'https://www.nidcr.nih.gov/health-info/tooth-decay/more-info/tooth-decay-process',
     ),
-    Resource(
+    LearningResource(
       id: 'e4',
-      title: 'Gum Disease Guide',
+      title: 'Periodontal Gum Disease',
       category: 'Gum Care',
-      description: 'Learn symptoms and prevention of gum disease.',
+      description: 'Causes, symptoms, and prevention of gum disease.',
       url: 'https://www.nidcr.nih.gov/health-info/gum-disease',
     ),
-    Resource(
+    LearningResource(
       id: 'e5',
-      title: 'Kids Oral Care',
+      title: 'Keeping Kids Teeth Healthy',
       category: 'Kids',
-      description: 'Dental care tips for children and parents.',
+      description: 'Brushing, flossing, fluoride, and dentist visits for children.',
       url: 'https://kidshealth.org/en/parents/healthy.html',
     ),
-    Resource(
+    LearningResource(
       id: 'e6',
-      title: 'Nutrition and Teeth',
+      title: 'Nutrition and Oral Health',
       category: 'Nutrition',
-      description: 'Foods that support healthy teeth.',
+      description: 'How sugar, snacks, and drinks affect oral health.',
       url: 'https://www.ada.org/resources/ada-library/oral-health-topics/nutrition-and-oral-health',
     ),
-    Resource(
+    LearningResource(
       id: 'e7',
-      title: 'Braces Care',
+      title: 'Life During Treatment',
       category: 'Orthodontics',
-      description: 'Brushing and flossing while wearing braces.',
+      description: 'Simple care tips for teeth and braces during treatment.',
       url: 'https://aaoinfo.org/whats-trending/life-during-treatment/',
     ),
-    Resource(
+    LearningResource(
       id: 'e8',
-      title: 'Oral Hygiene Basics',
-      category: 'Basics',
-      description: 'Beginner-friendly oral hygiene education.',
+      title: 'Oral Hygiene',
+      category: 'Hygiene',
+      description: 'Brushing, flossing, and daily habits for healthy teeth and gums.',
       url: 'https://www.nidcr.nih.gov/health-info/oral-hygiene',
     ),
-    Resource(
+    LearningResource(
       id: 'e9',
-      title: 'Mouth Care Tips',
-      category: 'Health Tips',
-      description: 'Simple oral health maintenance tips.',
+      title: 'Taking Care of Teeth and Mouth',
+      category: 'Older Adults',
+      description: 'Oral care tips for teeth, gums, dry mouth, and dentures.',
       url: 'https://www.nia.nih.gov/health/teeth-and-mouth/taking-care-your-teeth-and-mouth',
     ),
-    Resource(
+    LearningResource(
       id: 'e10',
-      title: 'WHO Oral Health',
-      category: 'WHO',
-      description: 'Global oral health awareness and facts.',
-      url: 'https://kidshealth.org/en/parents/healthy.html',
+      title: 'WHO Oral Health Facts',
+      category: 'Global Health',
+      description: 'WHO facts on oral diseases, prevention, and global oral health.',
+      url: 'https://www.who.int/news-room/fact-sheets/detail/oral-health',
     ),
   ];
 
-  final List<Resource> _tamil = const [
-    Resource(
+  static const List<LearningResource> _fallbackTamilResources = [
+    LearningResource(
       id: 't1',
-      title: 'தமிழ் பல் ஆரோக்கிய கட்டுரைகள்',
-      category: 'ஆரோக்கியம்',
-      description: 'தமிழில் பல் பராமரிப்பு மற்றும் வாய்நல கட்டுரைகள்.',
-      url: 'https://www.ada.org/resources/ada-library/oral-health-topics/nutrition-and-oral-health',
+      title: 'பல் துலக்கும் வழிமுறை',
+      category: 'தினசரி பராமரிப்பு',
+      description: 'பற்களின் அனைத்து பகுதிகளையும் சுத்தம் செய்யும் ADA வழிமுறை.',
+      url: 'https://translate.google.com/translate?hl=ta&sl=en&tl=ta&u=https://www.mouthhealthy.org/en/az-topics/b/brushing-your-teeth',
     ),
-    Resource(
+    LearningResource(
       id: 't2',
-      title: 'விகடன் ஆரோக்கியம்',
-      category: 'நலன்',
-      description: 'ஆரோக்கியம் மற்றும் பல் விழிப்புணர்வு தொடர்பான தமிழ் கட்டுரைகள்.',
-      url: 'https://aaoinfo.org/whats-trending/life-during-treatment/',
+      title: 'Flossing',
+      category: 'பல் இடை சுத்தம்',
+      description: 'பற்களுக்கு நடுவில் சுத்தம் செய்யும் தினசரி floss குறிப்புகள்.',
+      url: 'https://translate.google.com/translate?hl=ta&sl=en&tl=ta&u=https://www.mouthhealthy.org/en/az-topics/f/flossing',
     ),
-    Resource(
+    LearningResource(
       id: 't3',
-      title: 'நியூஸ்18 தமிழ் ஆரோக்கியம்',
-      category: 'செய்திகள்',
-      description: 'நலன் மற்றும் வாய்நல தொடர்பான தமிழ் செய்திகள்.',
-      url: 'https://www.nidcr.nih.gov/health-info/oral-hygiene',
+      title: 'பல் சொத்தை செயல்முறை',
+      category: 'சொத்தை',
+      description: 'சொத்தை எப்படி உருவாகிறது, fluoride எப்படி உதவுகிறது.',
+      url: 'https://translate.google.com/translate?hl=ta&sl=en&tl=ta&u=https://www.nidcr.nih.gov/health-info/tooth-decay/more-info/tooth-decay-process',
     ),
-    Resource(
+    LearningResource(
       id: 't4',
-      title: 'மாலைமலர் ஆரோக்கியம்',
-      category: 'தடுப்பு',
-      description: 'தடுப்பு ஆரோக்கியம் மற்றும் வாய்ப்பராமரிப்பு வழிகாட்டுதல்.',
-      url: 'https://www.maalaimalar.com/health',
+      title: 'ஈறு நோய்',
+      category: 'ஈறு பராமரிப்பு',
+      description: 'ஈறு நோயின் காரணங்கள், அறிகுறிகள், தடுப்பு.',
+      url: 'https://translate.google.com/translate?hl=ta&sl=en&tl=ta&u=https://www.nidcr.nih.gov/health-info/gum-disease',
     ),
-    Resource(
+    LearningResource(
       id: 't5',
-      title: 'ஒன் எம் ஜி தமிழ் ஆரோக்கியம்',
-      category: 'மருத்துவம்',
-      description: 'தமிழில் மருத்துவம் மற்றும் பல் கல்வி வளங்கள்.',
-      url: 'https://www.1mg.com/ta/',
+      title: 'குழந்தைகளின் பல் ஆரோக்கியம்',
+      category: 'குழந்தைகள்',
+      description: 'துலக்குதல், flossing, fluoride, மற்றும் dentist visits.',
+      url: 'https://translate.google.com/translate?hl=ta&sl=en&tl=ta&u=https://kidshealth.org/en/parents/healthy.html',
     ),
-    Resource(
+    LearningResource(
       id: 't6',
-      title: 'ஒன்லிமைஹெல்த் தமிழ்',
-      category: 'வாழ்க்கைமுறை',
-      description: 'தமிழில் ஆரோக்கியம் மற்றும் வாய்நல விழிப்புணர்வு.',
-      url: 'https://tamil.onlymyhealth.com/',
+      title: 'உணவு மற்றும் வாய்நலம்',
+      category: 'உணவுமுறை',
+      description: 'சர்க்கரை, snacks, drinks ஆகியவை வாய்நலத்தை எப்படி பாதிக்கின்றன.',
+      url: 'https://translate.google.com/translate?hl=ta&sl=en&tl=ta&u=https://www.ada.org/resources/ada-library/oral-health-topics/nutrition-and-oral-health',
     ),
-    Resource(
+    LearningResource(
       id: 't7',
-      title: 'பிபிசி தமிழ் ஆரோக்கியம்',
-      category: 'விழிப்புணர்வு',
-      description: 'பொது ஆரோக்கிய விழிப்புணர்வு குறித்த தமிழ் கட்டுரைகள்.',
-      url: 'https://www.bbc.com/tamil/topics/c340q430m4vt',
+      title: 'சிகிச்சை கால பராமரிப்பு',
+      category: 'பிரேஸ்கள்',
+      description: 'பல் சிகிச்சை காலத்தில் teeth மற்றும் braces பராமரிப்பு.',
+      url: 'https://translate.google.com/translate?hl=ta&sl=en&tl=ta&u=https://aaoinfo.org/whats-trending/life-during-treatment/',
     ),
-    Resource(
+    LearningResource(
       id: 't8',
-      title: 'நலம் தமிழ் ஆரோக்கியம்',
-      category: 'நலவாழ்வு',
-      description: 'ஆரோக்கியமான வாழ்க்கைமுறை மற்றும் நலவாழ்வு கல்வி.',
-      url: 'https://www.nalam360.com/',
+      title: 'வாய்ச் சுகாதாரம்',
+      category: 'வாய்ச் சுகாதாரம்',
+      description: 'தினசரி துலக்குதல், flossing, மற்றும் நல்ல பழக்கங்கள்.',
+      url: 'https://translate.google.com/translate?hl=ta&sl=en&tl=ta&u=https://www.nidcr.nih.gov/health-info/oral-hygiene',
     ),
-    Resource(
+    LearningResource(
       id: 't9',
-      title: 'தினமலர் ஆரோக்கியம்',
-      category: 'தினசரி ஆரோக்கியம்',
-      description: 'வாய்ப்பராமரிப்பு மற்றும் ஆரோக்கிய பராமரிப்பு வழிகாட்டுதல்.',
-      url: 'https://www.dinamalar.com/health/',
+      title: 'பற்கள் மற்றும் வாய் பராமரிப்பு',
+      category: 'முதியோர்',
+      description: 'Dry mouth, dentures, gum care ஆகியவற்றுக்கான குறிப்புகள்.',
+      url: 'https://translate.google.com/translate?hl=ta&sl=en&tl=ta&u=https://www.nia.nih.gov/health/teeth-and-mouth/taking-care-your-teeth-and-mouth',
     ),
-    Resource(
+    LearningResource(
       id: 't10',
-      title: 'தமிழ் சமயம் ஆரோக்கியம்',
-      category: 'ஆரோக்கியக் கட்டுரைகள்',
-      description: 'தமிழில் ஆரோக்கியம் மற்றும் பல் பராமரிப்பு கட்டுரைகள்.',
-      url: 'https://tamil.samayam.com/lifestyle/health/articlelist/',
+      title: 'WHO வாய்நல உண்மைகள்',
+      category: 'உலகளாவிய உண்மைத் தகவல்',
+      description: 'வாய்நோய்கள், தடுப்பு, மற்றும் உலகளாவிய வாய்நலம் பற்றிய தகவல்கள்.',
+      url: 'https://translate.google.com/translate?hl=ta&sl=en&tl=ta&u=https://www.who.int/news-room/fact-sheets/detail/oral-health',
     ),
   ];
+
+  List<LearningResource> _englishResources = _fallbackEnglishResources;
+  List<LearningResource> _tamilResources = _fallbackTamilResources;
 
   String _query = '';
+  String? _loadedLanguageCode;
 
-    bool get _isTamil => Localizations.localeOf(context).languageCode == 'ta';
+  bool get _isTamil => Localizations.localeOf(context).languageCode == 'ta';
 
-    List<Resource> get _currentResources => _isTamil ? _tamil : _english;
+  List<LearningResource> get _currentResources => _isTamil ? _tamilResources : _englishResources;
 
-    String get _pageTitle => _isTamil ? 'கற்றல்' : 'Learn';
+  String get _pageTitle => _isTamil ? 'கற்றல்' : 'Learn';
 
-    String get _searchHint => _isTamil ? 'தலைப்பு அல்லது வகை மூலம் தேடுக' : 'Search by title or category';
+  String get _searchHint => _isTamil ? 'தலைப்பு அல்லது வகை மூலம் தேடுக' : 'Search by title or category';
 
-    String get _sectionTitle => _isTamil ? 'தமிழ் கற்றல் வளங்கள்' : 'English Learning Resources';
+  String get _sectionTitle => _isTamil ? 'தமிழ் கற்றல் வளங்கள்' : 'English Learning Resources';
 
-    String get _openLabel => _isTamil ? 'திறக்க' : 'Open';
+  String get _openLabel => _isTamil ? 'திறக்க' : 'Open';
 
-    String get _emptyState => _isTamil ? 'தேடலுக்கான முடிவுகள் இல்லை' : 'No resources found';
+  String get _emptyState => _isTamil ? 'தேடலுக்கான முடிவுகள் இல்லை' : 'No resources found';
 
-    List<Resource> get _filteredResources => _currentResources
+  List<LearningResource> get _filteredResources => _currentResources
       .where((r) => r.title.toLowerCase().contains(_query) || r.category.toLowerCase().contains(_query))
       .toList();
 
-  Future<void> _openResource(Resource resource) async {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final languageCode = _languageCodeFromContext(context);
+    if (_loadedLanguageCode != languageCode) {
+      _loadedLanguageCode = languageCode;
+      unawaited(_loadContentForLanguage(languageCode));
+    }
+  }
+
+  String _languageCodeFromContext(BuildContext context) {
+    return Localizations.localeOf(context).languageCode == 'ta' ? 'ta' : 'en';
+  }
+
+  Future<void> _loadContentForLanguage(String languageCode) async {
+    try {
+      final apiItems = await LearningContentApiService.instance.fetchArticles(language: languageCode);
+      if (!mounted) {
+        return;
+      }
+
+      final items = apiItems.map((item) => LearningResource.fromApi(item)).toList();
+      setState(() {
+        if (languageCode == 'ta') {
+          _tamilResources = items;
+        } else {
+          _englishResources = items;
+        }
+      });
+    } catch (error) {
+      debugPrint('[LearnScreenV2] API failed, using fallback: $error');
+      if (!mounted) {
+        return;
+      }
+
+      final fallbackItems = languageCode == 'ta' ? _fallbackTamilResources : _fallbackEnglishResources;
+      setState(() {
+        if (languageCode == 'ta') {
+          _tamilResources = fallbackItems;
+        } else {
+          _englishResources = fallbackItems;
+        }
+      });
+    }
+  }
+
+  Future<void> _openResource(LearningResource resource) async {
     final uri = Uri.tryParse(resource.url);
     if (uri == null || !(uri.hasScheme && (uri.scheme == 'http' || uri.scheme == 'https'))) {
       if (!mounted) return;
@@ -187,7 +243,10 @@ class _LearnScreenV2State extends State<LearnScreenV2> {
     }
 
     if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
+      final launched = await launchUrl(uri, mode: LaunchMode.externalApplication);
+      if (launched) {
+        unawaited(TrackerService.instance.markArticleCompleted(resource.id));
+      }
     } else {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -263,7 +322,7 @@ class _LearnScreenV2State extends State<LearnScreenV2> {
     );
   }
 
-  Widget _buildCard(Resource r) {
+  Widget _buildCard(LearningResource r) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Material(
@@ -273,63 +332,73 @@ class _LearnScreenV2State extends State<LearnScreenV2> {
           borderRadius: BorderRadius.circular(10),
           onTap: () => _openResource(r),
           child: Container(
-            constraints: const BoxConstraints(minHeight: 96),
+            constraints: const BoxConstraints(minHeight: 116),
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               border: Border.all(color: const Color(0xFFE6ECEC)),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Row(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(Icons.picture_as_pdf, size: 36, color: Color(0xFF2F80ED)),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        r.title,
-                        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
-                        softWrap: true,
-                        overflow: TextOverflow.visible,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Icon(Icons.picture_as_pdf, size: 34, color: Color(0xFF2F80ED)),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            r.title,
+                            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            r.description,
+                            style: TextStyle(fontSize: 13, color: AppTheme.textSecondary),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 6),
-                      Text(
-                        r.description,
-                        style: TextStyle(fontSize: 13, color: AppTheme.textSecondary),
-                        softWrap: true,
-                        overflow: TextOverflow.visible,
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        r.category,
-                        style: TextStyle(fontSize: 12, color: AppTheme.textSecondary),
-                        softWrap: true,
-                        overflow: TextOverflow.visible,
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 12),
-                Flexible(
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(minWidth: 84),
-                    child: ElevatedButton(
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    Flexible(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF4F7FA),
+                          borderRadius: BorderRadius.circular(999),
+                        ),
+                        child: Text(
+                          r.category,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(fontSize: 11.5, color: AppTheme.textSecondary, fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    ElevatedButton(
                       onPressed: () => _openResource(r),
                       style: ElevatedButton.styleFrom(
                         elevation: 0,
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                        visualDensity: VisualDensity.compact,
                       ),
-                      child: Text(
-                        _openLabel,
-                        softWrap: true,
-                        overflow: TextOverflow.visible,
-                        textAlign: TextAlign.center,
-                      ),
+                      child: Text(_openLabel, overflow: TextOverflow.ellipsis),
                     ),
-                  ),
+                  ],
                 ),
               ],
             ),
@@ -339,14 +408,3 @@ class _LearnScreenV2State extends State<LearnScreenV2> {
     );
   }
 }
-
-class Resource {
-  final String id;
-  final String title;
-  final String category;
-  final String description;
-  final String url;
-
-  const Resource({required this.id, required this.title, this.category = '', required this.description, required this.url});
-}
-

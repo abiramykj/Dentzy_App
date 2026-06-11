@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
 
+import 'authenticated_http_client.dart';
 import 'auth_service.dart';
 import '../models/myth_item.dart';
 import '../utils/constants.dart';
@@ -23,44 +23,26 @@ class MythApiService {
 
     // Detect input language for logging
     final detectedLanguage = _detectLanguage(trimmedText);
+    debugPrint('[MythAPI] detected_language=$detectedLanguage');
 
     final uri = Uri.parse('${_normalizedBaseUrl()}/classify');
-    final url = uri.toString();
     final requestBody = jsonEncode({'text': trimmedText});
 
-    print('[MythAPI] START classify');
-    print('[MythAPI] loading token...');
-
-    final token = await AuthService.getToken();
-    print('[MythAPI] token=$token');
-    print('[MythAPI] url=$url');
-
-    final headers = {
-      'Content-Type': 'application/json',
-    };
-
-    if (token != null && token.isNotEmpty) {
-      headers['Authorization'] = 'Bearer $token';
-      print('[MythAPI] Authorization header added');
-    } else {
-      print('[MythAPI] TOKEN IS NULL');
-      print('[MythAPI] Authorization header skipped');
-    }
-
-    print('[MythAPI] headers=$headers');
-    print('[MythAPI] body=$requestBody');
-
     try {
-      final response = await http
-          .post(
-            uri,
-            headers: headers,
-            body: requestBody,
-          )
-          .timeout(AppConstants.apiTimeout);
+      final response = await AuthenticatedHttpClient.instance.post(
+        uri,
+        headersProvider: () => AuthService.getAuthorizedHeaders(includeContentType: true),
+        body: requestBody,
+        onSessionExpired: AuthService.handleSessionExpired,
+        timeout: AppConstants.apiTimeout,
+      );
 
-          print('[MythAPI] response status=${response.statusCode}');
-          print('[MythAPI] response body=${response.body}');
+      if (response == null) {
+        return _fallbackResult('Session expired. Please login again.');
+      }
+
+      debugPrint('[MythAPI] response status=${response.statusCode}');
+      debugPrint('[MythAPI] response body=${response.body}');
 
       final payload = _decodeJsonMap(response.body);
       debugPrint('[MythApiService] parsed_json=$payload');
@@ -221,12 +203,6 @@ class MythApiService {
     required String explanation,
   }) async {
     try {
-      final token = await _getAuthToken();
-      if (token == null || token.isEmpty) {
-        debugPrint('[MythApiService] No auth token available for saving history');
-        return false;
-      }
-
       final uri = Uri.parse('${_normalizedBaseUrl()}/api/myths/history');
       final requestBody = jsonEncode({
         'statement': statement.trim(),
@@ -238,17 +214,18 @@ class MythApiService {
       debugPrint('[MythApiService] POST $uri (save history)');
       debugPrint('[MythApiService] request_body=$requestBody');
 
-      final response = await http
-          .post(
-            uri,
-            headers: {
-              'Content-Type': 'application/json; charset=utf-8',
-              'Accept': 'application/json',
-              'Authorization': 'Bearer $token',
-            },
-            body: requestBody,
-          )
-          .timeout(AppConstants.apiTimeout);
+      final response = await AuthenticatedHttpClient.instance.post(
+        uri,
+        headersProvider: () => AuthService.getAuthorizedHeaders(includeContentType: true),
+        body: requestBody,
+        onSessionExpired: AuthService.handleSessionExpired,
+        timeout: AppConstants.apiTimeout,
+      );
+
+      if (response == null) {
+        debugPrint('[MythApiService] save_history skipped: session expired');
+        return false;
+      }
 
       debugPrint('[MythApiService] save_history status=${response.statusCode}');
       if (response.statusCode < 200 || response.statusCode >= 300) {
@@ -267,24 +244,20 @@ class MythApiService {
   /// Get stored myth history from backend.
   Future<List<Map<String, dynamic>>> getMythHistory() async {
     try {
-      final token = await AuthService.getToken();
-      if (token == null || token.isEmpty) {
-        debugPrint('[MythApiService] No auth token available for fetching history');
-        return [];
-      }
-
       final uri = Uri.parse('${_normalizedBaseUrl()}/api/myths/history');
       debugPrint('[MythApiService] GET $uri (fetch history)');
 
-      final response = await http
-          .get(
-            uri,
-            headers: {
-              'Accept': 'application/json',
-              'Authorization': 'Bearer $token',
-            },
-          )
-          .timeout(AppConstants.apiTimeout);
+      final response = await AuthenticatedHttpClient.instance.get(
+        uri,
+        headersProvider: () => AuthService.getAuthorizedHeaders(),
+        onSessionExpired: AuthService.handleSessionExpired,
+        timeout: AppConstants.apiTimeout,
+      );
+
+      if (response == null) {
+        debugPrint('[MythApiService] fetch_history skipped: session expired');
+        return [];
+      }
 
       debugPrint('[MythApiService] fetch_history status=${response.statusCode}');
       debugPrint('[MythApiService] fetch_history body=${response.body}');
@@ -305,12 +278,35 @@ class MythApiService {
     }
   }
 
-  /// Get authentication token from auth service.
-  Future<String?> _getAuthToken() async {
+  /// Delete a specific history item by ID.
+  Future<bool> deleteHistoryItem(int historyId) async {
     try {
-      return await AuthService.getToken();
-    } catch (_) {
-      return null;
+      final uri = Uri.parse('${_normalizedBaseUrl()}/api/myths/history/$historyId');
+      debugPrint('[MythApiService] DELETE $uri (delete history item)');
+
+      final response = await AuthenticatedHttpClient.instance.delete(
+        uri,
+        headersProvider: () => AuthService.getAuthorizedHeaders(),
+        onSessionExpired: AuthService.handleSessionExpired,
+        timeout: AppConstants.apiTimeout,
+      );
+
+      if (response == null) {
+        debugPrint('[MythApiService] delete_history skipped: session expired');
+        return false;
+      }
+
+      debugPrint('[MythApiService] delete_history status=${response.statusCode}');
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        debugPrint('[MythApiService] delete_history failed: ${response.body}');
+        return false;
+      }
+
+      debugPrint('[API] History item deleted');
+      return true;
+    } catch (error) {
+      debugPrint('[MythApiService] deleteHistoryItem error=$error');
+      return false;
     }
   }
 

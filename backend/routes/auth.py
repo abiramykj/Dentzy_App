@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 import traceback
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -18,6 +19,7 @@ from services.auth_service import (
 )
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
+logger = logging.getLogger("dentzy.auth.route")
 
 
 @router.post("/signup", response_model=TokenResponse)
@@ -49,30 +51,20 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)):
     """
     Login endpoint with comprehensive error handling.
     """
-    import traceback
     try:
-        # Execution trace prints requested by debugging task
-        print("STEP 1: LOGIN REQUEST RECEIVED")
-        print("STEP 2: EMAIL =", payload.email)
-        print("STEP 3: BEFORE DB QUERY")
+        logger.info("[LOGIN][ROUTE] request received email=%s remember_me=%s", payload.email, payload.remember_me)
         result = authenticate_user(db, payload)
-        print("STEP 4: AFTER DB QUERY")
-        print("STEP 5: BEFORE PASSWORD VERIFY")
-        # authenticate_user performs password verify and token generation; it will log further steps
-        print("STEP 6: AFTER PASSWORD VERIFY")
-        print("STEP 7: BEFORE TOKEN GENERATION")
-        print("STEP 8: AFTER TOKEN GENERATION")
-        print("STEP 9: BEFORE RESPONSE RETURN")
+        logger.info("[LOGIN][ROUTE] authenticate_user completed email=%s", payload.email)
+        logger.info("[LOGIN][ROUTE] returning success response email=%s", payload.email)
         return result
         
     except HTTPException as exc:
-        print(f"[ROUTE] HTTPException caught: {exc.status_code}")
-        print(f"[ROUTE] Detail: {exc.detail}")
+        logger.warning("[LOGIN][ROUTE] HTTPException status=%s detail=%s", exc.status_code, exc.detail)
         raise
     except Exception as exc:
         tb = traceback.format_exc()
-        print("STEP ERROR: Exception in /api/auth/login", str(exc))
-        print(tb)
+        logger.exception("[LOGIN][ROUTE] unexpected error: %s", exc)
+        logger.error(tb)
         return JSONResponse(
             status_code=500,
             content={

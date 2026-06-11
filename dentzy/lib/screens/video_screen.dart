@@ -1,8 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../widgets/custom_card.dart';
-import '../utils/theme.dart';
+
 import '../l10n/app_localizations.dart';
+import '../models/video_lesson.dart';
+import '../models/tamil_video_lesson.dart';
+import '../services/learning_content_api_service.dart';
+import '../services/tracker_service.dart';
+import '../utils/theme.dart';
+import '../widgets/custom_card.dart';
+import '../widgets/video_card.dart';
+import '../widgets/tamil_video_card.dart';
 
 class VideoScreen extends StatefulWidget {
   const VideoScreen({super.key});
@@ -11,235 +20,279 @@ class VideoScreen extends StatefulWidget {
   State<VideoScreen> createState() => _VideoScreenState();
 }
 
-class _VideoScreenState extends State<VideoScreen> {
-  late final Map<String, List<_Video>> videoData = {
-    'en': [
-      _Video(
-        id: '1',
-        title: 'Proper Brushing Technique',
-        description: 'Learn the correct way to brush your teeth effectively',
-        duration: '5:32',
-        instructor: 'Dr. Smith',
-        youtubeUrl: 'https://www.youtube.com/watch?v=3oG6Y9cFz6k',
-        views: 45000,
-      ),
-      _Video(
-        id: '2',
-        title: 'How to Choose Toothpaste',
-        description: 'Find the right toothpaste for your dental needs',
-        duration: '4:15',
-        instructor: 'Dr. Johnson',
-        youtubeUrl: 'https://www.youtube.com/watch?v=Jf9Zz1nRZ8c',
-        views: 32000,
-      ),
-      _Video(
-        id: '3',
-        title: 'Oral Hygiene Basics',
-        description: 'Master the fundamentals of oral hygiene',
-        duration: '6:20',
-        instructor: 'Dr. Lee',
-        youtubeUrl: 'https://www.youtube.com/watch?v=7dJ7k8b9g1k',
-        views: 58000,
-      ),
-      _Video(
-        id: '4',
-        title: 'Flossing Correctly',
-        description: 'Perfect your flossing technique',
-        duration: '3:45',
-        instructor: 'Dr. Brown',
-        youtubeUrl: 'https://www.youtube.com/watch?v=wxM7QvHc8s8',
-        views: 29000,
-      ),
-      _Video(
-        id: '5',
-        title: 'Prevent Tooth Decay',
-        description: 'Effective strategies to prevent cavities',
-        duration: '7:10',
-        instructor: 'Dr. Williams',
-        youtubeUrl: 'https://www.youtube.com/watch?v=VhP8Xz0s2f4',
-        views: 67000,
-      ),
-      _Video(
-        id: '6',
-        title: 'Morning & Night Routine',
-        description: 'Establish a healthy daily oral care routine',
-        duration: '5:00',
-        instructor: 'Dr. Miller',
-        youtubeUrl: 'https://www.youtube.com/watch?v=8F3m7gX2k3s',
-        views: 51000,
-      ),
-      _Video(
-        id: '7',
-        title: 'Toothpaste Ingredients Explained',
-        description: 'Understand what makes good toothpaste',
-        duration: '4:50',
-        instructor: 'Dr. Davis',
-        youtubeUrl: 'https://www.youtube.com/watch?v=R6nYk8f3L0o',
-        views: 38000,
-      ),
-      _Video(
-        id: '8',
-        title: 'Common Brushing Mistakes',
-        description: 'Avoid these common dental hygiene errors',
-        duration: '3:30',
-        instructor: 'Dr. Garcia',
-        youtubeUrl: 'https://www.youtube.com/watch?v=9gH2JkL4m2A',
-        views: 44000,
-      ),
-      _Video(
-        id: '9',
-        title: 'Kids Dental Care',
-        description: 'Tips for keeping children\'s teeth healthy',
-        duration: '6:15',
-        instructor: 'Dr. Martinez',
-        youtubeUrl: 'https://www.youtube.com/watch?v=Q7kT2F9n3s8',
-        views: 72000,
-      ),
-      _Video(
-        id: '10',
-        title: 'Healthy Teeth Tips',
-        description: 'General guidance for maintaining healthy teeth',
-        duration: '4:40',
-        instructor: 'Dr. Taylor',
-        youtubeUrl: 'https://www.youtube.com/watch?v=Z8kF3gL9p1Q',
-        views: 55000,
-      ),
-    ],
-    'ta': [
-      _Video(
-        id: '11',
-        title: 'சரியான பல் துலக்கும் முறை',
-        description: 'பல் துலக்கும் சரியான முறையை கற்றுக்கொள்ளுங்கள்',
-        duration: '5:32',
-        instructor: 'ডॉ. ஸ்மிથ்',
-        youtubeUrl: 'https://www.youtube.com/watch?v=2fKzQxXvG6Q',
-        views: 42000,
-      ),
-      _Video(
-        id: '12',
-        title: 'பல் துலக்கும் முக்கியம்',
-        description: 'தினந்தோறும் பல் துலக்குவதின் महत्ता',
-        duration: '4:20',
-        instructor: 'ডॉ. जонсन',
-        youtubeUrl: 'https://www.youtube.com/watch?v=5dR9kJ2nL8Y',
-        views: 35000,
-      ),
-      _Video(
-        id: '13',
-        title: 'வாய்நலம் பராமரிப்பு',
-        description: 'வாய்நலத்தை பராமரிப்பதற்கான வழிகள்',
-        duration: '6:00',
-        instructor: 'ডॉ. லீ',
-        youtubeUrl: 'https://www.youtube.com/watch?v=8gT2LkF3P1Q',
-        views: 48000,
-      ),
-      _Video(
-        id: '14',
-        title: 'பல் கெடுதல் தவிர்ப்பது எப்படி',
-        description: 'பல் கெடுவதை தவிர்ப்பதற்கான टिप्स',
-        duration: '5:45',
-        instructor: 'ডॉ. ब्राউन',
-        youtubeUrl: 'https://www.youtube.com/watch?v=7kJ2L9M4N0A',
-        views: 38000,
-      ),
-      _Video(
-        id: '15',
-        title: 'நல்ல பல் பழக்கங்கள்',
-        description: 'ஆரோக்கியமான பல் பழக்கங்களை பின்பற்றுங்கள்',
-        duration: '4:55',
-        instructor: 'ডॉ. williams',
-        youtubeUrl: 'https://www.youtube.com/watch?v=4pK9F3G2L8M',
-        views: 41000,
-      ),
-      _Video(
-        id: '16',
-        title: 'இரவு பல் துலக்கும் அவசியம்',
-        description: 'இரவு பல் துலக்குவதின் महत्ता',
-        duration: '3:50',
-        instructor: 'ডॉ. மिller',
-        youtubeUrl: 'https://www.youtube.com/watch?v=3F2kL9N8Q1X',
-        views: 33000,
-      ),
-      _Video(
-        id: '17',
-        title: 'பல் மருத்துவர் ஆலோசனை',
-        description: 'पल मरुत्वुवर एलोचनै',
-        duration: '5:30',
-        instructor: 'ডॉ. davis',
-        youtubeUrl: 'https://www.youtube.com/watch?v=6J8kF3M2P0L',
-        views: 36000,
-      ),
-      _Video(
-        id: '18',
-        title: 'பல் பாதுகாப்பு வழிகள்',
-        description: 'पल पाधुकप्पु वलिगल',
-        duration: '6:10',
-        instructor: 'ডौ. garcia',
-        youtubeUrl: 'https://www.youtube.com/watch?v=9K2L4F8G1M0',
-        views: 39000,
-      ),
-      _Video(
-        id: '19',
-        title: 'பல் துலக்கும் தவறுகள்',
-        description: 'पल दुलक्कुम तवरुकल',
-        duration: '4:25',
-        instructor: 'ডॉ. martinez',
-        youtubeUrl: 'https://www.youtube.com/watch?v=1F8K3L2M9Q0',
-        views: 34000,
-      ),
-      _Video(
-        id: '20',
-        title: 'வாய்நலம் முக்கியம்',
-        description: 'वय नलम मुक्कियम',
-        duration: '5:00',
-        instructor: 'ডॉ. taylor',
-        youtubeUrl: 'https://www.youtube.com/watch?v=5K2L9F3G8M1',
-        views: 43000,
-      ),
-    ],
-  };
+class _VideoScreenState extends State<VideoScreen>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _entryController;
+  List<VideoLesson> _englishVideos = englishOralHealthVideos;
+  List<TamilVideoLesson> _tamilVideos = tamilOralHealthVideos;
+  String? _loadedLanguageCode;
+
+  @override
+  void initState() {
+    super.initState();
+    _entryController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 900),
+    )..forward();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final languageCode = _languageCodeFromContext(context);
+    if (_loadedLanguageCode != languageCode) {
+      _loadedLanguageCode = languageCode;
+      unawaited(_loadVideosForLanguage(languageCode));
+    }
+  }
+
+  @override
+  void dispose() {
+    _entryController.dispose();
+    super.dispose();
+  }
+
+  String _languageCodeFromContext(BuildContext context) {
+    return Localizations.localeOf(context).languageCode == 'ta' ? 'ta' : 'en';
+  }
+
+  Future<void> _loadVideosForLanguage(String languageCode) async {
+    try {
+      final apiItems = await LearningContentApiService.instance.fetchVideos(language: languageCode);
+      if (!mounted) {
+        return;
+      }
+
+      if (languageCode == 'ta') {
+        final tamilVideos = apiItems.map((item) => TamilVideoLesson.fromApi(item)).toList();
+        setState(() {
+          _tamilVideos = tamilVideos;
+        });
+        return;
+      }
+
+      final englishVideos = apiItems.map((item) => VideoLesson.fromApi(item)).toList();
+      setState(() {
+        _englishVideos = englishVideos;
+      });
+    } catch (error) {
+      debugPrint('[VideoScreen] API failed, using fallback: $error');
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        if (languageCode == 'ta') {
+          _tamilVideos = tamilOralHealthVideos;
+        } else {
+          _englishVideos = englishOralHealthVideos;
+        }
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
-    final String selectedLanguage = Localizations.localeOf(context).languageCode == 'ta' ? 'ta' : 'en';
-    final List<_Video> videos = videoData[selectedLanguage] ?? videoData['en'] ?? [];
+    final String selectedLanguage =
+        Localizations.localeOf(context).languageCode == 'ta' ? 'ta' : 'en';
 
     return Scaffold(
-      backgroundColor: AppTheme.backgroundColor,
+      backgroundColor: const Color(0xFFF7F9FC),
       appBar: AppBar(
         title: Text(loc.videoLessons),
         elevation: 0,
+        backgroundColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
       ),
-      body: ListView(
-        children: [
-          if (videos.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: _buildFeaturedVideoCard(context, videos.first),
-            ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              AppLocalizations.of(context)?.videoLessons ?? 'More Videos', // TODO: add specific key for "More Videos"
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-          ),
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: const EdgeInsets.all(16),
-            itemCount: videos.isNotEmpty ? videos.length - 1 : 0,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 12),
-                child: _buildVideoCard(context, videos[index + 1]),
-              );
-            },
-          ),
-        ],
-      ),
+      body: selectedLanguage == 'ta'
+          ? _buildTamilContent(context)
+          : _buildEnglishContent(context),
     );
+  }
+
+  Widget _buildEnglishContent(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return ListView(
+      physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+      children: [
+        Container(
+          padding: const EdgeInsets.all(18),
+          decoration: BoxDecoration(
+            color: colorScheme.surface,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: colorScheme.outlineVariant.withOpacity(0.55)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 18,
+                offset: const Offset(0, 8),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Oral health learning videos',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Curated YouTube lessons for brushing, hygiene, cavities, flossing, and dental awareness.',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                      height: 1.45,
+                    ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        Text(
+          loc.videoLessons,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+        ),
+        const SizedBox(height: 12),
+        for (int index = 0; index < _englishVideos.length; index++) ...[
+          VideoCard(
+            video: _englishVideos[index],
+            onTap: () => _openEnglishVideo(_englishVideos[index]),
+            animation: CurvedAnimation(
+              parent: _entryController,
+              curve: Interval(
+                0.08 + (index * 0.07),
+                1.0,
+                curve: Curves.easeOutCubic,
+              ),
+            ),
+          ),
+          if (index != _englishVideos.length - 1) const SizedBox(height: 14),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildTamilContent(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+    final videos = _tamilVideos;
+
+    return ListView(
+      physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+      children: [
+        Container(
+          padding: const EdgeInsets.all(18),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: Theme.of(context).colorScheme.outlineVariant.withOpacity(0.55),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 18,
+                offset: const Offset(0, 8),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'தமிழ் பல் நல வீடியோக்கள்',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'பல் பராமரிப்பு, ஈறு நலம், சொத்தைத் தடுப்பு, மற்றும் தினசரி சுத்தம் பற்றிய சிறிய விளக்கங்கள்.',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      height: 1.45,
+                    ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        Text(
+          loc.videoLessons,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+        ),
+        const SizedBox(height: 12),
+        for (int index = 0; index < videos.length; index++) ...[
+          TamilVideoCard(
+            video: videos[index],
+            onTap: () => _openTamilVideo(videos[index]),
+            animation: CurvedAnimation(
+              parent: _entryController,
+              curve: Interval(
+                0.08 + (index * 0.08),
+                1.0,
+                curve: Curves.easeOutCubic,
+              ),
+            ),
+          ),
+          if (index != videos.length - 1) const SizedBox(height: 14),
+        ],
+      ],
+    );
+  }
+
+  Future<void> _openTamilVideo(TamilVideoLesson video) async {
+    await _openYouTubeUrl(video.videoUrl, videoId: video.youtubeId);
+  }
+
+  Future<void> _openEnglishVideo(VideoLesson video) async {
+    await _openYouTubeUrl(video.videoUrl, videoId: video.youtubeId);
+  }
+
+  Future<void> _openYouTubeUrl(String youtubeUrl, {required String videoId}) async {
+    final messenger = ScaffoldMessenger.maybeOf(context);
+    final localizations = AppLocalizations.of(context);
+    final invalidMessage = localizations?.error ?? 'Invalid YouTube URL';
+    final unavailableMessage = localizations?.error ?? 'No app available to open this video';
+    final failedMessage = localizations?.error ?? 'Could not open video';
+    final exceptionPrefix = localizations?.error ?? 'Error opening video';
+
+    try {
+      final Uri videoUri = Uri.parse(youtubeUrl);
+
+      if (!_isValidYouTubeUrl(videoUri)) {
+        _showErrorSnackBar(messenger, invalidMessage);
+        return;
+      }
+
+      if (!await canLaunchUrl(videoUri)) {
+        _showErrorSnackBar(messenger, unavailableMessage);
+        return;
+      }
+
+      final bool launched = await launchUrl(
+        videoUri,
+        mode: LaunchMode.externalApplication,
+      );
+
+      if (!launched) {
+        _showErrorSnackBar(messenger, failedMessage);
+      } else {
+        unawaited(TrackerService.instance.markVideoWatched(videoId));
+      }
+    } catch (e) {
+      _showErrorSnackBar(messenger, '$exceptionPrefix: $e');
+    }
   }
 
   Widget _buildFeaturedVideoCard(BuildContext context, _Video video) {
@@ -340,18 +393,25 @@ class _VideoScreenState extends State<VideoScreen> {
   }
 
   Future<void> _openVideo(_Video video) async {
+    final messenger = ScaffoldMessenger.maybeOf(context);
+    final localizations = AppLocalizations.of(context);
+    final invalidMessage = localizations?.error ?? 'Invalid YouTube URL';
+    final unavailableMessage = localizations?.error ?? 'No app available to open this video';
+    final failedMessage = localizations?.error ?? 'Could not open video';
+    final exceptionPrefix = localizations?.error ?? 'Error opening video';
+
     try {
       final Uri videoUri = Uri.parse(video.youtubeUrl);
       
       // Validate YouTube URL
       if (!_isValidYouTubeUrl(videoUri)) {
-        _showErrorSnackBar(AppLocalizations.of(context)?.error ?? 'Invalid YouTube URL'); // TODO: add specific key
+        _showErrorSnackBar(messenger, invalidMessage); // TODO: add specific key
         return;
       }
 
       // Check if URL can be launched
       if (!await canLaunchUrl(videoUri)) {
-        _showErrorSnackBar(AppLocalizations.of(context)?.error ?? 'No app available to open this video'); // TODO: add specific key
+        _showErrorSnackBar(messenger, unavailableMessage); // TODO: add specific key
         return;
       }
 
@@ -362,10 +422,10 @@ class _VideoScreenState extends State<VideoScreen> {
       );
 
       if (!launched) {
-        _showErrorSnackBar(AppLocalizations.of(context)?.error ?? 'Could not open video'); // TODO: add specific key
+        _showErrorSnackBar(messenger, failedMessage); // TODO: add specific key
       }
     } catch (e) {
-      _showErrorSnackBar(AppLocalizations.of(context)?.error ?? 'Error opening video: $e');
+      _showErrorSnackBar(messenger, '$exceptionPrefix: $e');
     }
   }
 
@@ -388,9 +448,9 @@ class _VideoScreenState extends State<VideoScreen> {
   }
 
   /// Shows error message in a SnackBar
-  void _showErrorSnackBar(String message) {
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
+  void _showErrorSnackBar(ScaffoldMessengerState? messenger, String message) {
+    if (mounted && messenger != null) {
+      messenger.showSnackBar(
         SnackBar(
           content: Text(message),
           backgroundColor: Colors.red[600],

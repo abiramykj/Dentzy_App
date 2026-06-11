@@ -22,6 +22,8 @@ class User(Base):
     myth_histories = relationship("MythHistory", back_populates="user", cascade="all, delete-orphan")
     brushing_records = relationship("BrushingTracker", back_populates="user", cascade="all, delete-orphan")
     notifications = relationship("Notification", back_populates="user", cascade="all, delete-orphan")
+    article_progress = relationship("ArticleProgress", back_populates="user", cascade="all, delete-orphan")
+    video_progress = relationship("VideoProgress", back_populates="user", cascade="all, delete-orphan")
 
     @property
     def hashed_password(self) -> str:
