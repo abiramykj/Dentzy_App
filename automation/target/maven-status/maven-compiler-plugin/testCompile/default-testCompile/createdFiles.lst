@@ -1,0 +1,10 @@
+tests\AuthenticationTest.class
+tests\MythCheckerTest.class
+tests\ProfileTest.class
+tests\HomeTest.class
+tests\BrushingTest.class
+tests\SettingsTest.class
+tests\ReportsTest.class
+tests\LearningTest.class
+tests\NotificationsTest.class
+tests\QuizTest.class

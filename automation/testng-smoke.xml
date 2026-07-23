@@ -1,0 +1,15 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Dentzy Startup Smoke Suite" parallel="false" thread-count="1" configfailurepolicy="continue">
+    <listeners>
+        <listener class-name="utilities.TestListener"/>
+    </listeners>
+    <test name="Startup Smoke Test">
+        <classes>
+            <class name="tests.AuthenticationTest">
+                <methods>
+                    <include name="splashScreenLoads"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

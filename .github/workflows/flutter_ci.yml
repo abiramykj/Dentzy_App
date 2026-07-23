@@ -1,0 +1,103 @@
+name: Flutter CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Flutter CI Workflow
+    runs-on: ubuntu-latest
+
+    # Set the working directory to the Flutter project folder
+    defaults:
+      run:
+        working-directory: ./dentzy
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Java for Android build
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+          cache: 'gradle'
+
+      # Step 3: Install Flutter SDK and enable caching
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+          
+      # Step 4: Install Flutter dependencies
+      - name: Install dependencies
+        run: flutter pub get
+
+      # Step 5: Verify Dart formatting
+      - name: Verify formatting
+        run: dart format --output=none --set-exit-if-changed .
+
+      # Step 6: Analyze the project for errors and warnings
+      - name: Analyze project
+        run: flutter analyze
+
+      # Step 7: Run Flutter tests and generate coverage report (if tests exist)
+      - name: Run Flutter tests
+        run: |
+          if [ -d "test" ] && [ "$(ls -A test 2>/dev/null)" ]; then
+            echo "Tests folder exists and is not empty. Running tests..."
+            flutter test --coverage
+          else
+            echo "No tests found in the test folder. Skipping..."
+          fi
+        shell: bash
+
+      # Step 8: Build release APK
+      - name: Build Android APK
+        run: flutter build apk --release
+
+      # Step 9: Build Android App Bundle (AAB)
+      - name: Build Android AAB
+        run: flutter build appbundle --release
+
+      # Step 10: Upload the generated release APK
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-apk
+          path: dentzy/build/app/outputs/flutter-apk/app-release.apk
+
+      # Step 11: Upload the generated release AAB
+      - name: Upload AAB artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-aab
+          path: dentzy/build/app/outputs/bundle/release/app-release.aab
+
+      # Step 12: Upload Code Coverage Report
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-report
+          path: dentzy/coverage/lcov.info
+          if-no-files-found: ignore
+
+      # Step 13: Upload Excel Test Reports
+      - name: Upload Excel Reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: excel-test-reports
+          path: reports/*.xlsx
+          if-no-files-found: ignore

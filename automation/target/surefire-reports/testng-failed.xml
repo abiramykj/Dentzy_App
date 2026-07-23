@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite configfailurepolicy="continue" thread-count="1" name="Failed suite [Dentzy Startup Smoke Suite]" guice-stage="DEVELOPMENT" verbose="0">
+  <listeners>
+    <listener class-name="utilities.TestListener"/>
+  </listeners>
+  <test thread-count="1" name="Startup Smoke Test(failed)" verbose="0">
+    <classes>
+      <class name="tests.AuthenticationTest">
+        <methods>
+          <include name="setUp"/>
+          <include name="suiteSetup"/>
+          <include name="splashScreenLoads"/>
+          <include name="tearDown"/>
+          <include name="suiteTearDown"/>
+          <include name="classSetup"/>
+        </methods>
+      </class> <!-- tests.AuthenticationTest -->
+    </classes>
+  </test> <!-- Startup Smoke Test(failed) -->
+</suite> <!-- Failed suite [Dentzy Startup Smoke Suite] -->

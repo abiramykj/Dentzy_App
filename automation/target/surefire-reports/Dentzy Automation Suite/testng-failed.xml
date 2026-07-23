@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite thread-count="1" name="Failed suite [Dentzy Automation Suite]" guice-stage="DEVELOPMENT" verbose="0">
+  <listeners>
+    <listener class-name="utilities.TestListener"/>
+  </listeners>
+  <test thread-count="1" name="Dentzy Functional Tests(failed)" verbose="0">
+    <classes>
+      <class name="tests.SettingsTest">
+        <methods>
+          <include name="setUp"/>
+          <include name="tearDown"/>
+          <include name="suiteSetup"/>
+          <include name="suiteTearDown"/>
+          <include name="openSettings"/>
+        </methods>
+      </class> <!-- tests.SettingsTest -->
+      <class name="tests.QuizTest">
+        <methods>
+          <include name="setUp"/>
+          <include name="tearDown"/>
+          <include name="suiteSetup"/>
+          <include name="suiteTearDown"/>
+          <include name="openQuiz"/>
+        </methods>
+      </class> <!-- tests.QuizTest -->
+      <class name="tests.MythCheckerTest">
+        <methods>
+          <include name="setUp"/>
+          <include name="tearDown"/>
+          <include name="suiteSetup"/>
+          <include name="suiteTearDown"/>
+          <include name="validMythCheck"/>
+        </methods>
+      </class> <!-- tests.MythCheckerTest -->
+      <class name="tests.HomeTest">
+        <methods>
+          <include name="setUp"/>
+          <include name="suiteSetup"/>
+          <include name="tearDown"/>
+          <include name="navigateToMythChecker"/>
+          <include name="homeScreenLoads"/>
+          <include name="suiteTearDown"/>
+        </methods>
+      </class> <!-- tests.HomeTest -->
+      <class name="tests.AuthenticationTest">
+        <methods>
+          <include name="userCanEnterPassword"/>
+          <include name="setUp"/>
+          <include name="suiteSetup"/>
+          <include name="signUpScreenShouldDisplayRequiredFields"/>
+          <include name="tearDown"/>
+          <include name="userCanEnterConfirmPassword"/>
+          <include name="suiteTearDown"/>
+          <include name="userCanEnterFullName"/>
+          <include name="userCanEnterEmail"/>
+        </methods>
+      </class> <!-- tests.AuthenticationTest -->
+      <class name="tests.ReportsTest">
+        <methods>
+          <include name="setUp"/>
+          <include name="suiteSetup"/>
+          <include name="tearDown"/>
+          <include name="suiteTearDown"/>
+          <include name="openReports"/>
+        </methods>
+      </class> <!-- tests.ReportsTest -->
+    </classes>
+  </test> <!-- Dentzy Functional Tests(failed) -->
+</suite> <!-- Failed suite [Dentzy Automation Suite] -->

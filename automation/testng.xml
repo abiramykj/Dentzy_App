@@ -1,0 +1,20 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Dentzy Automation Suite" parallel="false" thread-count="1" configfailurepolicy="continue">
+    <listeners>
+        <listener class-name="utilities.TestListener"/>
+    </listeners>
+    <test name="Dentzy Functional Tests">
+        <classes>
+            <class name="tests.AuthenticationTest"/>
+            <class name="tests.HomeTest"/>
+            <class name="tests.MythCheckerTest"/>
+            <class name="tests.LearningTest"/>
+            <class name="tests.QuizTest"/>
+            <class name="tests.BrushingTest"/>
+            <class name="tests.ReportsTest"/>
+            <class name="tests.NotificationsTest"/>
+            <class name="tests.SettingsTest"/>
+            <class name="tests.ProfileTest"/>
+        </classes>
+    </test>
+</suite>

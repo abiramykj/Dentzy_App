@@ -7,23 +7,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'notification_api_service.dart';
 import 'notification_service.dart';
 import 'session_manager.dart';
-import 'package:timezone/timezone.dart' as tz;
 
 class SettingsProvider extends ChangeNotifier {
   // State variables
   bool _remindersEnabled = false;
+  bool _morningReminderEnabled = true;
+  bool _nightReminderEnabled = true;
   TimeOfDay _morningReminderTime = const TimeOfDay(hour: 7, minute: 0);
   TimeOfDay _nightReminderTime = const TimeOfDay(hour: 21, minute: 0);
-  bool _morningReminderEnabled = false;
-  bool _nightReminderEnabled = false;
   int _lastLoadedSessionEpoch = -1;
   bool _initializing = false;
   int _initializedSessionEpoch = -1;
   final NotificationApiService _notificationApiService = NotificationApiService();
   final NotificationService _notificationService = NotificationService.instance;
-  bool _isScheduling = false;
-  int? _scheduledMorningEpoch;
-  int? _scheduledNightEpoch;
 
   static const String _settingsSuffix = 'settings';
 
@@ -36,10 +32,10 @@ class SettingsProvider extends ChangeNotifier {
 
   // Getters
   bool get remindersEnabled => _remindersEnabled;
+  bool get morningReminderEnabled => _remindersEnabled && _morningReminderEnabled;
+  bool get nightReminderEnabled => _remindersEnabled && _nightReminderEnabled;
   TimeOfDay get morningReminderTime => _morningReminderTime;
   TimeOfDay get nightReminderTime => _nightReminderTime;
-  bool get morningReminderEnabled => _morningReminderEnabled;
-  bool get nightReminderEnabled => _nightReminderEnabled;
 
   String get morningTimeDisplay =>
       '${_morningReminderTime.hour.toString().padLeft(2, '0')}:${_morningReminderTime.minute.toString().padLeft(2, '0')}';
@@ -80,6 +76,14 @@ class SettingsProvider extends ChangeNotifier {
         // Don't crash the app if notifications fail
       }
 
+      try {
+        debugPrint('🔄 [SettingsProvider.initialize] Clearing previous reminders before rescheduling...');
+        await cancelReminders();
+      } catch (e) {
+        debugPrint('⚠️  [SettingsProvider.initialize] Error clearing reminders: $e');
+      }
+
+      // Schedule reminders if enabled
       if (_remindersEnabled) {
         try {
           debugPrint('🔄 [SettingsProvider.initialize] Scheduling reminders...');
@@ -88,13 +92,6 @@ class SettingsProvider extends ChangeNotifier {
           debugPrint('✅ [SettingsProvider.initialize] Reminders scheduled');
         } catch (e) {
           debugPrint('⚠️  [SettingsProvider.initialize] Error scheduling reminders: $e');
-        }
-      } else {
-        try {
-          debugPrint('🔄 [SettingsProvider.initialize] Clearing previous reminders...');
-          await cancelReminders();
-        } catch (e) {
-          debugPrint('⚠️  [SettingsProvider.initialize] Error clearing reminders: $e');
         }
       }
 
@@ -125,6 +122,8 @@ class SettingsProvider extends ChangeNotifier {
 
   void _resetState() {
     _remindersEnabled = false;
+    _morningReminderEnabled = true;
+    _nightReminderEnabled = true;
     _morningReminderTime = const TimeOfDay(hour: 7, minute: 0);
     _nightReminderTime = const TimeOfDay(hour: 21, minute: 0);
   }
@@ -157,8 +156,8 @@ class SettingsProvider extends ChangeNotifier {
       final settings = decoded is Map ? decoded.map((key, value) => MapEntry(key.toString(), value)) : <String, dynamic>{};
 
       _remindersEnabled = settings['remindersEnabled'] as bool? ?? false;
-      _morningReminderEnabled = settings['morningReminderEnabled'] as bool? ?? false;
-      _nightReminderEnabled = settings['eveningReminderEnabled'] as bool? ?? false;
+      _morningReminderEnabled = settings['morningReminderEnabled'] as bool? ?? true;
+      _nightReminderEnabled = settings['nightReminderEnabled'] as bool? ?? true;
 
       // Load and parse morning time with null safety
       final morningStr = settings['morningReminderTime']?.toString() ?? '';
@@ -192,12 +191,6 @@ class SettingsProvider extends ChangeNotifier {
         }
       }
 
-      _scheduledMorningEpoch = prefs.getInt('$settingsKey:scheduledMorningEpoch');
-      _scheduledNightEpoch = prefs.getInt('$settingsKey:scheduledNightEpoch');
-      debugPrint(
-        '[SETTINGS] restored scheduled epochs morning=$_scheduledMorningEpoch night=$_scheduledNightEpoch',
-      );
-
       if (loadEpoch != AuthSessionService.instance.sessionEpoch) {
         debugPrint('[SETTINGS] Discarding decoded settings for stale epoch=$loadEpoch');
         return;
@@ -227,7 +220,7 @@ class SettingsProvider extends ChangeNotifier {
         jsonEncode({
           'remindersEnabled': _remindersEnabled,
           'morningReminderEnabled': _morningReminderEnabled,
-          'eveningReminderEnabled': _nightReminderEnabled,
+          'nightReminderEnabled': _nightReminderEnabled,
           'morningReminderTime': '${_morningReminderTime.hour}:${_morningReminderTime.minute}',
           'nightReminderTime': '${_nightReminderTime.hour}:${_nightReminderTime.minute}',
         }),
@@ -236,74 +229,6 @@ class SettingsProvider extends ChangeNotifier {
       print('Error saving settings: $e');
     }
   }
-
-    // Toggle morning reminder enabled state
-    Future<void> toggleMorningReminderEnabled(bool enabled) async {
-      _morningReminderEnabled = enabled;
-      await _saveSettings();
-        if (_morningReminderEnabled) {
-          await scheduleMorningReminder();
-          debugPrint('[SETTINGS] Morning reminder enabled');
-        } else {
-          await cancelMorningReminder();
-          debugPrint('[SETTINGS] Morning reminder disabled');
-        }
-      notifyListeners();
-    }
-
-    // Toggle evening reminder enabled state
-    Future<void> toggleEveningReminderEnabled(bool enabled) async {
-      _nightReminderEnabled = enabled;
-      await _saveSettings();
-      if (_nightReminderEnabled) {
-        await scheduleNightReminder();
-        debugPrint('[SETTINGS] Evening reminder enabled');
-      } else {
-        await cancelEveningReminder();
-        debugPrint('[SETTINGS] Evening reminder disabled');
-      }
-      notifyListeners();
-    }
-
-    Future<void> cancelMorningReminder() async {
-      try {
-        await _notificationService.cancelNotification(101);
-        debugPrint('[SETTINGS] cancelMorningReminder id=101');
-        // Clear persisted scheduled epoch
-        try {
-          final prefs = await SharedPreferences.getInstance();
-          final settingsKey = _settingsKey();
-          if (settingsKey != null) {
-            await prefs.remove('\$settingsKey:scheduledMorningEpoch');
-          }
-        } catch (e) {
-          debugPrint('[SETTINGS] cancelMorningReminder: failed to clear stored epoch: $e');
-        }
-        _scheduledMorningEpoch = null;
-      } catch (e) {
-        debugPrint('[SETTINGS] cancelMorningReminder error=$e');
-      }
-    }
-
-    Future<void> cancelEveningReminder() async {
-      try {
-        await _notificationService.cancelNotification(102);
-        debugPrint('[SETTINGS] cancelEveningReminder id=102');
-        // Clear persisted scheduled epoch
-        try {
-          final prefs = await SharedPreferences.getInstance();
-          final settingsKey = _settingsKey();
-          if (settingsKey != null) {
-            await prefs.remove('\$settingsKey:scheduledNightEpoch');
-          }
-        } catch (e) {
-          debugPrint('[SETTINGS] cancelEveningReminder: failed to clear stored epoch: $e');
-        }
-        _scheduledNightEpoch = null;
-      } catch (e) {
-        debugPrint('[SETTINGS] cancelEveningReminder error=$e');
-      }
-    }
 
   // Initialize local notifications
   Future<void> _initializeNotifications() async {
@@ -323,6 +248,12 @@ class SettingsProvider extends ChangeNotifier {
   Future<void> toggleReminders(bool value) async {
     _remindersEnabled = value;
 
+    if (_remindersEnabled && !_morningReminderEnabled && !_nightReminderEnabled) {
+      // Keep legacy behavior: enabling reminders schedules at least one reminder.
+      _morningReminderEnabled = true;
+      _nightReminderEnabled = true;
+    }
+
     if (_remindersEnabled) {
       await scheduleReminders();
     } else {
@@ -340,7 +271,7 @@ class SettingsProvider extends ChangeNotifier {
     await _saveSettings();
     await _syncNotificationSettingsToBackend();
 
-    if (_remindersEnabled) {
+    if (_remindersEnabled && _morningReminderEnabled) {
       await scheduleMorningReminder();
     }
 
@@ -352,11 +283,56 @@ class SettingsProvider extends ChangeNotifier {
     _nightReminderTime = time;
     await _saveSettings();
 
-    if (_remindersEnabled) {
+    if (_remindersEnabled && _nightReminderEnabled) {
       await scheduleNightReminder();
     }
 
     notifyListeners();
+  }
+
+  Future<void> toggleMorningReminderEnabled(bool value) async {
+    _morningReminderEnabled = value;
+
+    if (value) {
+      _remindersEnabled = true;
+    } else if (!_nightReminderEnabled) {
+      _remindersEnabled = false;
+    }
+
+    await _saveSettings();
+    await _syncNotificationSettingsToBackend();
+    await _rescheduleSelectedReminders();
+    notifyListeners();
+  }
+
+  Future<void> toggleEveningReminderEnabled(bool value) async {
+    _nightReminderEnabled = value;
+
+    if (value) {
+      _remindersEnabled = true;
+    } else if (!_morningReminderEnabled) {
+      _remindersEnabled = false;
+    }
+
+    await _saveSettings();
+    await _syncNotificationSettingsToBackend();
+    await _rescheduleSelectedReminders();
+    notifyListeners();
+  }
+
+  Future<void> _rescheduleSelectedReminders() async {
+    await cancelReminders();
+    if (!_remindersEnabled) {
+      return;
+    }
+
+    if (_morningReminderEnabled) {
+      await scheduleMorningReminder();
+    }
+
+    if (_nightReminderEnabled) {
+      await scheduleNightReminder();
+    }
   }
 
   Future<void> _syncNotificationSettingsToBackend() async {
@@ -377,133 +353,49 @@ class SettingsProvider extends ChangeNotifier {
 
   // Schedule both reminders
   Future<void> scheduleReminders() async {
-    // Reconcile desired state with actual scheduled alarms. Do not unconditionally cancel
-    // to avoid cancel → schedule loops during rebuilds.
+    await cancelReminders();
     if (_morningReminderEnabled) {
       await scheduleMorningReminder();
-      debugPrint('[SETTINGS] scheduleReminders: morning scheduled (or already present)');
-    } else {
-      await cancelMorningReminder();
     }
-
     if (_nightReminderEnabled) {
       await scheduleNightReminder();
-      debugPrint('[SETTINGS] scheduleReminders: evening scheduled (or already present)');
-    } else {
-      await cancelEveningReminder();
     }
-
-    debugPrint('scheduleReminders reconciliation complete');
+    print('Both reminders scheduled');
   }
 
   // Schedule morning reminder at specified time
   Future<void> scheduleMorningReminder() async {
-    if (_isScheduling) {
-      debugPrint('[SETTINGS] scheduleMorningReminder skipped: already scheduling');
-      return;
-    }
-
     try {
-      _isScheduling = true;
       final scheduledDate = _nextOccurrence(_morningReminderTime);
-      final scheduledEpoch = scheduledDate.millisecondsSinceEpoch;
-
-      debugPrint('[SETTINGS] scheduleMorningReminder: now=${tz.TZDateTime.now(tz.local)} scheduled=$scheduledDate (epoch=$scheduledEpoch)');
-
-      final settingsKey = _settingsKey();
-      if (settingsKey != null && _scheduledMorningEpoch == scheduledEpoch) {
-        debugPrint('[SETTINGS] scheduleMorningReminder: identical reminder already scheduled (epoch=$scheduledEpoch), skipping');
-        return;
-      }
-
-      // Only cancel existing if a different scheduled time exists
-      if (_scheduledMorningEpoch != null && _scheduledMorningEpoch != scheduledEpoch) {
-        await _notificationService.cancelNotification(101);
-        debugPrint('[SETTINGS] scheduleMorningReminder: canceled old morning reminder epoch=$_scheduledMorningEpoch');
-      }
-
       await _notificationService.scheduleNotificationAt(
-        id: 101,
+        id: 1,
         title: 'Good Morning! 🦷',
         body: 'Time to brush your teeth',
         scheduledDate: scheduledDate,
-        repeatDaily: true,
         payload: 'morning_brush',
         preferExact: true,
       );
-
-      // Persist scheduled epoch
-      try {
-        final prefs = await SharedPreferences.getInstance();
-        if (settingsKey != null) {
-          await prefs.setInt('\$settingsKey:scheduledMorningEpoch', scheduledEpoch);
-          _scheduledMorningEpoch = scheduledEpoch;
-          debugPrint('[SETTINGS] scheduleMorningReminder: stored scheduledMorningEpoch=$scheduledEpoch');
-        }
-      } catch (e) {
-        debugPrint('[SETTINGS] scheduleMorningReminder: failed to store epoch: $e');
-      }
-
       print('Morning reminder scheduled for ${_morningReminderTime.hour}:${_morningReminderTime.minute} at $scheduledDate');
     } catch (e) {
       print('Error scheduling morning reminder: $e');
-    } finally {
-      _isScheduling = false;
     }
   }
 
   // Schedule night reminder at specified time
   Future<void> scheduleNightReminder() async {
-    if (_isScheduling) {
-      debugPrint('[SETTINGS] scheduleNightReminder skipped: already scheduling');
-      return;
-    }
-
     try {
-      _isScheduling = true;
       final scheduledDate = _nextOccurrence(_nightReminderTime);
-      final scheduledEpoch = scheduledDate.millisecondsSinceEpoch;
-
-      debugPrint('[SETTINGS] scheduleNightReminder: now=${tz.TZDateTime.now(tz.local)} scheduled=$scheduledDate (epoch=$scheduledEpoch)');
-
-      final settingsKey = _settingsKey();
-      if (settingsKey != null && _scheduledNightEpoch == scheduledEpoch) {
-        debugPrint('[SETTINGS] scheduleNightReminder: identical reminder already scheduled (epoch=$scheduledEpoch), skipping');
-        return;
-      }
-
-      if (_scheduledNightEpoch != null && _scheduledNightEpoch != scheduledEpoch) {
-        await _notificationService.cancelNotification(102);
-        debugPrint('[SETTINGS] scheduleNightReminder: canceled old night reminder epoch=$_scheduledNightEpoch');
-      }
-
       await _notificationService.scheduleNotificationAt(
-        id: 102,
+        id: 2,
         title: 'Before Bed! 🌙',
         body: 'Don\'t forget to brush your teeth',
         scheduledDate: scheduledDate,
-        repeatDaily: true,
         payload: 'night_brush',
         preferExact: true,
       );
-
-      // Persist scheduled epoch
-      try {
-        final prefs = await SharedPreferences.getInstance();
-        if (settingsKey != null) {
-          await prefs.setInt('\$settingsKey:scheduledNightEpoch', scheduledEpoch);
-          _scheduledNightEpoch = scheduledEpoch;
-          debugPrint('[SETTINGS] scheduleNightReminder: stored scheduledNightEpoch=$scheduledEpoch');
-        }
-      } catch (e) {
-        debugPrint('[SETTINGS] scheduleNightReminder: failed to store epoch: $e');
-      }
-
       print('Night reminder scheduled for ${_nightReminderTime.hour}:${_nightReminderTime.minute} at $scheduledDate');
     } catch (e) {
       print('Error scheduling night reminder: $e');
-    } finally {
-      _isScheduling = false;
     }
   }
 
@@ -518,13 +410,12 @@ class SettingsProvider extends ChangeNotifier {
   }
 
   DateTime _nextOccurrence(TimeOfDay time) {
-    final now = tz.TZDateTime.now(tz.local);
-    var scheduled = tz.TZDateTime(tz.local, now.year, now.month, now.day, time.hour, time.minute);
+    final now = DateTime.now();
+    var scheduled = DateTime(now.year, now.month, now.day, time.hour, time.minute);
     if (!scheduled.isAfter(now)) {
       scheduled = scheduled.add(const Duration(days: 1));
     }
-    debugPrint('[SETTINGS] _nextOccurrence nowLocal=$now selected=${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')} scheduledLocal=$scheduled timezone=${tz.local.name}');
-    return DateTime(scheduled.year, scheduled.month, scheduled.day, scheduled.hour, scheduled.minute, scheduled.second, scheduled.millisecond, scheduled.microsecond);
+    return scheduled;
   }
 
   Future<void> resetForSessionChange() async {

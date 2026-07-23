@@ -124,18 +124,14 @@ class NotificationService {
   }) async {
     await _ensureInitialized();
     debugPrint('[Notifications] showImmediateNotification id=$id title=$title body=$body payload=$payload');
-    try {
-      await _notificationsPlugin.show(
-        id,
-        title,
-        body,
-        _buildDetails(body: body),
-        payload: payload,
-      );
-      await logDiagnostics(reason: 'after immediate show id=$id');
-    } catch (e) {
-      debugPrint('[Notifications] Immediate notification failed: $e');
-    }
+    await _notificationsPlugin.show(
+      id,
+      title,
+      body,
+      _buildDetails(body: body),
+      payload: payload,
+    );
+    await logDiagnostics(reason: 'after immediate show id=$id');
   }
 
   Future<void> scheduleNotificationAt({
@@ -145,7 +141,6 @@ class NotificationService {
     required DateTime scheduledDate,
     String? payload,
     bool preferExact = true,
-    bool repeatDaily = false,
   }) async {
     await _ensureInitialized();
 
@@ -164,38 +159,24 @@ class NotificationService {
       );
     }
 
-    final scheduledAt = tz.TZDateTime(
-      tz.local,
-      scheduledDate.year,
-      scheduledDate.month,
-      scheduledDate.day,
-      scheduledDate.hour,
-      scheduledDate.minute,
-      scheduledDate.second,
-      scheduledDate.millisecond,
-      scheduledDate.microsecond,
-    );
+    final scheduledAt = tz.TZDateTime.from(scheduledDate, tz.local);
     debugPrint(
-      '[Notifications] scheduleNotificationAt id=$id title=$title body=$body nowLocal=${tz.TZDateTime.now(tz.local)} scheduledLocal=$scheduledAt scheduledDate=$scheduledDate scheduleMode=$scheduleMode payload=$payload timezone=${tz.local.name}',
+      '[Notifications] scheduleNotificationAt id=$id title=$title body=$body scheduledDate=$scheduledDate scheduleMode=$scheduleMode payload=$payload',
     );
 
-    try {
-      await _notificationsPlugin.zonedSchedule(
-        id,
-        title,
-        body,
-        scheduledAt,
-        _buildDetails(body: body),
-        androidScheduleMode: scheduleMode,
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime,
-        payload: payload,
-        matchDateTimeComponents: repeatDaily ? DateTimeComponents.time : null,
-      );
-      await logDiagnostics(reason: 'after schedule id=$id');
-    } catch (e) {
-      debugPrint('[Notifications] Notification scheduling failed: $e');
-    }
+    await _notificationsPlugin.zonedSchedule(
+      id,
+      title,
+      body,
+      scheduledAt,
+      _buildDetails(body: body),
+      androidScheduleMode: scheduleMode,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      payload: payload,
+    );
+
+    await logDiagnostics(reason: 'after schedule id=$id');
   }
 
   Future<void> scheduleDelayedTestNotification() async {
@@ -318,7 +299,7 @@ class NotificationService {
     await _ensureTimeZoneInitialized();
 
     const androidInitializationSettings = AndroidInitializationSettings(
-      'ic_notification',
+      'app_icon',
     );
     const darwinInitializationSettings = DarwinInitializationSettings(
       requestAlertPermission: false,
@@ -341,36 +322,6 @@ class NotificationService {
       },
     );
 
-    // Create Android notification channel for brushing reminders
-    if (_isAndroid) {
-      final androidImpl = _notificationsPlugin.resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>();
-      if (androidImpl != null) {
-        const channel = AndroidNotificationChannel(
-          'brushing_reminders',
-          'Brushing Reminders',
-          description: 'Daily brushing reminder notifications',
-          importance: Importance.max,
-        );
-        try {
-          // In debug mode, remove existing channel to ensure importance/settings are applied during development.
-          if (kDebugMode) {
-            try {
-              await androidImpl.deleteNotificationChannel('brushing_reminders');
-              debugPrint('[Notifications] Deleted existing brushing_reminders channel (debug)');
-            } catch (e) {
-              debugPrint('[Notifications] No existing channel to delete or delete failed: $e');
-            }
-          }
-
-          await androidImpl.createNotificationChannel(channel);
-          debugPrint('[Notifications] Created Android channel brushing_reminders');
-        } catch (e) {
-          debugPrint('[Notifications] Failed to create channel: $e');
-        }
-      }
-    }
-
     _initialized = true;
     debugPrint('[Notifications] FlutterLocalNotificationsPlugin initialized');
   }
@@ -383,18 +334,12 @@ class NotificationService {
     tz.initializeTimeZones();
 
     try {
-      tz.setLocalLocation(tz.getLocation('Asia/Kolkata'));
-      debugPrint('[Notifications] Time zone initialized: Asia/Kolkata');
+      final localTimeZone = await FlutterTimezone.getLocalTimezone();
+      tz.setLocalLocation(tz.getLocation(localTimeZone.identifier));
+      debugPrint('[Notifications] Time zone initialized: ${localTimeZone.identifier}');
     } catch (error) {
-      debugPrint('[Notifications] Time zone initialization failed, falling back to system local: $error');
-      try {
-        final localTimeZone = await FlutterTimezone.getLocalTimezone();
-        tz.setLocalLocation(tz.getLocation(localTimeZone.identifier));
-        debugPrint('[Notifications] Time zone fallback initialized: ${localTimeZone.identifier}');
-      } catch (fallbackError) {
-        debugPrint('[Notifications] Time zone fallback failed, using UTC as last resort: $fallbackError');
-        tz.setLocalLocation(tz.getLocation('UTC'));
-      }
+      debugPrint('[Notifications] Time zone detection failed, falling back to UTC: $error');
+      tz.setLocalLocation(tz.getLocation('UTC'));
     }
 
     _timeZoneInitialized = true;
@@ -402,12 +347,11 @@ class NotificationService {
 
   NotificationDetails _buildDetails({required String body}) {
     final androidDetails = AndroidNotificationDetails(
-      'brushing_reminders',
-      'Brushing Reminders',
-      channelDescription: 'Daily brushing reminder notifications',
+      'dentzy_timer_notifications',
+      'Dentzy Timer Notifications',
+      channelDescription: 'Timer completion and diagnostic notifications',
       importance: Importance.max,
       priority: Priority.high,
-      icon: 'ic_notification',
       category: AndroidNotificationCategory.reminder,
       enableVibration: true,
       playSound: true,

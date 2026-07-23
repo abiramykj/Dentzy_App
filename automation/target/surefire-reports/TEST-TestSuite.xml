@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="TestSuite" time="14.691" tests="1" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="surefire.printSummary" value="true"/>
+    <property name="surefire.suiteXmlFiles" value="testng-smoke.xml"/>
+    <property name="java.specification.version" value="17"/>
+    <property name="sun.cpu.isalist" value="amd64"/>
+    <property name="sun.jnu.encoding" value="Cp1252"/>
+    <property name="java.class.path" value="C:\Users\Dyuthi\Dentzy_App\automation\target\test-classes;C:\Users\Dyuthi\Dentzy_App\automation\target\classes;C:\Users\Dyuthi\.m2\repository\io\appium\java-client\10.1.1\java-client-10.1.1.jar;C:\Users\Dyuthi\.m2\repository\org\seleniumhq\selenium\selenium-api\4.46.0\selenium-api-4.46.0.jar;C:\Users\Dyuthi\.m2\repository\org\seleniumhq\selenium\selenium-remote-driver\4.46.0\selenium-remote-driver-4.46.0.jar;C:\Users\Dyuthi\.m2\repository\com\google\auto\service\auto-service-annotations\1.1.1\auto-service-annotations-1.1.1.jar;C:\Users\Dyuthi\.m2\repository\com\google\guava\guava\33.6.0-jre\guava-33.6.0-jre.jar;C:\Users\Dyuthi\.m2\repository\com\google\guava\failureaccess\1.0.3\failureaccess-1.0.3.jar;C:\Users\Dyuthi\.m2\repository\com\google\guava\listenablefuture\9999.0-empty-to-avoid-conflict-with-guava\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar;C:\Users\Dyuthi\.m2\repository\com\google\j2objc\j2objc-annotations\3.1\j2objc-annotations-3.1.jar;C:\Users\Dyuthi\.m2\repository\io\opentelemetry\opentelemetry-api\1.64.0\opentelemetry-api-1.64.0.jar;C:\Users\Dyuthi\.m2\repository\io\opentelemetry\opentelemetry-context\1.64.0\opentelemetry-context-1.64.0.jar;C:\Users\Dyuthi\.m2\repository\io\opentelemetry\opentelemetry-common\1.64.0\opentelemetry-common-1.64.0.jar;C:\Users\Dyuthi\.m2\repository\io\opentelemetry\opentelemetry-exporter-logging\1.64.0\opentelemetry-exporter-logging-1.64.0.jar;C:\Users\Dyuthi\.m2\repository\io\opentelemetry\opentelemetry-sdk-common\1.64.0\opentelemetry-sdk-common-1.64.0.jar;C:\Users\Dyuthi\.m2\repository\io\opentelemetry\opentelemetry-sdk-extension-autoconfigure-spi\1.64.0\opentelemetry-sdk-extension-autoconfigure-spi-1.64.0.jar;C:\Users\Dyuthi\.m2\repository\io\opentelemetry\opentelemetry-sdk-extension-autoconfigure\1.64.0\opentelemetry-sdk-extension-autoconfigure-1.64.0.jar;C:\Users\Dyuthi\.m2\repository\io\opentelemetry\opentelemetry-sdk-trace\1.64.0\opentelemetry-sdk-trace-1.64.0.jar;C:\Users\Dyuthi\.m2\repository\io\opentelemetry\opentelemetry-sdk\1.64.0\opentelemetry-sdk-1.64.0.jar;C:\Users\Dyuthi\.m2\repository\io\opentelemetry\opentelemetry-sdk-metrics\1.64.0\opentelemetry-sdk-metrics-1.64.0.jar;C:\Users\Dyuthi\.m2\repository\io\opentelemetry\opentelemetry-sdk-logs\1.64.0\opentelemetry-sdk-logs-1.64.0.jar;C:\Users\Dyuthi\.m2\repository\net\bytebuddy\byte-buddy\1.18.11\byte-buddy-1.18.11.jar;C:\Users\Dyuthi\.m2\repository\org\seleniumhq\selenium\selenium-http\4.46.0\selenium-http-4.46.0.jar;C:\Users\Dyuthi\.m2\repository\org\seleniumhq\selenium\selenium-json\4.46.0\selenium-json-4.46.0.jar;C:\Users\Dyuthi\.m2\repository\org\seleniumhq\selenium\selenium-manager\4.46.0\selenium-manager-4.46.0.jar;C:\Users\Dyuthi\.m2\repository\org\seleniumhq\selenium\selenium-os\4.46.0\selenium-os-4.46.0.jar;C:\Users\Dyuthi\.m2\repository\org\seleniumhq\selenium\selenium-support\4.46.0\selenium-support-4.46.0.jar;C:\Users\Dyuthi\.m2\repository\com\google\code\gson\gson\2.13.2\gson-2.13.2.jar;C:\Users\Dyuthi\.m2\repository\com\google\errorprone\error_prone_annotations\2.41.0\error_prone_annotations-2.41.0.jar;C:\Users\Dyuthi\.m2\repository\org\slf4j\slf4j-api\2.0.17\slf4j-api-2.0.17.jar;C:\Users\Dyuthi\.m2\repository\org\jspecify\jspecify\1.0.0\jspecify-1.0.0.jar;C:\Users\Dyuthi\.m2\repository\org\testng\testng\7.10.0\testng-7.10.0.jar;C:\Users\Dyuthi\.m2\repository\com\beust\jcommander\1.82\jcommander-1.82.jar;C:\Users\Dyuthi\.m2\repository\org\webjars\jquery\3.7.1\jquery-3.7.1.jar;C:\Users\Dyuthi\.m2\repository\org\apache\poi\poi-ooxml\5.2.5\poi-ooxml-5.2.5.jar;C:\Users\Dyuthi\.m2\repository\org\apache\poi\poi\5.2.5\poi-5.2.5.jar;C:\Users\Dyuthi\.m2\repository\commons-codec\commons-codec\1.16.0\commons-codec-1.16.0.jar;C:\Users\Dyuthi\.m2\repository\org\apache\commons\commons-math3\3.6.1\commons-math3-3.6.1.jar;C:\Users\Dyuthi\.m2\repository\com\zaxxer\SparseBitSet\1.3\SparseBitSet-1.3.jar;C:\Users\Dyuthi\.m2\repository\org\apache\poi\poi-ooxml-lite\5.2.5\poi-ooxml-lite-5.2.5.jar;C:\Users\Dyuthi\.m2\repository\org\apache\xmlbeans\xmlbeans\5.2.0\xmlbeans-5.2.0.jar;C:\Users\Dyuthi\.m2\repository\org\apache\commons\commons-compress\1.25.0\commons-compress-1.25.0.jar;C:\Users\Dyuthi\.m2\repository\com\github\virtuald\curvesapi\1.08\curvesapi-1.08.jar;C:\Users\Dyuthi\.m2\repository\org\apache\commons\commons-collections4\4.4\commons-collections4-4.4.jar;C:\Users\Dyuthi\.m2\repository\com\aventstack\extentreports\5.1.2\extentreports-5.1.2.jar;C:\Users\Dyuthi\.m2\repository\io\reactivex\rxjava3\rxjava\3.1.6\rxjava-3.1.6.jar;C:\Users\Dyuthi\.m2\repository\org\reactivestreams\reactive-streams\1.0.4\reactive-streams-1.0.4.jar;C:\Users\Dyuthi\.m2\repository\org\freemarker\freemarker\2.3.32\freemarker-2.3.32.jar;C:\Users\Dyuthi\.m2\repository\org\projectlombok\lombok\1.18.26\lombok-1.18.26.jar;C:\Users\Dyuthi\.m2\repository\org\apache\logging\log4j\log4j-core\2.24.1\log4j-core-2.24.1.jar;C:\Users\Dyuthi\.m2\repository\org\apache\logging\log4j\log4j-api\2.24.1\log4j-api-2.24.1.jar;C:\Users\Dyuthi\.m2\repository\org\apache\commons\commons-lang3\3.16.0\commons-lang3-3.16.0.jar;C:\Users\Dyuthi\.m2\repository\commons-io\commons-io\2.16.0\commons-io-2.16.0.jar;"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="user.variant" value=""/>
+    <property name="java.vendor.url" value="https://java.oracle.com/"/>
+    <property name="user.timezone" value="Asia/Calcutta"/>
+    <property name="os.name" value="Windows 11"/>
+    <property name="java.vm.specification.version" value="17"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="GB"/>
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-17\bin"/>
+    <property name="sun.java.command" value="C:\Users\Dyuthi\AppData\Local\Temp\surefire12599826394068195372\surefirebooter-20260711115804436_3.jar C:\Users\Dyuthi\AppData\Local\Temp\surefire12599826394068195372 2026-07-11T11-58-04_288-jvmRun1 surefire-20260711115804436_1tmp surefire_0-20260711115804436_2tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="C:\Users\Dyuthi\Dentzy_App\automation\target\test-classes;C:\Users\Dyuthi\Dentzy_App\automation\target\classes;C:\Users\Dyuthi\.m2\repository\io\appium\java-client\10.1.1\java-client-10.1.1.jar;C:\Users\Dyuthi\.m2\repository\org\seleniumhq\selenium\selenium-api\4.46.0\selenium-api-4.46.0.jar;C:\Users\Dyuthi\.m2\repository\org\seleniumhq\selenium\selenium-remote-driver\4.46.0\selenium-remote-driver-4.46.0.jar;C:\Users\Dyuthi\.m2\repository\com\google\auto\service\auto-service-annotations\1.1.1\auto-service-annotations-1.1.1.jar;C:\Users\Dyuthi\.m2\repository\com\google\guava\guava\33.6.0-jre\guava-33.6.0-jre.jar;C:\Users\Dyuthi\.m2\repository\com\google\guava\failureaccess\1.0.3\failureaccess-1.0.3.jar;C:\Users\Dyuthi\.m2\repository\com\google\guava\listenablefuture\9999.0-empty-to-avoid-conflict-with-guava\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar;C:\Users\Dyuthi\.m2\repository\com\google\j2objc\j2objc-annotations\3.1\j2objc-annotations-3.1.jar;C:\Users\Dyuthi\.m2\repository\io\opentelemetry\opentelemetry-api\1.64.0\opentelemetry-api-1.64.0.jar;C:\Users\Dyuthi\.m2\repository\io\opentelemetry\opentelemetry-context\1.64.0\opentelemetry-context-1.64.0.jar;C:\Users\Dyuthi\.m2\repository\io\opentelemetry\opentelemetry-common\1.64.0\opentelemetry-common-1.64.0.jar;C:\Users\Dyuthi\.m2\repository\io\opentelemetry\opentelemetry-exporter-logging\1.64.0\opentelemetry-exporter-logging-1.64.0.jar;C:\Users\Dyuthi\.m2\repository\io\opentelemetry\opentelemetry-sdk-common\1.64.0\opentelemetry-sdk-common-1.64.0.jar;C:\Users\Dyuthi\.m2\repository\io\opentelemetry\opentelemetry-sdk-extension-autoconfigure-spi\1.64.0\opentelemetry-sdk-extension-autoconfigure-spi-1.64.0.jar;C:\Users\Dyuthi\.m2\repository\io\opentelemetry\opentelemetry-sdk-extension-autoconfigure\1.64.0\opentelemetry-sdk-extension-autoconfigure-1.64.0.jar;C:\Users\Dyuthi\.m2\repository\io\opentelemetry\opentelemetry-sdk-trace\1.64.0\opentelemetry-sdk-trace-1.64.0.jar;C:\Users\Dyuthi\.m2\repository\io\opentelemetry\opentelemetry-sdk\1.64.0\opentelemetry-sdk-1.64.0.jar;C:\Users\Dyuthi\.m2\repository\io\opentelemetry\opentelemetry-sdk-metrics\1.64.0\opentelemetry-sdk-metrics-1.64.0.jar;C:\Users\Dyuthi\.m2\repository\io\opentelemetry\opentelemetry-sdk-logs\1.64.0\opentelemetry-sdk-logs-1.64.0.jar;C:\Users\Dyuthi\.m2\repository\net\bytebuddy\byte-buddy\1.18.11\byte-buddy-1.18.11.jar;C:\Users\Dyuthi\.m2\repository\org\seleniumhq\selenium\selenium-http\4.46.0\selenium-http-4.46.0.jar;C:\Users\Dyuthi\.m2\repository\org\seleniumhq\selenium\selenium-json\4.46.0\selenium-json-4.46.0.jar;C:\Users\Dyuthi\.m2\repository\org\seleniumhq\selenium\selenium-manager\4.46.0\selenium-manager-4.46.0.jar;C:\Users\Dyuthi\.m2\repository\org\seleniumhq\selenium\selenium-os\4.46.0\selenium-os-4.46.0.jar;C:\Users\Dyuthi\.m2\repository\org\seleniumhq\selenium\selenium-support\4.46.0\selenium-support-4.46.0.jar;C:\Users\Dyuthi\.m2\repository\com\google\code\gson\gson\2.13.2\gson-2.13.2.jar;C:\Users\Dyuthi\.m2\repository\com\google\errorprone\error_prone_annotations\2.41.0\error_prone_annotations-2.41.0.jar;C:\Users\Dyuthi\.m2\repository\org\slf4j\slf4j-api\2.0.17\slf4j-api-2.0.17.jar;C:\Users\Dyuthi\.m2\repository\org\jspecify\jspecify\1.0.0\jspecify-1.0.0.jar;C:\Users\Dyuthi\.m2\repository\org\testng\testng\7.10.0\testng-7.10.0.jar;C:\Users\Dyuthi\.m2\repository\com\beust\jcommander\1.82\jcommander-1.82.jar;C:\Users\Dyuthi\.m2\repository\org\webjars\jquery\3.7.1\jquery-3.7.1.jar;C:\Users\Dyuthi\.m2\repository\org\apache\poi\poi-ooxml\5.2.5\poi-ooxml-5.2.5.jar;C:\Users\Dyuthi\.m2\repository\org\apache\poi\poi\5.2.5\poi-5.2.5.jar;C:\Users\Dyuthi\.m2\repository\commons-codec\commons-codec\1.16.0\commons-codec-1.16.0.jar;C:\Users\Dyuthi\.m2\repository\org\apache\commons\commons-math3\3.6.1\commons-math3-3.6.1.jar;C:\Users\Dyuthi\.m2\repository\com\zaxxer\SparseBitSet\1.3\SparseBitSet-1.3.jar;C:\Users\Dyuthi\.m2\repository\org\apache\poi\poi-ooxml-lite\5.2.5\poi-ooxml-lite-5.2.5.jar;C:\Users\Dyuthi\.m2\repository\org\apache\xmlbeans\xmlbeans\5.2.0\xmlbeans-5.2.0.jar;C:\Users\Dyuthi\.m2\repository\org\apache\commons\commons-compress\1.25.0\commons-compress-1.25.0.jar;C:\Users\Dyuthi\.m2\repository\com\github\virtuald\curvesapi\1.08\curvesapi-1.08.jar;C:\Users\Dyuthi\.m2\repository\org\apache\commons\commons-collections4\4.4\commons-collections4-4.4.jar;C:\Users\Dyuthi\.m2\repository\com\aventstack\extentreports\5.1.2\extentreports-5.1.2.jar;C:\Users\Dyuthi\.m2\repository\io\reactivex\rxjava3\rxjava\3.1.6\rxjava-3.1.6.jar;C:\Users\Dyuthi\.m2\repository\org\reactivestreams\reactive-streams\1.0.4\reactive-streams-1.0.4.jar;C:\Users\Dyuthi\.m2\repository\org\freemarker\freemarker\2.3.32\freemarker-2.3.32.jar;C:\Users\Dyuthi\.m2\repository\org\projectlombok\lombok\1.18.26\lombok-1.18.26.jar;C:\Users\Dyuthi\.m2\repository\org\apache\logging\log4j\log4j-core\2.24.1\log4j-core-2.24.1.jar;C:\Users\Dyuthi\.m2\repository\org\apache\logging\log4j\log4j-api\2.24.1\log4j-api-2.24.1.jar;C:\Users\Dyuthi\.m2\repository\org\apache\commons\commons-lang3\3.16.0\commons-lang3-3.16.0.jar;C:\Users\Dyuthi\.m2\repository\commons-io\commons-io\2.16.0\commons-io-2.16.0.jar;"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="C:\Users\Dyuthi"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2024-07-16"/>
+    <property name="java.home" value="C:\Program Files\Java\jdk-17"/>
+    <property name="file.separator" value="\"/>
+    <property name="basedir" value="C:\Users\Dyuthi\Dentzy_App\automation"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="surefire.real.class.path" value="C:\Users\Dyuthi\AppData\Local\Temp\surefire12599826394068195372\surefirebooter-20260711115804436_3.jar"/>
+    <property name="user.script" value=""/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="17.0.12+8-LTS-286"/>
+    <property name="user.name" value="Dyuthi"/>
+    <property name="path.separator" value=";"/>
+    <property name="os.version" value="10.0"/>
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+    <property name="file.encoding" value="Cp1252"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
+    <property name="localRepository" value="C:\Users\Dyuthi\.m2\repository"/>
+    <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
+    <property name="java.io.tmpdir" value="C:\Users\Dyuthi\AppData\Local\Temp\"/>
+    <property name="java.version" value="17.0.12"/>
+    <property name="user.dir" value="C:\Users\Dyuthi\Dentzy_App\automation"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="sun.os.patch.level" value=""/>
+    <property name="native.encoding" value="Cp1252"/>
+    <property name="java.library.path" value="C:\Program Files\Java\jdk-17\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;c:\Users\Dyuthi\AppData\Roaming\Code\User\globalStorage\github.copilot-chat\debugCommand;c:\Users\Dyuthi\AppData\Roaming\Code\User\globalStorage\github.copilot-chat\copilotCli;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Python314\Scripts\;C:\Python314\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\NVIDIA Corporation\NVIDIA App\NvDLISR;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\nodejs\;C:\ProgramData\chocolatey\bin;C:\Program Files\Git\cmd;C:\Program Files\MySQL\MySQL Shell 8.0\bin\;C:\Users\Dyuthi\miniconda3;C:\Users\Dyuthi\miniconda3\Library\mingw-w64\bin;C:\Users\Dyuthi\miniconda3\Library\usr\bin;C:\Users\Dyuthi\miniconda3\Library\bin;C:\Users\Dyuthi\miniconda3\Scripts;C:\Users\Dyuthi\AppData\Local\Programs\Python\Launcher\;C:\Users\Dyuthi\AppData\Local\Microsoft\WindowsApps;C:\Program Files\JetBrains\IntelliJ IDEA 2025.2.5\bin;C:\Program Files\JetBrains\PyCharm 2025.2.5\bin;C:\Users\Dyuthi\AppData\Local\JetBrains\Toolbox\scripts;C:\Users\Dyuthi\AppData\Local\Python\bin;C:\Users\Dyuthi\Documents\pdd\flutter\bin;C:\Users\Dyuthi\flutter\flutter\bin;C:\Users\Dyuthi\AppData\Roaming\npm;C:\Users\Dyuthi\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Dyuthi\AppData\Local\Programs\Ollama;C:\Users\Dyuthi\AppData\Local\Programs\Antigravity\bin;C:\Users\Dyuthi\AppData\Local\Programs\DockerDesktop\resources\bin;C:\Users\Dyuthi\AppData\Local\Android\Sdk\platform-tools;C:\Users\Dyuthi\AppData\Local\Android\Sdk\emulator;C:\Users\Dyuthi\Downloads\apache-maven-3.9.16-bin\apache-maven-3.9.16\bin;;C:\tools\apache-maven-3.9.16\bin;c:\Users\Dyuthi\.vscode\extensions\ms-python.debugpy-2026.6.0-win32-x64\bundled\scripts\noConfigScripts;."/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="java.vm.version" value="17.0.12+8-LTS-286"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="61.0"/>
+  </properties>
+  <testcase name="splashScreenLoads" classname="tests.AuthenticationTest" time="0.269">
+    <system-out><![CDATA[[START] Maven started
+Timestamp: 2026-07-11 11:58:05.066
+Elapsed time: 0 ms
+[END] Maven started
+Elapsed time: 1 ms
+[START] TestNG suite started
+Timestamp: 2026-07-11 11:58:05.067
+Elapsed time: 1 ms
+[END] TestNG suite started
+Elapsed time: 1 ms
+[START] BeforeSuite
+Timestamp: 2026-07-11 11:58:05.067
+Elapsed time: 1 ms
+[END] BeforeSuite
+Elapsed time: 126 ms
+[START] BeforeClass
+Timestamp: 2026-07-11 11:58:05.204
+Elapsed time: 138 ms
+[END] BeforeClass
+Elapsed time: 138 ms
+[START] BeforeMethod
+Timestamp: 2026-07-11 11:58:05.209
+Elapsed time: 143 ms
+[START] Start Appium Server
+Timestamp: 2026-07-11 11:58:05.211
+Elapsed time: 145 ms
+[END] Start Appium Server
+Elapsed time: 1 ms
+[START] Verify Appium Server is reachable
+Timestamp: 2026-07-11 11:58:05.212
+Elapsed time: 146 ms
+Appium status code: 200
+Appium status body: {"value":{"ready":true,"message":"The server is ready to accept new connections","build":{"version":"3.5.2"}}}
+
+[END] Verify Appium Server is reachable
+Elapsed time: 11 ms
+[START] Connect to emulator
+Timestamp: 2026-07-11 11:58:05.223
+Elapsed time: 157 ms
+[END] Connect to emulator
+Elapsed time: 0 ms
+[START] Verify emulator is online using adb devices
+Timestamp: 2026-07-11 11:58:05.224
+Elapsed time: 158 ms
+adb devices output:
+List of devices attached
+emulator-5554          device product:sdk_gphone16k_x86_64 model:sdk_gphone16k_x86_64 device:emu64xa16k transport_id:2
+emulator-5556          device product:sdk_gphone16k_x86_64 model:sdk_gphone16k_x86_64 device:emu64xa16k transport_id:3
+
+
+[END] Verify emulator is online using adb devices
+Elapsed time: 37 ms
+[START] Install app if required
+Timestamp: 2026-07-11 11:58:05.261
+Elapsed time: 195 ms
+APK path: C:\Users\Dyuthi\Dentzy_App\dentzy\build\app\outputs\flutter-apk\app-debug.apk
+Package: com.example.dentzy
+pm path output:
+package:/data/app/~~tL0LdWUMln_8Ey_u-Ptt3A==/com.example.dentzy-nQF5MNeHRlcsFDwOBj_qVQ==/base.apk
+
+App is already installed on the device.
+[END] Install app if required
+Elapsed time: 56 ms
+[START] Create AndroidDriver
+Timestamp: 2026-07-11 11:58:05.318
+Elapsed time: 252 ms
+[INFO] Creating AndroidDriver against http://127.0.0.1:4723/
+[END] Create AndroidDriver
+Elapsed time: 9468 ms
+[START] Driver session created successfully
+Timestamp: 2026-07-11 11:58:14.787
+Elapsed time: 9721 ms
+SESSION ID: 38a23481-4772-44a8-99f1-2dc30a994225
+[END] Driver session created successfully
+Elapsed time: 5 ms
+[START] Launch application
+Timestamp: 2026-07-11 11:58:14.793
+Elapsed time: 9727 ms
+[END] Launch application
+Elapsed time: 286 ms
+[START] Wait for first screen
+Timestamp: 2026-07-11 11:58:15.080
+Elapsed time: 10014 ms
+[END] Wait for first screen
+Elapsed time: 2119 ms
+[START] Verify first screen is displayed
+Timestamp: 2026-07-11 11:58:17.200
+Elapsed time: 12134 ms
+[END] Verify first screen is displayed
+Elapsed time: 49 ms
+[START] Initialize page objects
+Timestamp: 2026-07-11 11:58:17.250
+Elapsed time: 12184 ms
+[END] Initialize page objects
+Elapsed time: 2 ms
+[END] BeforeMethod
+Elapsed time: 12043 ms
+[START] Execute first test method
+Timestamp: 2026-07-11 11:58:17.254
+Elapsed time: 12188 ms
+[END] Execute first test method
+Elapsed time: 62 ms
+]]></system-out>
+    <system-err><![CDATA[SLF4J(W): No SLF4J providers were found.
+SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+]]></system-err>
+  </testcase>
+</testsuite>

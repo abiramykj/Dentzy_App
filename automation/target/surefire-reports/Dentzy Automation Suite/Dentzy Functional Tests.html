@@ -1,0 +1,1517 @@
+<html>
+<head>
+<title>TestNG:  Dentzy Functional Tests</title>
+<link href="../testng.css" rel="stylesheet" type="text/css" />
+<link href="../my-testng.css" rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+.log { display: none;} 
+.stack-trace { display: none;} 
+</style>
+<script type="text/javascript">
+<!--
+function flip(e) {
+  current = e.style.display;
+  if (current == 'block') {
+    e.style.display = 'none';
+    return 0;
+  }
+  else {
+    e.style.display = 'block';
+    return 1;
+  }
+}
+
+function toggleBox(szDivId, elem, msg1, msg2)
+{
+  var res = -1;  if (document.getElementById) {
+    res = flip(document.getElementById(szDivId));
+  }
+  else if (document.all) {
+    // this is the way old msie versions work
+    res = flip(document.all[szDivId]);
+  }
+  if(elem) {
+    if(res == 0) elem.innerHTML = msg1; else elem.innerHTML = msg2;
+  }
+
+}
+
+function toggleAllBoxes() {
+  if (document.getElementsByTagName) {
+    d = document.getElementsByTagName('div');
+    for (i = 0; i < d.length; i++) {
+      if (d[i].className == 'log') {
+        flip(d[i]);
+      }
+    }
+  }
+}
+
+// -->
+</script>
+
+</head>
+<body>
+<h2 align='center'>Dentzy Functional Tests</h2><table border='1' align="center">
+<tr>
+<td>Tests passed/Failed/Skipped:</td><td>29/6/5</td>
+</tr><tr>
+<td>Started on:</td><td>Sat Jul 11 11:33:47 IST 2026</td>
+</tr>
+<tr><td>Total time:</td><td>489 seconds (489783 ms)</td>
+</tr><tr>
+<td>Included groups:</td><td></td>
+</tr><tr>
+<td>Excluded groups:</td><td></td>
+</tr>
+</table><p/>
+<small><i>(Hover the method name to see the test class name)</i></small><p/>
+<table width='100%' border='1' class='invocation-failed'>
+<tr><td colspan='4' align='center'><b>FAILED CONFIGURATIONS</b></td></tr>
+<tr><td><b>Test method</b></td>
+<td><b>Attribute(s)</b></td>
+<td width="30%"><b>Exception</b></td>
+<td width="10%"><b>Time (seconds)</b></td>
+<td><b>Instance</b></td>
+</tr>
+<tr>
+<td title='tests.MythCheckerTest.tearDown()'><b>tearDown</b><br>Test class: tests.MythCheckerTest<br>Parameters: [TestResult name=validMythCheck status=FAILURE method=MythCheckerTest.validMythCheck()[pri:1, instance:tests.MythCheckerTest@aba625] output={null}]</td>
+<td><div><pre>org.openqa.selenium.NoSuchSessionException: A session is either terminated or not started
+Build info: version: &apos;4.46.0&apos;, revision: &apos;df5a634 df5a6341cbb5f8f06b836bd595752775627c80dc&apos;
+System info: os.name: &apos;Windows 11&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;17.0.12&apos;
+Driver info: io.appium.java_client.android.AndroidDriver
+Command: [2fde51bd-d399-486f-afcc-c82306a01940, screenshot {}]
+Capabilities {appium:app: C:\Users\Dyuthi\Dentzy_App\..., appium:appActivity: com.example.dentzy.MainActi..., appium:appPackage: com.example.dentzy, appium:autoGrantPermissions: true, appium:automationName: UiAutomator2, appium:databaseEnabled: false, appium:desired: {app: C:\Users\Dyuthi\Dentzy_App\..., appActivity: com.example.dentzy.MainActi..., appPackage: com.example.dentzy, autoGrantPermissions: true, automationName: UiAutomator2, deviceName: emulator-5554, newCommandTimeout: 600, noReset: false, platformName: ANDROID, platformVersion: 17}, appium:deviceApiLevel: 37, appium:deviceManufacturer: Google, appium:deviceModel: sdk_gphone16k_x86_64, appium:deviceName: emulator-5554, appium:deviceScreenDensity: 480, appium:deviceScreenSize: 1344x2992, appium:deviceUDID: emulator-5554, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: true, appium:newCommandTimeout: 600, appium:noReset: false, appium:pixelRatio: 3, appium:platformVersion: 17, appium:statBarHeight: 156, appium:takesScreenshot: true, appium:viewportRect: {height: 2836, left: 0, top: 156, width: 1344}, appium:warnings: {}, appium:webStorageEnabled: false, platformName: ANDROID}
+Session ID: 2fde51bd-d399-486f-afcc-c82306a01940
+	at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:169)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:143)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:196)
+	at io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:243)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:626)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:708)
+	at io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:230)
+	at org.openqa.selenium.remote.RemoteWebDriver.getScreenshotAs(RemoteWebDriver.java:372)
+	at io.appium.java_client.AppiumDriver.getScreenshotAs(AppiumDriver.java:239)
+	at utilities.ScreenshotUtil.captureScreenshot(ScreenshotUtil.java:19)
+	at base.BaseTest.tearDown(BaseTest.java:140)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+... Removed 35 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace827539121", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace827539121'><pre>org.openqa.selenium.NoSuchSessionException: A session is either terminated or not started
+Build info: version: &apos;4.46.0&apos;, revision: &apos;df5a634 df5a6341cbb5f8f06b836bd595752775627c80dc&apos;
+System info: os.name: &apos;Windows 11&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;17.0.12&apos;
+Driver info: io.appium.java_client.android.AndroidDriver
+Command: [2fde51bd-d399-486f-afcc-c82306a01940, screenshot {}]
+Capabilities {appium:app: C:\Users\Dyuthi\Dentzy_App\..., appium:appActivity: com.example.dentzy.MainActi..., appium:appPackage: com.example.dentzy, appium:autoGrantPermissions: true, appium:automationName: UiAutomator2, appium:databaseEnabled: false, appium:desired: {app: C:\Users\Dyuthi\Dentzy_App\..., appActivity: com.example.dentzy.MainActi..., appPackage: com.example.dentzy, autoGrantPermissions: true, automationName: UiAutomator2, deviceName: emulator-5554, newCommandTimeout: 600, noReset: false, platformName: ANDROID, platformVersion: 17}, appium:deviceApiLevel: 37, appium:deviceManufacturer: Google, appium:deviceModel: sdk_gphone16k_x86_64, appium:deviceName: emulator-5554, appium:deviceScreenDensity: 480, appium:deviceScreenSize: 1344x2992, appium:deviceUDID: emulator-5554, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: true, appium:newCommandTimeout: 600, appium:noReset: false, appium:pixelRatio: 3, appium:platformVersion: 17, appium:statBarHeight: 156, appium:takesScreenshot: true, appium:viewportRect: {height: 2836, left: 0, top: 156, width: 1344}, appium:warnings: {}, appium:webStorageEnabled: false, platformName: ANDROID}
+Session ID: 2fde51bd-d399-486f-afcc-c82306a01940
+	at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:169)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:143)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:196)
+	at io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:243)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:626)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:708)
+	at io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:230)
+	at org.openqa.selenium.remote.RemoteWebDriver.getScreenshotAs(RemoteWebDriver.java:372)
+	at io.appium.java_client.AppiumDriver.getScreenshotAs(AppiumDriver.java:239)
+	at utilities.ScreenshotUtil.captureScreenshot(ScreenshotUtil.java:19)
+	at base.BaseTest.tearDown(BaseTest.java:140)
+	at jdk.internal.reflect.GeneratedMethodAccessor61.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethodConsideringTimeout(MethodInvocationHelper.java:71)
+	at org.testng.internal.invokers.ConfigInvoker.invokeConfigurationMethod(ConfigInvoker.java:400)
+	at org.testng.internal.invokers.ConfigInvoker.invokeConfigurations(ConfigInvoker.java:333)
+	at org.testng.internal.invokers.TestInvoker.runConfigMethods(TestInvoker.java:833)
+	at org.testng.internal.invokers.TestInvoker.runAfterConfigurations(TestInvoker.java:802)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:778)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:308)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:71)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:113)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+</pre></div></td>
+<td>0</td>
+<td>tests.MythCheckerTest@aba625</td></tr>
+<tr>
+<td title='tests.SettingsTest.tearDown()'><b>tearDown</b><br>Test class: tests.SettingsTest<br>Parameters: [TestResult name=openSettings status=FAILURE method=SettingsTest.openSettings()[pri:1, instance:tests.SettingsTest@624ea235] output={null}]</td>
+<td><div><pre>org.openqa.selenium.NoSuchSessionException: A session is either terminated or not started
+Build info: version: &apos;4.46.0&apos;, revision: &apos;df5a634 df5a6341cbb5f8f06b836bd595752775627c80dc&apos;
+System info: os.name: &apos;Windows 11&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;17.0.12&apos;
+Driver info: io.appium.java_client.android.AndroidDriver
+Command: [ac6dc55a-1488-4659-993f-0cf4a6c8f4f0, screenshot {}]
+Capabilities {appium:app: C:\Users\Dyuthi\Dentzy_App\..., appium:appActivity: com.example.dentzy.MainActi..., appium:appPackage: com.example.dentzy, appium:autoGrantPermissions: true, appium:automationName: UiAutomator2, appium:databaseEnabled: false, appium:desired: {app: C:\Users\Dyuthi\Dentzy_App\..., appActivity: com.example.dentzy.MainActi..., appPackage: com.example.dentzy, autoGrantPermissions: true, automationName: UiAutomator2, deviceName: emulator-5554, newCommandTimeout: 600, noReset: false, platformName: ANDROID, platformVersion: 17}, appium:deviceApiLevel: 37, appium:deviceManufacturer: Google, appium:deviceModel: sdk_gphone16k_x86_64, appium:deviceName: emulator-5554, appium:deviceScreenDensity: 480, appium:deviceScreenSize: 1344x2992, appium:deviceUDID: emulator-5554, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: true, appium:newCommandTimeout: 600, appium:noReset: false, appium:pixelRatio: 3, appium:platformVersion: 17, appium:statBarHeight: 156, appium:takesScreenshot: true, appium:viewportRect: {height: 2836, left: 0, top: 156, width: 1344}, appium:warnings: {}, appium:webStorageEnabled: false, platformName: ANDROID}
+Session ID: ac6dc55a-1488-4659-993f-0cf4a6c8f4f0
+	at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:169)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:143)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:196)
+	at io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:243)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:626)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:708)
+	at io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:230)
+	at org.openqa.selenium.remote.RemoteWebDriver.getScreenshotAs(RemoteWebDriver.java:372)
+	at io.appium.java_client.AppiumDriver.getScreenshotAs(AppiumDriver.java:239)
+	at utilities.ScreenshotUtil.captureScreenshot(ScreenshotUtil.java:19)
+	at base.BaseTest.tearDown(BaseTest.java:140)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+... Removed 35 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace872830530", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace872830530'><pre>org.openqa.selenium.NoSuchSessionException: A session is either terminated or not started
+Build info: version: &apos;4.46.0&apos;, revision: &apos;df5a634 df5a6341cbb5f8f06b836bd595752775627c80dc&apos;
+System info: os.name: &apos;Windows 11&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;17.0.12&apos;
+Driver info: io.appium.java_client.android.AndroidDriver
+Command: [ac6dc55a-1488-4659-993f-0cf4a6c8f4f0, screenshot {}]
+Capabilities {appium:app: C:\Users\Dyuthi\Dentzy_App\..., appium:appActivity: com.example.dentzy.MainActi..., appium:appPackage: com.example.dentzy, appium:autoGrantPermissions: true, appium:automationName: UiAutomator2, appium:databaseEnabled: false, appium:desired: {app: C:\Users\Dyuthi\Dentzy_App\..., appActivity: com.example.dentzy.MainActi..., appPackage: com.example.dentzy, autoGrantPermissions: true, automationName: UiAutomator2, deviceName: emulator-5554, newCommandTimeout: 600, noReset: false, platformName: ANDROID, platformVersion: 17}, appium:deviceApiLevel: 37, appium:deviceManufacturer: Google, appium:deviceModel: sdk_gphone16k_x86_64, appium:deviceName: emulator-5554, appium:deviceScreenDensity: 480, appium:deviceScreenSize: 1344x2992, appium:deviceUDID: emulator-5554, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: true, appium:newCommandTimeout: 600, appium:noReset: false, appium:pixelRatio: 3, appium:platformVersion: 17, appium:statBarHeight: 156, appium:takesScreenshot: true, appium:viewportRect: {height: 2836, left: 0, top: 156, width: 1344}, appium:warnings: {}, appium:webStorageEnabled: false, platformName: ANDROID}
+Session ID: ac6dc55a-1488-4659-993f-0cf4a6c8f4f0
+	at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:169)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:143)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:196)
+	at io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:243)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:626)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:708)
+	at io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:230)
+	at org.openqa.selenium.remote.RemoteWebDriver.getScreenshotAs(RemoteWebDriver.java:372)
+	at io.appium.java_client.AppiumDriver.getScreenshotAs(AppiumDriver.java:239)
+	at utilities.ScreenshotUtil.captureScreenshot(ScreenshotUtil.java:19)
+	at base.BaseTest.tearDown(BaseTest.java:140)
+	at jdk.internal.reflect.GeneratedMethodAccessor61.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethodConsideringTimeout(MethodInvocationHelper.java:71)
+	at org.testng.internal.invokers.ConfigInvoker.invokeConfigurationMethod(ConfigInvoker.java:400)
+	at org.testng.internal.invokers.ConfigInvoker.invokeConfigurations(ConfigInvoker.java:333)
+	at org.testng.internal.invokers.TestInvoker.runConfigMethods(TestInvoker.java:833)
+	at org.testng.internal.invokers.TestInvoker.runAfterConfigurations(TestInvoker.java:802)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:778)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:308)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:71)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:113)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+</pre></div></td>
+<td>0</td>
+<td>tests.SettingsTest@624ea235</td></tr>
+<tr>
+<td title='tests.HomeTest.tearDown()'><b>tearDown</b><br>Test class: tests.HomeTest<br>Parameters: [TestResult name=homeScreenLoads status=FAILURE method=HomeTest.homeScreenLoads()[pri:1, instance:tests.HomeTest@7a6d7e92] output={null}]</td>
+<td><div><pre>org.openqa.selenium.NoSuchSessionException: A session is either terminated or not started
+Build info: version: &apos;4.46.0&apos;, revision: &apos;df5a634 df5a6341cbb5f8f06b836bd595752775627c80dc&apos;
+System info: os.name: &apos;Windows 11&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;17.0.12&apos;
+Driver info: io.appium.java_client.android.AndroidDriver
+Command: [9659fa67-b81e-468e-ac88-5b46fca185a2, screenshot {}]
+Capabilities {appium:app: C:\Users\Dyuthi\Dentzy_App\..., appium:appActivity: com.example.dentzy.MainActi..., appium:appPackage: com.example.dentzy, appium:autoGrantPermissions: true, appium:automationName: UiAutomator2, appium:databaseEnabled: false, appium:desired: {app: C:\Users\Dyuthi\Dentzy_App\..., appActivity: com.example.dentzy.MainActi..., appPackage: com.example.dentzy, autoGrantPermissions: true, automationName: UiAutomator2, deviceName: emulator-5554, newCommandTimeout: 600, noReset: false, platformName: ANDROID, platformVersion: 17}, appium:deviceApiLevel: 37, appium:deviceManufacturer: Google, appium:deviceModel: sdk_gphone16k_x86_64, appium:deviceName: emulator-5554, appium:deviceScreenDensity: 480, appium:deviceScreenSize: 1344x2992, appium:deviceUDID: emulator-5554, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: true, appium:newCommandTimeout: 600, appium:noReset: false, appium:pixelRatio: 3, appium:platformVersion: 17, appium:statBarHeight: 156, appium:takesScreenshot: true, appium:viewportRect: {height: 2836, left: 0, top: 156, width: 1344}, appium:warnings: {}, appium:webStorageEnabled: false, platformName: ANDROID}
+Session ID: 9659fa67-b81e-468e-ac88-5b46fca185a2
+	at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:169)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:143)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:196)
+	at io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:243)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:626)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:708)
+	at io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:230)
+	at org.openqa.selenium.remote.RemoteWebDriver.getScreenshotAs(RemoteWebDriver.java:372)
+	at io.appium.java_client.AppiumDriver.getScreenshotAs(AppiumDriver.java:239)
+	at utilities.ScreenshotUtil.captureScreenshot(ScreenshotUtil.java:19)
+	at base.BaseTest.tearDown(BaseTest.java:140)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+... Removed 35 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1385061944", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1385061944'><pre>org.openqa.selenium.NoSuchSessionException: A session is either terminated or not started
+Build info: version: &apos;4.46.0&apos;, revision: &apos;df5a634 df5a6341cbb5f8f06b836bd595752775627c80dc&apos;
+System info: os.name: &apos;Windows 11&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;17.0.12&apos;
+Driver info: io.appium.java_client.android.AndroidDriver
+Command: [9659fa67-b81e-468e-ac88-5b46fca185a2, screenshot {}]
+Capabilities {appium:app: C:\Users\Dyuthi\Dentzy_App\..., appium:appActivity: com.example.dentzy.MainActi..., appium:appPackage: com.example.dentzy, appium:autoGrantPermissions: true, appium:automationName: UiAutomator2, appium:databaseEnabled: false, appium:desired: {app: C:\Users\Dyuthi\Dentzy_App\..., appActivity: com.example.dentzy.MainActi..., appPackage: com.example.dentzy, autoGrantPermissions: true, automationName: UiAutomator2, deviceName: emulator-5554, newCommandTimeout: 600, noReset: false, platformName: ANDROID, platformVersion: 17}, appium:deviceApiLevel: 37, appium:deviceManufacturer: Google, appium:deviceModel: sdk_gphone16k_x86_64, appium:deviceName: emulator-5554, appium:deviceScreenDensity: 480, appium:deviceScreenSize: 1344x2992, appium:deviceUDID: emulator-5554, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: true, appium:newCommandTimeout: 600, appium:noReset: false, appium:pixelRatio: 3, appium:platformVersion: 17, appium:statBarHeight: 156, appium:takesScreenshot: true, appium:viewportRect: {height: 2836, left: 0, top: 156, width: 1344}, appium:warnings: {}, appium:webStorageEnabled: false, platformName: ANDROID}
+Session ID: 9659fa67-b81e-468e-ac88-5b46fca185a2
+	at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:169)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:143)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:196)
+	at io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:243)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:626)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:708)
+	at io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:230)
+	at org.openqa.selenium.remote.RemoteWebDriver.getScreenshotAs(RemoteWebDriver.java:372)
+	at io.appium.java_client.AppiumDriver.getScreenshotAs(AppiumDriver.java:239)
+	at utilities.ScreenshotUtil.captureScreenshot(ScreenshotUtil.java:19)
+	at base.BaseTest.tearDown(BaseTest.java:140)
+	at jdk.internal.reflect.GeneratedMethodAccessor61.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethodConsideringTimeout(MethodInvocationHelper.java:71)
+	at org.testng.internal.invokers.ConfigInvoker.invokeConfigurationMethod(ConfigInvoker.java:400)
+	at org.testng.internal.invokers.ConfigInvoker.invokeConfigurations(ConfigInvoker.java:333)
+	at org.testng.internal.invokers.TestInvoker.runConfigMethods(TestInvoker.java:833)
+	at org.testng.internal.invokers.TestInvoker.runAfterConfigurations(TestInvoker.java:802)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:778)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:308)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:71)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:113)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+</pre></div></td>
+<td>0</td>
+<td>tests.HomeTest@7a6d7e92</td></tr>
+<tr>
+<td title='tests.ReportsTest.tearDown()'><b>tearDown</b><br>Test class: tests.ReportsTest<br>Parameters: [TestResult name=openReports status=FAILURE method=ReportsTest.openReports()[pri:1, instance:tests.ReportsTest@16150369] output={null}]</td>
+<td><div><pre>org.openqa.selenium.NoSuchSessionException: A session is either terminated or not started
+Build info: version: &apos;4.46.0&apos;, revision: &apos;df5a634 df5a6341cbb5f8f06b836bd595752775627c80dc&apos;
+System info: os.name: &apos;Windows 11&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;17.0.12&apos;
+Driver info: io.appium.java_client.android.AndroidDriver
+Command: [db0011ee-80f2-4e47-b697-e19dc94bdb42, screenshot {}]
+Capabilities {appium:app: C:\Users\Dyuthi\Dentzy_App\..., appium:appActivity: com.example.dentzy.MainActi..., appium:appPackage: com.example.dentzy, appium:autoGrantPermissions: true, appium:automationName: UiAutomator2, appium:databaseEnabled: false, appium:desired: {app: C:\Users\Dyuthi\Dentzy_App\..., appActivity: com.example.dentzy.MainActi..., appPackage: com.example.dentzy, autoGrantPermissions: true, automationName: UiAutomator2, deviceName: emulator-5554, newCommandTimeout: 600, noReset: false, platformName: ANDROID, platformVersion: 17}, appium:deviceApiLevel: 37, appium:deviceManufacturer: Google, appium:deviceModel: sdk_gphone16k_x86_64, appium:deviceName: emulator-5554, appium:deviceScreenDensity: 480, appium:deviceScreenSize: 1344x2992, appium:deviceUDID: emulator-5554, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: true, appium:newCommandTimeout: 600, appium:noReset: false, appium:pixelRatio: 3, appium:platformVersion: 17, appium:statBarHeight: 156, appium:takesScreenshot: true, appium:viewportRect: {height: 2836, left: 0, top: 156, width: 1344}, appium:warnings: {}, appium:webStorageEnabled: false, platformName: ANDROID}
+Session ID: db0011ee-80f2-4e47-b697-e19dc94bdb42
+	at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:169)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:143)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:196)
+	at io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:243)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:626)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:708)
+	at io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:230)
+	at org.openqa.selenium.remote.RemoteWebDriver.getScreenshotAs(RemoteWebDriver.java:372)
+	at io.appium.java_client.AppiumDriver.getScreenshotAs(AppiumDriver.java:239)
+	at utilities.ScreenshotUtil.captureScreenshot(ScreenshotUtil.java:19)
+	at base.BaseTest.tearDown(BaseTest.java:140)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+... Removed 35 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1261095698", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1261095698'><pre>org.openqa.selenium.NoSuchSessionException: A session is either terminated or not started
+Build info: version: &apos;4.46.0&apos;, revision: &apos;df5a634 df5a6341cbb5f8f06b836bd595752775627c80dc&apos;
+System info: os.name: &apos;Windows 11&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;17.0.12&apos;
+Driver info: io.appium.java_client.android.AndroidDriver
+Command: [db0011ee-80f2-4e47-b697-e19dc94bdb42, screenshot {}]
+Capabilities {appium:app: C:\Users\Dyuthi\Dentzy_App\..., appium:appActivity: com.example.dentzy.MainActi..., appium:appPackage: com.example.dentzy, appium:autoGrantPermissions: true, appium:automationName: UiAutomator2, appium:databaseEnabled: false, appium:desired: {app: C:\Users\Dyuthi\Dentzy_App\..., appActivity: com.example.dentzy.MainActi..., appPackage: com.example.dentzy, autoGrantPermissions: true, automationName: UiAutomator2, deviceName: emulator-5554, newCommandTimeout: 600, noReset: false, platformName: ANDROID, platformVersion: 17}, appium:deviceApiLevel: 37, appium:deviceManufacturer: Google, appium:deviceModel: sdk_gphone16k_x86_64, appium:deviceName: emulator-5554, appium:deviceScreenDensity: 480, appium:deviceScreenSize: 1344x2992, appium:deviceUDID: emulator-5554, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: true, appium:newCommandTimeout: 600, appium:noReset: false, appium:pixelRatio: 3, appium:platformVersion: 17, appium:statBarHeight: 156, appium:takesScreenshot: true, appium:viewportRect: {height: 2836, left: 0, top: 156, width: 1344}, appium:warnings: {}, appium:webStorageEnabled: false, platformName: ANDROID}
+Session ID: db0011ee-80f2-4e47-b697-e19dc94bdb42
+	at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:169)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:143)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:196)
+	at io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:243)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:626)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:708)
+	at io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:230)
+	at org.openqa.selenium.remote.RemoteWebDriver.getScreenshotAs(RemoteWebDriver.java:372)
+	at io.appium.java_client.AppiumDriver.getScreenshotAs(AppiumDriver.java:239)
+	at utilities.ScreenshotUtil.captureScreenshot(ScreenshotUtil.java:19)
+	at base.BaseTest.tearDown(BaseTest.java:140)
+	at jdk.internal.reflect.GeneratedMethodAccessor61.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethodConsideringTimeout(MethodInvocationHelper.java:71)
+	at org.testng.internal.invokers.ConfigInvoker.invokeConfigurationMethod(ConfigInvoker.java:400)
+	at org.testng.internal.invokers.ConfigInvoker.invokeConfigurations(ConfigInvoker.java:333)
+	at org.testng.internal.invokers.TestInvoker.runConfigMethods(TestInvoker.java:833)
+	at org.testng.internal.invokers.TestInvoker.runAfterConfigurations(TestInvoker.java:802)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:778)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:308)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:71)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:113)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+</pre></div></td>
+<td>0</td>
+<td>tests.ReportsTest@16150369</td></tr>
+<tr>
+<td title='tests.QuizTest.tearDown()'><b>tearDown</b><br>Test class: tests.QuizTest<br>Parameters: [TestResult name=openQuiz status=FAILURE method=QuizTest.openQuiz()[pri:1, instance:tests.QuizTest@5a5a729f] output={null}]</td>
+<td><div><pre>org.openqa.selenium.NoSuchSessionException: A session is either terminated or not started
+Build info: version: &apos;4.46.0&apos;, revision: &apos;df5a634 df5a6341cbb5f8f06b836bd595752775627c80dc&apos;
+System info: os.name: &apos;Windows 11&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;17.0.12&apos;
+Driver info: io.appium.java_client.android.AndroidDriver
+Command: [a97dfb10-9458-40a3-a49b-feb57003f3eb, screenshot {}]
+Capabilities {appium:app: C:\Users\Dyuthi\Dentzy_App\..., appium:appActivity: com.example.dentzy.MainActi..., appium:appPackage: com.example.dentzy, appium:autoGrantPermissions: true, appium:automationName: UiAutomator2, appium:databaseEnabled: false, appium:desired: {app: C:\Users\Dyuthi\Dentzy_App\..., appActivity: com.example.dentzy.MainActi..., appPackage: com.example.dentzy, autoGrantPermissions: true, automationName: UiAutomator2, deviceName: emulator-5554, newCommandTimeout: 600, noReset: false, platformName: ANDROID, platformVersion: 17}, appium:deviceApiLevel: 37, appium:deviceManufacturer: Google, appium:deviceModel: sdk_gphone16k_x86_64, appium:deviceName: emulator-5554, appium:deviceScreenDensity: 480, appium:deviceScreenSize: 1344x2992, appium:deviceUDID: emulator-5554, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: true, appium:newCommandTimeout: 600, appium:noReset: false, appium:pixelRatio: 3, appium:platformVersion: 17, appium:statBarHeight: 156, appium:takesScreenshot: true, appium:viewportRect: {height: 2836, left: 0, top: 156, width: 1344}, appium:warnings: {}, appium:webStorageEnabled: false, platformName: ANDROID}
+Session ID: a97dfb10-9458-40a3-a49b-feb57003f3eb
+	at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:169)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:143)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:196)
+	at io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:243)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:626)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:708)
+	at io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:230)
+	at org.openqa.selenium.remote.RemoteWebDriver.getScreenshotAs(RemoteWebDriver.java:372)
+	at io.appium.java_client.AppiumDriver.getScreenshotAs(AppiumDriver.java:239)
+	at utilities.ScreenshotUtil.captureScreenshot(ScreenshotUtil.java:19)
+	at base.BaseTest.tearDown(BaseTest.java:140)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+... Removed 35 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1895373539", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1895373539'><pre>org.openqa.selenium.NoSuchSessionException: A session is either terminated or not started
+Build info: version: &apos;4.46.0&apos;, revision: &apos;df5a634 df5a6341cbb5f8f06b836bd595752775627c80dc&apos;
+System info: os.name: &apos;Windows 11&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;17.0.12&apos;
+Driver info: io.appium.java_client.android.AndroidDriver
+Command: [a97dfb10-9458-40a3-a49b-feb57003f3eb, screenshot {}]
+Capabilities {appium:app: C:\Users\Dyuthi\Dentzy_App\..., appium:appActivity: com.example.dentzy.MainActi..., appium:appPackage: com.example.dentzy, appium:autoGrantPermissions: true, appium:automationName: UiAutomator2, appium:databaseEnabled: false, appium:desired: {app: C:\Users\Dyuthi\Dentzy_App\..., appActivity: com.example.dentzy.MainActi..., appPackage: com.example.dentzy, autoGrantPermissions: true, automationName: UiAutomator2, deviceName: emulator-5554, newCommandTimeout: 600, noReset: false, platformName: ANDROID, platformVersion: 17}, appium:deviceApiLevel: 37, appium:deviceManufacturer: Google, appium:deviceModel: sdk_gphone16k_x86_64, appium:deviceName: emulator-5554, appium:deviceScreenDensity: 480, appium:deviceScreenSize: 1344x2992, appium:deviceUDID: emulator-5554, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: true, appium:newCommandTimeout: 600, appium:noReset: false, appium:pixelRatio: 3, appium:platformVersion: 17, appium:statBarHeight: 156, appium:takesScreenshot: true, appium:viewportRect: {height: 2836, left: 0, top: 156, width: 1344}, appium:warnings: {}, appium:webStorageEnabled: false, platformName: ANDROID}
+Session ID: a97dfb10-9458-40a3-a49b-feb57003f3eb
+	at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:169)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:143)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:196)
+	at io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:243)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:626)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:708)
+	at io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:230)
+	at org.openqa.selenium.remote.RemoteWebDriver.getScreenshotAs(RemoteWebDriver.java:372)
+	at io.appium.java_client.AppiumDriver.getScreenshotAs(AppiumDriver.java:239)
+	at utilities.ScreenshotUtil.captureScreenshot(ScreenshotUtil.java:19)
+	at base.BaseTest.tearDown(BaseTest.java:140)
+	at jdk.internal.reflect.GeneratedMethodAccessor61.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethodConsideringTimeout(MethodInvocationHelper.java:71)
+	at org.testng.internal.invokers.ConfigInvoker.invokeConfigurationMethod(ConfigInvoker.java:400)
+	at org.testng.internal.invokers.ConfigInvoker.invokeConfigurations(ConfigInvoker.java:333)
+	at org.testng.internal.invokers.TestInvoker.runConfigMethods(TestInvoker.java:833)
+	at org.testng.internal.invokers.TestInvoker.runAfterConfigurations(TestInvoker.java:802)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:778)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:308)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:71)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:113)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+</pre></div></td>
+<td>0</td>
+<td>tests.QuizTest@5a5a729f</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.tearDown()'><b>tearDown</b><br>Test class: tests.AuthenticationTest<br>Parameters: [TestResult name=signUpScreenShouldDisplayRequiredFields status=FAILURE method=AuthenticationTest.signUpScreenShouldDisplayRequiredFields()[pri:2, instance:tests.AuthenticationTest@dc7df28] output={null}]</td>
+<td><div><pre>org.openqa.selenium.WebDriverException: &apos;GET /screenshot&apos; cannot be proxied to UiAutomator2 server because the instrumentation process is not running (probably crashed). Check the server log and/or the logcat output for more details
+Build info: version: &apos;4.46.0&apos;, revision: &apos;df5a634 df5a6341cbb5f8f06b836bd595752775627c80dc&apos;
+System info: os.name: &apos;Windows 11&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;17.0.12&apos;
+Driver info: io.appium.java_client.android.AndroidDriver
+Command: [de9569b0-cece-4ea1-a68e-f80e96b74eb0, screenshot {}]
+Capabilities {appium:app: C:\Users\Dyuthi\Dentzy_App\..., appium:appActivity: com.example.dentzy.MainActi..., appium:appPackage: com.example.dentzy, appium:autoGrantPermissions: true, appium:automationName: UiAutomator2, appium:databaseEnabled: false, appium:desired: {app: C:\Users\Dyuthi\Dentzy_App\..., appActivity: com.example.dentzy.MainActi..., appPackage: com.example.dentzy, autoGrantPermissions: true, automationName: UiAutomator2, deviceName: emulator-5554, newCommandTimeout: 600, noReset: false, platformName: ANDROID, platformVersion: 17}, appium:deviceApiLevel: 37, appium:deviceManufacturer: Google, appium:deviceModel: sdk_gphone16k_x86_64, appium:deviceName: emulator-5554, appium:deviceScreenDensity: 480, appium:deviceScreenSize: 1344x2992, appium:deviceUDID: emulator-5554, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: true, appium:newCommandTimeout: 600, appium:noReset: false, appium:pixelRatio: 3, appium:platformVersion: 17, appium:statBarHeight: 156, appium:takesScreenshot: true, appium:viewportRect: {height: 2836, left: 0, top: 156, width: 1344}, appium:warnings: {}, appium:webStorageEnabled: false, platformName: ANDROID}
+Session ID: de9569b0-cece-4ea1-a68e-f80e96b74eb0
+	at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:169)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:143)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:196)
+	at io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:243)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:626)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:708)
+	at io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:230)
+	at org.openqa.selenium.remote.RemoteWebDriver.getScreenshotAs(RemoteWebDriver.java:372)
+	at io.appium.java_client.AppiumDriver.getScreenshotAs(AppiumDriver.java:239)
+	at utilities.ScreenshotUtil.captureScreenshot(ScreenshotUtil.java:19)
+	at base.BaseTest.tearDown(BaseTest.java:140)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+... Removed 35 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace189993695", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace189993695'><pre>org.openqa.selenium.WebDriverException: &apos;GET /screenshot&apos; cannot be proxied to UiAutomator2 server because the instrumentation process is not running (probably crashed). Check the server log and/or the logcat output for more details
+Build info: version: &apos;4.46.0&apos;, revision: &apos;df5a634 df5a6341cbb5f8f06b836bd595752775627c80dc&apos;
+System info: os.name: &apos;Windows 11&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;17.0.12&apos;
+Driver info: io.appium.java_client.android.AndroidDriver
+Command: [de9569b0-cece-4ea1-a68e-f80e96b74eb0, screenshot {}]
+Capabilities {appium:app: C:\Users\Dyuthi\Dentzy_App\..., appium:appActivity: com.example.dentzy.MainActi..., appium:appPackage: com.example.dentzy, appium:autoGrantPermissions: true, appium:automationName: UiAutomator2, appium:databaseEnabled: false, appium:desired: {app: C:\Users\Dyuthi\Dentzy_App\..., appActivity: com.example.dentzy.MainActi..., appPackage: com.example.dentzy, autoGrantPermissions: true, automationName: UiAutomator2, deviceName: emulator-5554, newCommandTimeout: 600, noReset: false, platformName: ANDROID, platformVersion: 17}, appium:deviceApiLevel: 37, appium:deviceManufacturer: Google, appium:deviceModel: sdk_gphone16k_x86_64, appium:deviceName: emulator-5554, appium:deviceScreenDensity: 480, appium:deviceScreenSize: 1344x2992, appium:deviceUDID: emulator-5554, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: true, appium:newCommandTimeout: 600, appium:noReset: false, appium:pixelRatio: 3, appium:platformVersion: 17, appium:statBarHeight: 156, appium:takesScreenshot: true, appium:viewportRect: {height: 2836, left: 0, top: 156, width: 1344}, appium:warnings: {}, appium:webStorageEnabled: false, platformName: ANDROID}
+Session ID: de9569b0-cece-4ea1-a68e-f80e96b74eb0
+	at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:169)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:143)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:196)
+	at io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:243)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:626)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:708)
+	at io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:230)
+	at org.openqa.selenium.remote.RemoteWebDriver.getScreenshotAs(RemoteWebDriver.java:372)
+	at io.appium.java_client.AppiumDriver.getScreenshotAs(AppiumDriver.java:239)
+	at utilities.ScreenshotUtil.captureScreenshot(ScreenshotUtil.java:19)
+	at base.BaseTest.tearDown(BaseTest.java:140)
+	at jdk.internal.reflect.GeneratedMethodAccessor61.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethodConsideringTimeout(MethodInvocationHelper.java:71)
+	at org.testng.internal.invokers.ConfigInvoker.invokeConfigurationMethod(ConfigInvoker.java:400)
+	at org.testng.internal.invokers.ConfigInvoker.invokeConfigurations(ConfigInvoker.java:333)
+	at org.testng.internal.invokers.TestInvoker.runConfigMethods(TestInvoker.java:833)
+	at org.testng.internal.invokers.TestInvoker.runAfterConfigurations(TestInvoker.java:802)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:778)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:308)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:71)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:113)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+</pre></div></td>
+<td>0</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+</table><p>
+<table width='100%' border='1' class='invocation-skipped'>
+<tr><td colspan='4' align='center'><b>SKIPPED CONFIGURATIONS</b></td></tr>
+<tr><td><b>Test method</b></td>
+<td><b>Attribute(s)</b></td>
+<td width="30%"><b>Exception</b></td>
+<td width="10%"><b>Time (seconds)</b></td>
+<td><b>Instance</b></td>
+</tr>
+<tr>
+<td title='tests.AuthenticationTest.setUp()'><b>setUp</b><br>Test class: tests.AuthenticationTest</td>
+<td></td>
+<td>0</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.tearDown()'><b>tearDown</b><br>Test class: tests.AuthenticationTest</td>
+<td></td>
+<td>0</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.setUp()'><b>setUp</b><br>Test class: tests.AuthenticationTest</td>
+<td></td>
+<td>0</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.HomeTest.setUp()'><b>setUp</b><br>Test class: tests.HomeTest</td>
+<td></td>
+<td>0</td>
+<td>tests.HomeTest@7a6d7e92</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.setUp()'><b>setUp</b><br>Test class: tests.AuthenticationTest</td>
+<td></td>
+<td>0</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.HomeTest.tearDown()'><b>tearDown</b><br>Test class: tests.HomeTest</td>
+<td></td>
+<td>0</td>
+<td>tests.HomeTest@7a6d7e92</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.setUp()'><b>setUp</b><br>Test class: tests.AuthenticationTest</td>
+<td></td>
+<td>0</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.tearDown()'><b>tearDown</b><br>Test class: tests.AuthenticationTest</td>
+<td></td>
+<td>0</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.tearDown()'><b>tearDown</b><br>Test class: tests.AuthenticationTest</td>
+<td></td>
+<td>0</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.tearDown()'><b>tearDown</b><br>Test class: tests.AuthenticationTest</td>
+<td></td>
+<td>0</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+</table><p>
+<table width='100%' border='1' class='invocation-failed'>
+<tr><td colspan='4' align='center'><b>FAILED TESTS</b></td></tr>
+<tr><td><b>Test method</b></td>
+<td><b>Attribute(s)</b></td>
+<td width="30%"><b>Exception</b></td>
+<td width="10%"><b>Time (seconds)</b></td>
+<td><b>Instance</b></td>
+</tr>
+<tr>
+<td title='tests.AuthenticationTest.signUpScreenShouldDisplayRequiredFields()'><b>signUpScreenShouldDisplayRequiredFields</b><br>Test class: tests.AuthenticationTest<br>Test method: AUTH-020: Sign Up screen should display required fields</td>
+<td><div><pre>org.openqa.selenium.WebDriverException: &apos;POST /element&apos; cannot be proxied to UiAutomator2 server because the instrumentation process is not running (probably crashed). Check the server log and/or the logcat output for more details
+Build info: version: &apos;4.46.0&apos;, revision: &apos;df5a634 df5a6341cbb5f8f06b836bd595752775627c80dc&apos;
+System info: os.name: &apos;Windows 11&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;17.0.12&apos;
+Driver info: io.appium.java_client.android.AndroidDriver
+Command: [de9569b0-cece-4ea1-a68e-f80e96b74eb0, findElement {using=xpath, value=//android.widget.Button[@content-desc=&apos;Sign Up&apos; or @text=&apos;Sign Up&apos;]}]
+Capabilities {appium:app: C:\Users\Dyuthi\Dentzy_App\..., appium:appActivity: com.example.dentzy.MainActi..., appium:appPackage: com.example.dentzy, appium:autoGrantPermissions: true, appium:automationName: UiAutomator2, appium:databaseEnabled: false, appium:desired: {app: C:\Users\Dyuthi\Dentzy_App\..., appActivity: com.example.dentzy.MainActi..., appPackage: com.example.dentzy, autoGrantPermissions: true, automationName: UiAutomator2, deviceName: emulator-5554, newCommandTimeout: 600, noReset: false, platformName: ANDROID, platformVersion: 17}, appium:deviceApiLevel: 37, appium:deviceManufacturer: Google, appium:deviceModel: sdk_gphone16k_x86_64, appium:deviceName: emulator-5554, appium:deviceScreenDensity: 480, appium:deviceScreenSize: 1344x2992, appium:deviceUDID: emulator-5554, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: true, appium:newCommandTimeout: 600, appium:noReset: false, appium:pixelRatio: 3, appium:platformVersion: 17, appium:statBarHeight: 156, appium:takesScreenshot: true, appium:viewportRect: {height: 2836, left: 0, top: 156, width: 1344}, appium:warnings: {}, appium:webStorageEnabled: false, platformName: ANDROID}
+Session ID: de9569b0-cece-4ea1-a68e-f80e96b74eb0
+	at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:169)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:143)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:196)
+	at io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:243)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:626)
+	at org.openqa.selenium.remote.ElementLocation$ElementFinder$2.findElement(ElementLocation.java:173)
+	at org.openqa.selenium.remote.ElementLocation.findElement(ElementLocation.java:60)
+	at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:406)
+	at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:400)
+	at org.openqa.selenium.support.ui.ExpectedConditions$22.apply(ExpectedConditions.java:756)
+	at org.openqa.selenium.support.ui.ExpectedConditions$22.apply(ExpectedConditions.java:749)
+	at org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:210)
+	at utilities.WaitUtils.waitForClickable(WaitUtils.java:28)
+	at pages.AuthenticationPage.clickSignUp(AuthenticationPage.java:116)
+	at tests.AuthenticationTest.signUpScreenShouldDisplayRequiredFields(AuthenticationTest.java:184)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+... Removed 31 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace804559024", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace804559024'><pre>org.openqa.selenium.WebDriverException: &apos;POST /element&apos; cannot be proxied to UiAutomator2 server because the instrumentation process is not running (probably crashed). Check the server log and/or the logcat output for more details
+Build info: version: &apos;4.46.0&apos;, revision: &apos;df5a634 df5a6341cbb5f8f06b836bd595752775627c80dc&apos;
+System info: os.name: &apos;Windows 11&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;17.0.12&apos;
+Driver info: io.appium.java_client.android.AndroidDriver
+Command: [de9569b0-cece-4ea1-a68e-f80e96b74eb0, findElement {using=xpath, value=//android.widget.Button[@content-desc=&apos;Sign Up&apos; or @text=&apos;Sign Up&apos;]}]
+Capabilities {appium:app: C:\Users\Dyuthi\Dentzy_App\..., appium:appActivity: com.example.dentzy.MainActi..., appium:appPackage: com.example.dentzy, appium:autoGrantPermissions: true, appium:automationName: UiAutomator2, appium:databaseEnabled: false, appium:desired: {app: C:\Users\Dyuthi\Dentzy_App\..., appActivity: com.example.dentzy.MainActi..., appPackage: com.example.dentzy, autoGrantPermissions: true, automationName: UiAutomator2, deviceName: emulator-5554, newCommandTimeout: 600, noReset: false, platformName: ANDROID, platformVersion: 17}, appium:deviceApiLevel: 37, appium:deviceManufacturer: Google, appium:deviceModel: sdk_gphone16k_x86_64, appium:deviceName: emulator-5554, appium:deviceScreenDensity: 480, appium:deviceScreenSize: 1344x2992, appium:deviceUDID: emulator-5554, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: true, appium:newCommandTimeout: 600, appium:noReset: false, appium:pixelRatio: 3, appium:platformVersion: 17, appium:statBarHeight: 156, appium:takesScreenshot: true, appium:viewportRect: {height: 2836, left: 0, top: 156, width: 1344}, appium:warnings: {}, appium:webStorageEnabled: false, platformName: ANDROID}
+Session ID: de9569b0-cece-4ea1-a68e-f80e96b74eb0
+	at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:169)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:143)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:196)
+	at io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:243)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:626)
+	at org.openqa.selenium.remote.ElementLocation$ElementFinder$2.findElement(ElementLocation.java:173)
+	at org.openqa.selenium.remote.ElementLocation.findElement(ElementLocation.java:60)
+	at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:406)
+	at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:400)
+	at org.openqa.selenium.support.ui.ExpectedConditions$22.apply(ExpectedConditions.java:756)
+	at org.openqa.selenium.support.ui.ExpectedConditions$22.apply(ExpectedConditions.java:749)
+	at org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:210)
+	at utilities.WaitUtils.waitForClickable(WaitUtils.java:28)
+	at pages.AuthenticationPage.clickSignUp(AuthenticationPage.java:116)
+	at tests.AuthenticationTest.signUpScreenShouldDisplayRequiredFields(AuthenticationTest.java:184)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:686)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:308)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:71)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:113)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+</pre></div></td>
+<td>0</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.SettingsTest.openSettings()'><b>openSettings</b><br>Test class: tests.SettingsTest<br>Test method: Settings flow should show the app shell</td>
+<td><div><pre>java.lang.AssertionError: App shell should be visible in settings flow expected [true] but found [false]
+	at tests.SettingsTest.openSettings(SettingsTest.java:9)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+... Removed 34 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace661300031", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace661300031'><pre>java.lang.AssertionError: App shell should be visible in settings flow expected [true] but found [false]
+	at org.testng.Assert.fail(Assert.java:111)
+	at org.testng.Assert.failNotEquals(Assert.java:1578)
+	at org.testng.Assert.assertTrue(Assert.java:57)
+	at tests.SettingsTest.openSettings(SettingsTest.java:9)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:686)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:308)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:71)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:113)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+</pre></div></td>
+<td>15</td>
+<td>tests.SettingsTest@624ea235</td></tr>
+<tr>
+<td title='tests.HomeTest.homeScreenLoads()'><b>homeScreenLoads</b><br>Test class: tests.HomeTest<br>Test method: App title should be visible</td>
+<td><div><pre>java.lang.AssertionError: App title should be visible expected [true] but found [false]
+	at tests.HomeTest.homeScreenLoads(HomeTest.java:9)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+... Removed 34 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace416682209", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace416682209'><pre>java.lang.AssertionError: App title should be visible expected [true] but found [false]
+	at org.testng.Assert.fail(Assert.java:111)
+	at org.testng.Assert.failNotEquals(Assert.java:1578)
+	at org.testng.Assert.assertTrue(Assert.java:57)
+	at tests.HomeTest.homeScreenLoads(HomeTest.java:9)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:686)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:308)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:71)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:113)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+</pre></div></td>
+<td>15</td>
+<td>tests.HomeTest@7a6d7e92</td></tr>
+<tr>
+<td title='tests.MythCheckerTest.validMythCheck()'><b>validMythCheck</b><br>Test class: tests.MythCheckerTest<br>Test method: Myth checker screen should be reachable from login</td>
+<td><div><pre>java.lang.AssertionError: App shell should be visible expected [true] but found [false]
+	at tests.MythCheckerTest.validMythCheck(MythCheckerTest.java:9)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+... Removed 34 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace710199598", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace710199598'><pre>java.lang.AssertionError: App shell should be visible expected [true] but found [false]
+	at org.testng.Assert.fail(Assert.java:111)
+	at org.testng.Assert.failNotEquals(Assert.java:1578)
+	at org.testng.Assert.assertTrue(Assert.java:57)
+	at tests.MythCheckerTest.validMythCheck(MythCheckerTest.java:9)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:686)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:308)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:71)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:113)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+</pre></div></td>
+<td>15</td>
+<td>tests.MythCheckerTest@aba625</td></tr>
+<tr>
+<td title='tests.QuizTest.openQuiz()'><b>openQuiz</b><br>Test class: tests.QuizTest<br>Test method: Quiz entry should see the app shell</td>
+<td><div><pre>java.lang.AssertionError: App shell should be visible from quiz entry expected [true] but found [false]
+	at tests.QuizTest.openQuiz(QuizTest.java:9)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+... Removed 34 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1266568468", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1266568468'><pre>java.lang.AssertionError: App shell should be visible from quiz entry expected [true] but found [false]
+	at org.testng.Assert.fail(Assert.java:111)
+	at org.testng.Assert.failNotEquals(Assert.java:1578)
+	at org.testng.Assert.assertTrue(Assert.java:57)
+	at tests.QuizTest.openQuiz(QuizTest.java:9)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:686)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:308)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:71)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:113)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+</pre></div></td>
+<td>15</td>
+<td>tests.QuizTest@5a5a729f</td></tr>
+<tr>
+<td title='tests.ReportsTest.openReports()'><b>openReports</b><br>Test class: tests.ReportsTest<br>Test method: Reports flow should show the app shell</td>
+<td><div><pre>java.lang.AssertionError: App shell should be visible in reports flow expected [true] but found [false]
+	at tests.ReportsTest.openReports(ReportsTest.java:9)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+... Removed 34 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1457383927", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1457383927'><pre>java.lang.AssertionError: App shell should be visible in reports flow expected [true] but found [false]
+	at org.testng.Assert.fail(Assert.java:111)
+	at org.testng.Assert.failNotEquals(Assert.java:1578)
+	at org.testng.Assert.assertTrue(Assert.java:57)
+	at tests.ReportsTest.openReports(ReportsTest.java:9)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:686)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:308)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:71)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:113)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+</pre></div></td>
+<td>15</td>
+<td>tests.ReportsTest@16150369</td></tr>
+</table><p>
+<table width='100%' border='1' class='invocation-passed'>
+<tr><td colspan='4' align='center'><b>PASSED TESTS</b></td></tr>
+<tr><td><b>Test method</b></td>
+<td><b>Attribute(s)</b></td>
+<td width="30%"><b>Exception</b></td>
+<td width="10%"><b>Time (seconds)</b></td>
+<td><b>Instance</b></td>
+</tr>
+<tr>
+<td title='tests.AuthenticationTest.fullNameFieldShouldBeVisibleOnSignUp()'><b>fullNameFieldShouldBeVisibleOnSignUp</b><br>Test class: tests.AuthenticationTest<br>Test method: AUTH-022: Full name field should be visible on Sign Up</td>
+<td></td>
+<td>4</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.backToLoginShouldReturnToLoginScreen()'><b>backToLoginShouldReturnToLoginScreen</b><br>Test class: tests.AuthenticationTest<br>Test method: AUTH-028: Back to Login should return to login screen</td>
+<td></td>
+<td>6</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.showPasswordToggleShouldWorkOnSignUpScreen()'><b>showPasswordToggleShouldWorkOnSignUpScreen</b><br>Test class: tests.AuthenticationTest<br>Test method: AUTH-029: Show password toggle should work on Sign Up screen</td>
+<td></td>
+<td>5</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.emailFieldShouldBeVisible()'><b>emailFieldShouldBeVisible</b><br>Test class: tests.AuthenticationTest<br>Test method: AUTH-005: Email field should be visible</td>
+<td></td>
+<td>2</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.authenticationScreenShouldRemainInForeground()'><b>authenticationScreenShouldRemainInForeground</b><br>Test class: tests.AuthenticationTest<br>Test method: AUTH-030: Authentication screen should remain in foreground</td>
+<td></td>
+<td>0</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.ProfileTest.openProfile()'><b>openProfile</b><br>Test class: tests.ProfileTest<br>Test method: Profile flow should show the app shell</td>
+<td></td>
+<td>2</td>
+<td>tests.ProfileTest@3932c79a</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.passwordFieldShouldBeVisible()'><b>passwordFieldShouldBeVisible</b><br>Test class: tests.AuthenticationTest<br>Test method: AUTH-006: Password field should be visible</td>
+<td></td>
+<td>2</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.signInButtonShouldBeClickable()'><b>signInButtonShouldBeClickable</b><br>Test class: tests.AuthenticationTest<br>Test method: AUTH-014: Sign In button should be clickable</td>
+<td></td>
+<td>3</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.emailHintShouldBeVisible()'><b>emailHintShouldBeVisible</b><br>Test class: tests.AuthenticationTest<br>Test method: AUTH-007: Email hint text should be visible</td>
+<td></td>
+<td>2</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.confirmPasswordFieldShouldBeVisible()'><b>confirmPasswordFieldShouldBeVisible</b><br>Test class: tests.AuthenticationTest<br>Test method: AUTH-023: Confirm password field should be visible</td>
+<td></td>
+<td>4</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.splashScreenLoads()'><b>splashScreenLoads</b><br>Test class: tests.AuthenticationTest<br>Test method: AUTH-001: Splash screen should load</td>
+<td></td>
+<td>2</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.BrushingTest.openBrushingTimer()'><b>openBrushingTimer</b><br>Test class: tests.BrushingTest<br>Test method: Brushing screen should show the app shell</td>
+<td></td>
+<td>2</td>
+<td>tests.BrushingTest@4b520ea8</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.signInButtonShouldBeVisible()'><b>signInButtonShouldBeVisible</b><br>Test class: tests.AuthenticationTest<br>Test method: AUTH-009: Sign In button should be visible</td>
+<td></td>
+<td>2</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.showPasswordToggleShouldBeClickable()'><b>showPasswordToggleShouldBeClickable</b><br>Test class: tests.AuthenticationTest<br>Test method: AUTH-016: Show password toggle should be clickable</td>
+<td></td>
+<td>3</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.appTitleShouldBeVisible()'><b>appTitleShouldBeVisible</b><br>Test class: tests.AuthenticationTest<br>Test method: AUTH-003: Dentzy app title should be visible</td>
+<td></td>
+<td>2</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.createAccountButtonShouldBeClickable()'><b>createAccountButtonShouldBeClickable</b><br>Test class: tests.AuthenticationTest<br>Test method: AUTH-026: Create Account button should be clickable</td>
+<td></td>
+<td>5</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.navigateToSignUpScreen()'><b>navigateToSignUpScreen</b><br>Test class: tests.AuthenticationTest<br>Test method: AUTH-019: Navigate to Sign Up screen</td>
+<td></td>
+<td>4</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.forgotPasswordActionShouldBeVisible()'><b>forgotPasswordActionShouldBeVisible</b><br>Test class: tests.AuthenticationTest<br>Test method: AUTH-011: Forgot password action should be visible</td>
+<td></td>
+<td>2</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.LearningTest.openArticles()'><b>openArticles</b><br>Test class: tests.LearningTest<br>Test method: Learning view should expose the app shell</td>
+<td></td>
+<td>2</td>
+<td>tests.LearningTest@97e93f1</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.loginDescriptionShouldBeVisible()'><b>loginDescriptionShouldBeVisible</b><br>Test class: tests.AuthenticationTest<br>Test method: AUTH-004: Login description should be visible</td>
+<td></td>
+<td>2</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.signUpButtonShouldBeClickable()'><b>signUpButtonShouldBeClickable</b><br>Test class: tests.AuthenticationTest<br>Test method: AUTH-015: Sign Up button should be clickable</td>
+<td></td>
+<td>4</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.createAccountButtonShouldBeVisible()'><b>createAccountButtonShouldBeVisible</b><br>Test class: tests.AuthenticationTest<br>Test method: AUTH-021: Create Account button should be visible</td>
+<td></td>
+<td>4</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.passwordHintShouldBeVisible()'><b>passwordHintShouldBeVisible</b><br>Test class: tests.AuthenticationTest<br>Test method: AUTH-008: Password hint text should be visible</td>
+<td></td>
+<td>2</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.signUpOptionShouldBeVisible()'><b>signUpOptionShouldBeVisible</b><br>Test class: tests.AuthenticationTest<br>Test method: AUTH-010: Sign Up option should be visible</td>
+<td></td>
+<td>2</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.NotificationsTest.openNotifications()'><b>openNotifications</b><br>Test class: tests.NotificationsTest<br>Test method: Notifications flow should show the app shell</td>
+<td></td>
+<td>2</td>
+<td>tests.NotificationsTest@6b09fb41</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.showPasswordToggleShouldBeVisible()'><b>showPasswordToggleShouldBeVisible</b><br>Test class: tests.AuthenticationTest<br>Test method: AUTH-013: Show password toggle should be visible</td>
+<td></td>
+<td>2</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.loginFormShouldBeVisible()'><b>loginFormShouldBeVisible</b><br>Test class: tests.AuthenticationTest<br>Test method: AUTH-002: Login form should be visible</td>
+<td></td>
+<td>2</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.backToLoginButtonShouldBeVisible()'><b>backToLoginButtonShouldBeVisible</b><br>Test class: tests.AuthenticationTest<br>Test method: AUTH-027: Back to Login button should be visible</td>
+<td></td>
+<td>4</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.rememberMeOptionShouldBeVisible()'><b>rememberMeOptionShouldBeVisible</b><br>Test class: tests.AuthenticationTest<br>Test method: AUTH-012: Remember me option should be visible</td>
+<td></td>
+<td>2</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+</table><p>
+<table width='100%' border='1' class='invocation-skipped'>
+<tr><td colspan='4' align='center'><b>SKIPPED TESTS</b></td></tr>
+<tr><td><b>Test method</b></td>
+<td><b>Attribute(s)</b></td>
+<td width="30%"><b>Exception</b></td>
+<td width="10%"><b>Time (seconds)</b></td>
+<td><b>Instance</b></td>
+</tr>
+<tr>
+<td title='tests.AuthenticationTest.userCanEnterFullName()'><b>userCanEnterFullName</b><br>Test class: tests.AuthenticationTest<br>Test method: AUTH-024: User can enter full name</td>
+<td><div><pre>org.openqa.selenium.WebDriverException: &apos;GET /screenshot&apos; cannot be proxied to UiAutomator2 server because the instrumentation process is not running (probably crashed). Check the server log and/or the logcat output for more details
+Build info: version: &apos;4.46.0&apos;, revision: &apos;df5a634 df5a6341cbb5f8f06b836bd595752775627c80dc&apos;
+System info: os.name: &apos;Windows 11&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;17.0.12&apos;
+Driver info: io.appium.java_client.android.AndroidDriver
+Command: [de9569b0-cece-4ea1-a68e-f80e96b74eb0, screenshot {}]
+Capabilities {appium:app: C:\Users\Dyuthi\Dentzy_App\..., appium:appActivity: com.example.dentzy.MainActi..., appium:appPackage: com.example.dentzy, appium:autoGrantPermissions: true, appium:automationName: UiAutomator2, appium:databaseEnabled: false, appium:desired: {app: C:\Users\Dyuthi\Dentzy_App\..., appActivity: com.example.dentzy.MainActi..., appPackage: com.example.dentzy, autoGrantPermissions: true, automationName: UiAutomator2, deviceName: emulator-5554, newCommandTimeout: 600, noReset: false, platformName: ANDROID, platformVersion: 17}, appium:deviceApiLevel: 37, appium:deviceManufacturer: Google, appium:deviceModel: sdk_gphone16k_x86_64, appium:deviceName: emulator-5554, appium:deviceScreenDensity: 480, appium:deviceScreenSize: 1344x2992, appium:deviceUDID: emulator-5554, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: true, appium:newCommandTimeout: 600, appium:noReset: false, appium:pixelRatio: 3, appium:platformVersion: 17, appium:statBarHeight: 156, appium:takesScreenshot: true, appium:viewportRect: {height: 2836, left: 0, top: 156, width: 1344}, appium:warnings: {}, appium:webStorageEnabled: false, platformName: ANDROID}
+Session ID: de9569b0-cece-4ea1-a68e-f80e96b74eb0
+	at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:169)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:143)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:196)
+	at io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:243)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:626)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:708)
+	at io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:230)
+	at org.openqa.selenium.remote.RemoteWebDriver.getScreenshotAs(RemoteWebDriver.java:372)
+	at io.appium.java_client.AppiumDriver.getScreenshotAs(AppiumDriver.java:239)
+	at utilities.ScreenshotUtil.captureScreenshot(ScreenshotUtil.java:19)
+	at base.BaseTest.tearDown(BaseTest.java:140)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+... Removed 35 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace566710404", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace566710404'><pre>org.openqa.selenium.WebDriverException: &apos;GET /screenshot&apos; cannot be proxied to UiAutomator2 server because the instrumentation process is not running (probably crashed). Check the server log and/or the logcat output for more details
+Build info: version: &apos;4.46.0&apos;, revision: &apos;df5a634 df5a6341cbb5f8f06b836bd595752775627c80dc&apos;
+System info: os.name: &apos;Windows 11&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;17.0.12&apos;
+Driver info: io.appium.java_client.android.AndroidDriver
+Command: [de9569b0-cece-4ea1-a68e-f80e96b74eb0, screenshot {}]
+Capabilities {appium:app: C:\Users\Dyuthi\Dentzy_App\..., appium:appActivity: com.example.dentzy.MainActi..., appium:appPackage: com.example.dentzy, appium:autoGrantPermissions: true, appium:automationName: UiAutomator2, appium:databaseEnabled: false, appium:desired: {app: C:\Users\Dyuthi\Dentzy_App\..., appActivity: com.example.dentzy.MainActi..., appPackage: com.example.dentzy, autoGrantPermissions: true, automationName: UiAutomator2, deviceName: emulator-5554, newCommandTimeout: 600, noReset: false, platformName: ANDROID, platformVersion: 17}, appium:deviceApiLevel: 37, appium:deviceManufacturer: Google, appium:deviceModel: sdk_gphone16k_x86_64, appium:deviceName: emulator-5554, appium:deviceScreenDensity: 480, appium:deviceScreenSize: 1344x2992, appium:deviceUDID: emulator-5554, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: true, appium:newCommandTimeout: 600, appium:noReset: false, appium:pixelRatio: 3, appium:platformVersion: 17, appium:statBarHeight: 156, appium:takesScreenshot: true, appium:viewportRect: {height: 2836, left: 0, top: 156, width: 1344}, appium:warnings: {}, appium:webStorageEnabled: false, platformName: ANDROID}
+Session ID: de9569b0-cece-4ea1-a68e-f80e96b74eb0
+	at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:169)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:143)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:196)
+	at io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:243)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:626)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:708)
+	at io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:230)
+	at org.openqa.selenium.remote.RemoteWebDriver.getScreenshotAs(RemoteWebDriver.java:372)
+	at io.appium.java_client.AppiumDriver.getScreenshotAs(AppiumDriver.java:239)
+	at utilities.ScreenshotUtil.captureScreenshot(ScreenshotUtil.java:19)
+	at base.BaseTest.tearDown(BaseTest.java:140)
+	at jdk.internal.reflect.GeneratedMethodAccessor61.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethodConsideringTimeout(MethodInvocationHelper.java:71)
+	at org.testng.internal.invokers.ConfigInvoker.invokeConfigurationMethod(ConfigInvoker.java:400)
+	at org.testng.internal.invokers.ConfigInvoker.invokeConfigurations(ConfigInvoker.java:333)
+	at org.testng.internal.invokers.TestInvoker.runConfigMethods(TestInvoker.java:833)
+	at org.testng.internal.invokers.TestInvoker.runAfterConfigurations(TestInvoker.java:802)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:778)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:308)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:71)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:113)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+</pre></div></td>
+<td>0</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.userCanEnterPassword()'><b>userCanEnterPassword</b><br>Test class: tests.AuthenticationTest<br>Test method: AUTH-018: User can enter password</td>
+<td><div><pre>org.openqa.selenium.WebDriverException: &apos;GET /screenshot&apos; cannot be proxied to UiAutomator2 server because the instrumentation process is not running (probably crashed). Check the server log and/or the logcat output for more details
+Build info: version: &apos;4.46.0&apos;, revision: &apos;df5a634 df5a6341cbb5f8f06b836bd595752775627c80dc&apos;
+System info: os.name: &apos;Windows 11&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;17.0.12&apos;
+Driver info: io.appium.java_client.android.AndroidDriver
+Command: [de9569b0-cece-4ea1-a68e-f80e96b74eb0, screenshot {}]
+Capabilities {appium:app: C:\Users\Dyuthi\Dentzy_App\..., appium:appActivity: com.example.dentzy.MainActi..., appium:appPackage: com.example.dentzy, appium:autoGrantPermissions: true, appium:automationName: UiAutomator2, appium:databaseEnabled: false, appium:desired: {app: C:\Users\Dyuthi\Dentzy_App\..., appActivity: com.example.dentzy.MainActi..., appPackage: com.example.dentzy, autoGrantPermissions: true, automationName: UiAutomator2, deviceName: emulator-5554, newCommandTimeout: 600, noReset: false, platformName: ANDROID, platformVersion: 17}, appium:deviceApiLevel: 37, appium:deviceManufacturer: Google, appium:deviceModel: sdk_gphone16k_x86_64, appium:deviceName: emulator-5554, appium:deviceScreenDensity: 480, appium:deviceScreenSize: 1344x2992, appium:deviceUDID: emulator-5554, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: true, appium:newCommandTimeout: 600, appium:noReset: false, appium:pixelRatio: 3, appium:platformVersion: 17, appium:statBarHeight: 156, appium:takesScreenshot: true, appium:viewportRect: {height: 2836, left: 0, top: 156, width: 1344}, appium:warnings: {}, appium:webStorageEnabled: false, platformName: ANDROID}
+Session ID: de9569b0-cece-4ea1-a68e-f80e96b74eb0
+	at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:169)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:143)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:196)
+	at io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:243)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:626)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:708)
+	at io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:230)
+	at org.openqa.selenium.remote.RemoteWebDriver.getScreenshotAs(RemoteWebDriver.java:372)
+	at io.appium.java_client.AppiumDriver.getScreenshotAs(AppiumDriver.java:239)
+	at utilities.ScreenshotUtil.captureScreenshot(ScreenshotUtil.java:19)
+	at base.BaseTest.tearDown(BaseTest.java:140)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+... Removed 35 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1370456137", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1370456137'><pre>org.openqa.selenium.WebDriverException: &apos;GET /screenshot&apos; cannot be proxied to UiAutomator2 server because the instrumentation process is not running (probably crashed). Check the server log and/or the logcat output for more details
+Build info: version: &apos;4.46.0&apos;, revision: &apos;df5a634 df5a6341cbb5f8f06b836bd595752775627c80dc&apos;
+System info: os.name: &apos;Windows 11&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;17.0.12&apos;
+Driver info: io.appium.java_client.android.AndroidDriver
+Command: [de9569b0-cece-4ea1-a68e-f80e96b74eb0, screenshot {}]
+Capabilities {appium:app: C:\Users\Dyuthi\Dentzy_App\..., appium:appActivity: com.example.dentzy.MainActi..., appium:appPackage: com.example.dentzy, appium:autoGrantPermissions: true, appium:automationName: UiAutomator2, appium:databaseEnabled: false, appium:desired: {app: C:\Users\Dyuthi\Dentzy_App\..., appActivity: com.example.dentzy.MainActi..., appPackage: com.example.dentzy, autoGrantPermissions: true, automationName: UiAutomator2, deviceName: emulator-5554, newCommandTimeout: 600, noReset: false, platformName: ANDROID, platformVersion: 17}, appium:deviceApiLevel: 37, appium:deviceManufacturer: Google, appium:deviceModel: sdk_gphone16k_x86_64, appium:deviceName: emulator-5554, appium:deviceScreenDensity: 480, appium:deviceScreenSize: 1344x2992, appium:deviceUDID: emulator-5554, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: true, appium:newCommandTimeout: 600, appium:noReset: false, appium:pixelRatio: 3, appium:platformVersion: 17, appium:statBarHeight: 156, appium:takesScreenshot: true, appium:viewportRect: {height: 2836, left: 0, top: 156, width: 1344}, appium:warnings: {}, appium:webStorageEnabled: false, platformName: ANDROID}
+Session ID: de9569b0-cece-4ea1-a68e-f80e96b74eb0
+	at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:169)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:143)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:196)
+	at io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:243)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:626)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:708)
+	at io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:230)
+	at org.openqa.selenium.remote.RemoteWebDriver.getScreenshotAs(RemoteWebDriver.java:372)
+	at io.appium.java_client.AppiumDriver.getScreenshotAs(AppiumDriver.java:239)
+	at utilities.ScreenshotUtil.captureScreenshot(ScreenshotUtil.java:19)
+	at base.BaseTest.tearDown(BaseTest.java:140)
+	at jdk.internal.reflect.GeneratedMethodAccessor61.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethodConsideringTimeout(MethodInvocationHelper.java:71)
+	at org.testng.internal.invokers.ConfigInvoker.invokeConfigurationMethod(ConfigInvoker.java:400)
+	at org.testng.internal.invokers.ConfigInvoker.invokeConfigurations(ConfigInvoker.java:333)
+	at org.testng.internal.invokers.TestInvoker.runConfigMethods(TestInvoker.java:833)
+	at org.testng.internal.invokers.TestInvoker.runAfterConfigurations(TestInvoker.java:802)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:778)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:308)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:71)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:113)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+</pre></div></td>
+<td>0</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.HomeTest.navigateToMythChecker()'><b>navigateToMythChecker</b><br>Test class: tests.HomeTest<br>Test method: Welcome text should be visible</td>
+<td><div><pre>org.openqa.selenium.NoSuchSessionException: A session is either terminated or not started
+Build info: version: &apos;4.46.0&apos;, revision: &apos;df5a634 df5a6341cbb5f8f06b836bd595752775627c80dc&apos;
+System info: os.name: &apos;Windows 11&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;17.0.12&apos;
+Driver info: io.appium.java_client.android.AndroidDriver
+Command: [9659fa67-b81e-468e-ac88-5b46fca185a2, screenshot {}]
+Capabilities {appium:app: C:\Users\Dyuthi\Dentzy_App\..., appium:appActivity: com.example.dentzy.MainActi..., appium:appPackage: com.example.dentzy, appium:autoGrantPermissions: true, appium:automationName: UiAutomator2, appium:databaseEnabled: false, appium:desired: {app: C:\Users\Dyuthi\Dentzy_App\..., appActivity: com.example.dentzy.MainActi..., appPackage: com.example.dentzy, autoGrantPermissions: true, automationName: UiAutomator2, deviceName: emulator-5554, newCommandTimeout: 600, noReset: false, platformName: ANDROID, platformVersion: 17}, appium:deviceApiLevel: 37, appium:deviceManufacturer: Google, appium:deviceModel: sdk_gphone16k_x86_64, appium:deviceName: emulator-5554, appium:deviceScreenDensity: 480, appium:deviceScreenSize: 1344x2992, appium:deviceUDID: emulator-5554, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: true, appium:newCommandTimeout: 600, appium:noReset: false, appium:pixelRatio: 3, appium:platformVersion: 17, appium:statBarHeight: 156, appium:takesScreenshot: true, appium:viewportRect: {height: 2836, left: 0, top: 156, width: 1344}, appium:warnings: {}, appium:webStorageEnabled: false, platformName: ANDROID}
+Session ID: 9659fa67-b81e-468e-ac88-5b46fca185a2
+	at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:169)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:143)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:196)
+	at io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:243)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:626)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:708)
+	at io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:230)
+	at org.openqa.selenium.remote.RemoteWebDriver.getScreenshotAs(RemoteWebDriver.java:372)
+	at io.appium.java_client.AppiumDriver.getScreenshotAs(AppiumDriver.java:239)
+	at utilities.ScreenshotUtil.captureScreenshot(ScreenshotUtil.java:19)
+	at base.BaseTest.tearDown(BaseTest.java:140)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+... Removed 35 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1790671741", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1790671741'><pre>org.openqa.selenium.NoSuchSessionException: A session is either terminated or not started
+Build info: version: &apos;4.46.0&apos;, revision: &apos;df5a634 df5a6341cbb5f8f06b836bd595752775627c80dc&apos;
+System info: os.name: &apos;Windows 11&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;17.0.12&apos;
+Driver info: io.appium.java_client.android.AndroidDriver
+Command: [9659fa67-b81e-468e-ac88-5b46fca185a2, screenshot {}]
+Capabilities {appium:app: C:\Users\Dyuthi\Dentzy_App\..., appium:appActivity: com.example.dentzy.MainActi..., appium:appPackage: com.example.dentzy, appium:autoGrantPermissions: true, appium:automationName: UiAutomator2, appium:databaseEnabled: false, appium:desired: {app: C:\Users\Dyuthi\Dentzy_App\..., appActivity: com.example.dentzy.MainActi..., appPackage: com.example.dentzy, autoGrantPermissions: true, automationName: UiAutomator2, deviceName: emulator-5554, newCommandTimeout: 600, noReset: false, platformName: ANDROID, platformVersion: 17}, appium:deviceApiLevel: 37, appium:deviceManufacturer: Google, appium:deviceModel: sdk_gphone16k_x86_64, appium:deviceName: emulator-5554, appium:deviceScreenDensity: 480, appium:deviceScreenSize: 1344x2992, appium:deviceUDID: emulator-5554, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: true, appium:newCommandTimeout: 600, appium:noReset: false, appium:pixelRatio: 3, appium:platformVersion: 17, appium:statBarHeight: 156, appium:takesScreenshot: true, appium:viewportRect: {height: 2836, left: 0, top: 156, width: 1344}, appium:warnings: {}, appium:webStorageEnabled: false, platformName: ANDROID}
+Session ID: 9659fa67-b81e-468e-ac88-5b46fca185a2
+	at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:169)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:143)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:196)
+	at io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:243)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:626)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:708)
+	at io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:230)
+	at org.openqa.selenium.remote.RemoteWebDriver.getScreenshotAs(RemoteWebDriver.java:372)
+	at io.appium.java_client.AppiumDriver.getScreenshotAs(AppiumDriver.java:239)
+	at utilities.ScreenshotUtil.captureScreenshot(ScreenshotUtil.java:19)
+	at base.BaseTest.tearDown(BaseTest.java:140)
+	at jdk.internal.reflect.GeneratedMethodAccessor61.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethodConsideringTimeout(MethodInvocationHelper.java:71)
+	at org.testng.internal.invokers.ConfigInvoker.invokeConfigurationMethod(ConfigInvoker.java:400)
+	at org.testng.internal.invokers.ConfigInvoker.invokeConfigurations(ConfigInvoker.java:333)
+	at org.testng.internal.invokers.TestInvoker.runConfigMethods(TestInvoker.java:833)
+	at org.testng.internal.invokers.TestInvoker.runAfterConfigurations(TestInvoker.java:802)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:778)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:308)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:71)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:113)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+</pre></div></td>
+<td>0</td>
+<td>tests.HomeTest@7a6d7e92</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.userCanEnterConfirmPassword()'><b>userCanEnterConfirmPassword</b><br>Test class: tests.AuthenticationTest<br>Test method: AUTH-025: User can enter confirm password</td>
+<td><div><pre>org.openqa.selenium.WebDriverException: &apos;GET /screenshot&apos; cannot be proxied to UiAutomator2 server because the instrumentation process is not running (probably crashed). Check the server log and/or the logcat output for more details
+Build info: version: &apos;4.46.0&apos;, revision: &apos;df5a634 df5a6341cbb5f8f06b836bd595752775627c80dc&apos;
+System info: os.name: &apos;Windows 11&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;17.0.12&apos;
+Driver info: io.appium.java_client.android.AndroidDriver
+Command: [de9569b0-cece-4ea1-a68e-f80e96b74eb0, screenshot {}]
+Capabilities {appium:app: C:\Users\Dyuthi\Dentzy_App\..., appium:appActivity: com.example.dentzy.MainActi..., appium:appPackage: com.example.dentzy, appium:autoGrantPermissions: true, appium:automationName: UiAutomator2, appium:databaseEnabled: false, appium:desired: {app: C:\Users\Dyuthi\Dentzy_App\..., appActivity: com.example.dentzy.MainActi..., appPackage: com.example.dentzy, autoGrantPermissions: true, automationName: UiAutomator2, deviceName: emulator-5554, newCommandTimeout: 600, noReset: false, platformName: ANDROID, platformVersion: 17}, appium:deviceApiLevel: 37, appium:deviceManufacturer: Google, appium:deviceModel: sdk_gphone16k_x86_64, appium:deviceName: emulator-5554, appium:deviceScreenDensity: 480, appium:deviceScreenSize: 1344x2992, appium:deviceUDID: emulator-5554, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: true, appium:newCommandTimeout: 600, appium:noReset: false, appium:pixelRatio: 3, appium:platformVersion: 17, appium:statBarHeight: 156, appium:takesScreenshot: true, appium:viewportRect: {height: 2836, left: 0, top: 156, width: 1344}, appium:warnings: {}, appium:webStorageEnabled: false, platformName: ANDROID}
+Session ID: de9569b0-cece-4ea1-a68e-f80e96b74eb0
+	at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:169)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:143)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:196)
+	at io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:243)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:626)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:708)
+	at io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:230)
+	at org.openqa.selenium.remote.RemoteWebDriver.getScreenshotAs(RemoteWebDriver.java:372)
+	at io.appium.java_client.AppiumDriver.getScreenshotAs(AppiumDriver.java:239)
+	at utilities.ScreenshotUtil.captureScreenshot(ScreenshotUtil.java:19)
+	at base.BaseTest.tearDown(BaseTest.java:140)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+... Removed 35 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1218734863", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1218734863'><pre>org.openqa.selenium.WebDriverException: &apos;GET /screenshot&apos; cannot be proxied to UiAutomator2 server because the instrumentation process is not running (probably crashed). Check the server log and/or the logcat output for more details
+Build info: version: &apos;4.46.0&apos;, revision: &apos;df5a634 df5a6341cbb5f8f06b836bd595752775627c80dc&apos;
+System info: os.name: &apos;Windows 11&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;17.0.12&apos;
+Driver info: io.appium.java_client.android.AndroidDriver
+Command: [de9569b0-cece-4ea1-a68e-f80e96b74eb0, screenshot {}]
+Capabilities {appium:app: C:\Users\Dyuthi\Dentzy_App\..., appium:appActivity: com.example.dentzy.MainActi..., appium:appPackage: com.example.dentzy, appium:autoGrantPermissions: true, appium:automationName: UiAutomator2, appium:databaseEnabled: false, appium:desired: {app: C:\Users\Dyuthi\Dentzy_App\..., appActivity: com.example.dentzy.MainActi..., appPackage: com.example.dentzy, autoGrantPermissions: true, automationName: UiAutomator2, deviceName: emulator-5554, newCommandTimeout: 600, noReset: false, platformName: ANDROID, platformVersion: 17}, appium:deviceApiLevel: 37, appium:deviceManufacturer: Google, appium:deviceModel: sdk_gphone16k_x86_64, appium:deviceName: emulator-5554, appium:deviceScreenDensity: 480, appium:deviceScreenSize: 1344x2992, appium:deviceUDID: emulator-5554, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: true, appium:newCommandTimeout: 600, appium:noReset: false, appium:pixelRatio: 3, appium:platformVersion: 17, appium:statBarHeight: 156, appium:takesScreenshot: true, appium:viewportRect: {height: 2836, left: 0, top: 156, width: 1344}, appium:warnings: {}, appium:webStorageEnabled: false, platformName: ANDROID}
+Session ID: de9569b0-cece-4ea1-a68e-f80e96b74eb0
+	at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:169)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:143)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:196)
+	at io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:243)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:626)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:708)
+	at io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:230)
+	at org.openqa.selenium.remote.RemoteWebDriver.getScreenshotAs(RemoteWebDriver.java:372)
+	at io.appium.java_client.AppiumDriver.getScreenshotAs(AppiumDriver.java:239)
+	at utilities.ScreenshotUtil.captureScreenshot(ScreenshotUtil.java:19)
+	at base.BaseTest.tearDown(BaseTest.java:140)
+	at jdk.internal.reflect.GeneratedMethodAccessor61.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethodConsideringTimeout(MethodInvocationHelper.java:71)
+	at org.testng.internal.invokers.ConfigInvoker.invokeConfigurationMethod(ConfigInvoker.java:400)
+	at org.testng.internal.invokers.ConfigInvoker.invokeConfigurations(ConfigInvoker.java:333)
+	at org.testng.internal.invokers.TestInvoker.runConfigMethods(TestInvoker.java:833)
+	at org.testng.internal.invokers.TestInvoker.runAfterConfigurations(TestInvoker.java:802)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:778)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:308)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:71)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:113)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+</pre></div></td>
+<td>0</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+<tr>
+<td title='tests.AuthenticationTest.userCanEnterEmail()'><b>userCanEnterEmail</b><br>Test class: tests.AuthenticationTest<br>Test method: AUTH-017: User can enter email</td>
+<td><div><pre>org.openqa.selenium.WebDriverException: &apos;GET /screenshot&apos; cannot be proxied to UiAutomator2 server because the instrumentation process is not running (probably crashed). Check the server log and/or the logcat output for more details
+Build info: version: &apos;4.46.0&apos;, revision: &apos;df5a634 df5a6341cbb5f8f06b836bd595752775627c80dc&apos;
+System info: os.name: &apos;Windows 11&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;17.0.12&apos;
+Driver info: io.appium.java_client.android.AndroidDriver
+Command: [de9569b0-cece-4ea1-a68e-f80e96b74eb0, screenshot {}]
+Capabilities {appium:app: C:\Users\Dyuthi\Dentzy_App\..., appium:appActivity: com.example.dentzy.MainActi..., appium:appPackage: com.example.dentzy, appium:autoGrantPermissions: true, appium:automationName: UiAutomator2, appium:databaseEnabled: false, appium:desired: {app: C:\Users\Dyuthi\Dentzy_App\..., appActivity: com.example.dentzy.MainActi..., appPackage: com.example.dentzy, autoGrantPermissions: true, automationName: UiAutomator2, deviceName: emulator-5554, newCommandTimeout: 600, noReset: false, platformName: ANDROID, platformVersion: 17}, appium:deviceApiLevel: 37, appium:deviceManufacturer: Google, appium:deviceModel: sdk_gphone16k_x86_64, appium:deviceName: emulator-5554, appium:deviceScreenDensity: 480, appium:deviceScreenSize: 1344x2992, appium:deviceUDID: emulator-5554, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: true, appium:newCommandTimeout: 600, appium:noReset: false, appium:pixelRatio: 3, appium:platformVersion: 17, appium:statBarHeight: 156, appium:takesScreenshot: true, appium:viewportRect: {height: 2836, left: 0, top: 156, width: 1344}, appium:warnings: {}, appium:webStorageEnabled: false, platformName: ANDROID}
+Session ID: de9569b0-cece-4ea1-a68e-f80e96b74eb0
+	at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:169)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:143)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:196)
+	at io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:243)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:626)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:708)
+	at io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:230)
+	at org.openqa.selenium.remote.RemoteWebDriver.getScreenshotAs(RemoteWebDriver.java:372)
+	at io.appium.java_client.AppiumDriver.getScreenshotAs(AppiumDriver.java:239)
+	at utilities.ScreenshotUtil.captureScreenshot(ScreenshotUtil.java:19)
+	at base.BaseTest.tearDown(BaseTest.java:140)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+... Removed 35 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace787497403", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace787497403'><pre>org.openqa.selenium.WebDriverException: &apos;GET /screenshot&apos; cannot be proxied to UiAutomator2 server because the instrumentation process is not running (probably crashed). Check the server log and/or the logcat output for more details
+Build info: version: &apos;4.46.0&apos;, revision: &apos;df5a634 df5a6341cbb5f8f06b836bd595752775627c80dc&apos;
+System info: os.name: &apos;Windows 11&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;17.0.12&apos;
+Driver info: io.appium.java_client.android.AndroidDriver
+Command: [de9569b0-cece-4ea1-a68e-f80e96b74eb0, screenshot {}]
+Capabilities {appium:app: C:\Users\Dyuthi\Dentzy_App\..., appium:appActivity: com.example.dentzy.MainActi..., appium:appPackage: com.example.dentzy, appium:autoGrantPermissions: true, appium:automationName: UiAutomator2, appium:databaseEnabled: false, appium:desired: {app: C:\Users\Dyuthi\Dentzy_App\..., appActivity: com.example.dentzy.MainActi..., appPackage: com.example.dentzy, autoGrantPermissions: true, automationName: UiAutomator2, deviceName: emulator-5554, newCommandTimeout: 600, noReset: false, platformName: ANDROID, platformVersion: 17}, appium:deviceApiLevel: 37, appium:deviceManufacturer: Google, appium:deviceModel: sdk_gphone16k_x86_64, appium:deviceName: emulator-5554, appium:deviceScreenDensity: 480, appium:deviceScreenSize: 1344x2992, appium:deviceUDID: emulator-5554, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: true, appium:newCommandTimeout: 600, appium:noReset: false, appium:pixelRatio: 3, appium:platformVersion: 17, appium:statBarHeight: 156, appium:takesScreenshot: true, appium:viewportRect: {height: 2836, left: 0, top: 156, width: 1344}, appium:warnings: {}, appium:webStorageEnabled: false, platformName: ANDROID}
+Session ID: de9569b0-cece-4ea1-a68e-f80e96b74eb0
+	at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:169)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:143)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:196)
+	at io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:243)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:626)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:708)
+	at io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:230)
+	at org.openqa.selenium.remote.RemoteWebDriver.getScreenshotAs(RemoteWebDriver.java:372)
+	at io.appium.java_client.AppiumDriver.getScreenshotAs(AppiumDriver.java:239)
+	at utilities.ScreenshotUtil.captureScreenshot(ScreenshotUtil.java:19)
+	at base.BaseTest.tearDown(BaseTest.java:140)
+	at jdk.internal.reflect.GeneratedMethodAccessor61.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethodConsideringTimeout(MethodInvocationHelper.java:71)
+	at org.testng.internal.invokers.ConfigInvoker.invokeConfigurationMethod(ConfigInvoker.java:400)
+	at org.testng.internal.invokers.ConfigInvoker.invokeConfigurations(ConfigInvoker.java:333)
+	at org.testng.internal.invokers.TestInvoker.runConfigMethods(TestInvoker.java:833)
+	at org.testng.internal.invokers.TestInvoker.runAfterConfigurations(TestInvoker.java:802)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:778)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:308)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:71)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:113)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+</pre></div></td>
+<td>0</td>
+<td>tests.AuthenticationTest@dc7df28</td></tr>
+</table><p>
+</body>
+</html>
