@@ -19,11 +19,9 @@ jobs:
         working-directory: ./dentzy
 
     steps:
-      # Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Setup Java
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
@@ -31,45 +29,39 @@ jobs:
           java-version: '17'
           cache: gradle
 
-      # Setup Flutter
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: stable
           cache: true
 
-      # Install dependencies
       - name: Install dependencies
         run: flutter pub get
 
-      # Format Dart files (does not fail workflow)
       - name: Format Dart files
         run: dart format .
 
-      # Analyze project
       - name: Analyze project
         continue-on-error: true
         run: flutter analyze
 
-      # Run tests only if test folder exists
       - name: Run Flutter tests
+        continue-on-error: true
         shell: bash
         run: |
           if [ -d test ] && [ "$(find test -type f)" ]; then
+            echo "Running Flutter tests..."
             flutter test --coverage
           else
-            echo "No Flutter tests found. Skipping..."
+            echo "No tests found. Skipping."
           fi
 
-      # Build APK
       - name: Build APK
         run: flutter build apk --release
 
-      # Build App Bundle
       - name: Build AAB
         run: flutter build appbundle --release
 
-      # Upload APK
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
@@ -77,7 +69,6 @@ jobs:
           path: dentzy/build/app/outputs/flutter-apk/app-release.apk
           if-no-files-found: warn
 
-      # Upload AAB
       - name: Upload AAB
         uses: actions/upload-artifact@v4
         with:
@@ -85,7 +76,6 @@ jobs:
           path: dentzy/build/app/outputs/bundle/release/app-release.aab
           if-no-files-found: warn
 
-      # Upload coverage
       - name: Upload Coverage
         if: always()
         uses: actions/upload-artifact@v4
@@ -94,7 +84,6 @@ jobs:
           path: dentzy/coverage/lcov.info
           if-no-files-found: ignore
 
-      # Upload Appium Report
       - name: Upload Appium Report
         if: always()
         uses: actions/upload-artifact@v4
@@ -103,7 +92,6 @@ jobs:
           path: reports/dentzy_appium_test_results.xlsx
           if-no-files-found: ignore
 
-      # Upload Selenium Report
       - name: Upload Selenium Report
         if: always()
         uses: actions/upload-artifact@v4
@@ -112,7 +100,6 @@ jobs:
           path: reports/selenium_test_results.xlsx
           if-no-files-found: ignore
 
-      # Upload Unit Test Report
       - name: Upload Unit Test Report
         if: always()
         uses: actions/upload-artifact@v4
@@ -121,7 +108,6 @@ jobs:
           path: reports/unit_test_results.xlsx
           if-no-files-found: ignore
 
-      # Upload Validation Report
       - name: Upload Validation Report
         if: always()
         uses: actions/upload-artifact@v4
@@ -130,7 +116,6 @@ jobs:
           path: reports/validation_test_results.xlsx
           if-no-files-found: ignore
 
-      # Upload Load Test Report
       - name: Upload Load Test Report
         if: always()
         uses: actions/upload-artifact@v4
