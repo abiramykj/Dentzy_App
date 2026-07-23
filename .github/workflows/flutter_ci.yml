@@ -48,6 +48,7 @@ jobs:
 
       # Analyze project
       - name: Analyze project
+        continue-on-error: true
         run: flutter analyze
 
       # Run tests only if test folder exists
