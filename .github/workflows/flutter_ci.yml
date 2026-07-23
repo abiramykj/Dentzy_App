@@ -14,90 +14,126 @@ jobs:
     name: Flutter CI Workflow
     runs-on: ubuntu-latest
 
-    # Set the working directory to the Flutter project folder
     defaults:
       run:
         working-directory: ./dentzy
 
     steps:
-      # Step 1: Checkout the repository
+      # Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Step 2: Set up Java for Android build
+      # Setup Java
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'
+          distribution: zulu
           java-version: '17'
-          cache: 'gradle'
+          cache: gradle
 
-      # Step 3: Install Flutter SDK and enable caching
+      # Setup Flutter
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: 'stable'
+          channel: stable
           cache: true
-          
-      # Step 4: Install Flutter dependencies
+
+      # Install dependencies
       - name: Install dependencies
         run: flutter pub get
 
-      # Step 5: Verify Dart formatting
-      - name: Format Dart Files
-       run: dart format .
+      # Format Dart files (does not fail workflow)
+      - name: Format Dart files
+        run: dart format .
 
-      # Step 6: Analyze the project for errors and warnings
+      # Analyze project
       - name: Analyze project
         run: flutter analyze
 
-      # Step 7: Run Flutter tests and generate coverage report (if tests exist)
+      # Run tests only if test folder exists
       - name: Run Flutter tests
+        shell: bash
         run: |
-          if [ -d "test" ] && [ "$(ls -A test 2>/dev/null)" ]; then
-            echo "Tests folder exists and is not empty. Running tests..."
+          if [ -d test ] && [ "$(find test -type f)" ]; then
             flutter test --coverage
           else
-            echo "No tests found in the test folder. Skipping..."
+            echo "No Flutter tests found. Skipping..."
           fi
-        shell: bash
 
-      # Step 8: Build release APK
-      - name: Build Android APK
+      # Build APK
+      - name: Build APK
         run: flutter build apk --release
 
-      # Step 9: Build Android App Bundle (AAB)
-      - name: Build Android AAB
+      # Build App Bundle
+      - name: Build AAB
         run: flutter build appbundle --release
 
-      # Step 10: Upload the generated release APK
-      - name: Upload APK artifact
+      # Upload APK
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: release-apk
           path: dentzy/build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: warn
 
-      # Step 11: Upload the generated release AAB
-      - name: Upload AAB artifact
+      # Upload AAB
+      - name: Upload AAB
         uses: actions/upload-artifact@v4
         with:
           name: release-aab
           path: dentzy/build/app/outputs/bundle/release/app-release.aab
+          if-no-files-found: warn
 
-      # Step 12: Upload Code Coverage Report
-      - name: Upload Coverage Report
-        uses: actions/upload-artifact@v4
+      # Upload coverage
+      - name: Upload Coverage
         if: always()
+        uses: actions/upload-artifact@v4
         with:
           name: coverage-report
           path: dentzy/coverage/lcov.info
           if-no-files-found: ignore
 
-      # Step 13: Upload Excel Test Reports
-      - name: Upload Excel Reports
-        uses: actions/upload-artifact@v4
+      # Upload Appium Report
+      - name: Upload Appium Report
         if: always()
+        uses: actions/upload-artifact@v4
         with:
-          name: excel-test-reports
-          path: reports/*.xlsx
+          name: appium-report
+          path: reports/dentzy_appium_test_results.xlsx
+          if-no-files-found: ignore
+
+      # Upload Selenium Report
+      - name: Upload Selenium Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: selenium-report
+          path: reports/selenium_test_results.xlsx
+          if-no-files-found: ignore
+
+      # Upload Unit Test Report
+      - name: Upload Unit Test Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-report
+          path: reports/unit_test_results.xlsx
+          if-no-files-found: ignore
+
+      # Upload Validation Report
+      - name: Upload Validation Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: validation-report
+          path: reports/validation_test_results.xlsx
+          if-no-files-found: ignore
+
+      # Upload Load Test Report
+      - name: Upload Load Test Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: load-test-report
+          path: reports/load_test_results.xlsx
           if-no-files-found: ignore
